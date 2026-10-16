@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "单机掼蛋 · 手机离线版",
+  "short_name": "单机掼蛋",
+  "description": "你与三名电脑玩家的四人掼蛋，手机横屏、离线对局和本地存档。",
+  "lang": "zh-CN",
+  "start_url": "./?source=homescreen",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#155d4c",
+  "theme_color": "#155d4c",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

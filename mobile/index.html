@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#155d4c" />
+<meta name="description" content="四人单机掼蛋，手机横屏游玩，添加到桌面后可离线游玩。" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="单机掼蛋" />
+<title>单机掼蛋 · 手机离线版</title>
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="stylesheet" href="../css/style.css?v=1.10.2" />
+<link rel="stylesheet" href="../css/table-theme.css?v=1.10.2" />
+<link rel="stylesheet" href="css/mobile.css?v=1.10.2" />
+</head>
+<body>
+<div id="app">
+
+  <!-- 棋牌桌 -->
+  <div id="table" class="table">
+    <div class="table-frame">
+      <header class="table-toolbar">
+        <div class="level-board" id="levelBoard"></div>
+        <div class="toolbar-right">
+          <button class="history-toggle" id="historyToggle" aria-expanded="false" aria-controls="playHistoryPanel"><span class="history-icon" aria-hidden="true"></span><span id="historySummary">出牌记录</span><span aria-hidden="true">⌄</span></button>
+          <div class="table-tools">
+            <button class="btn recorder-toggle" id="btnRecorder" title="记牌器：不含你的手牌和已出牌" aria-expanded="false" aria-controls="recorderPanel"><span aria-hidden="true">▤</span>记牌器</button>
+            <button class="btn btn-icon" id="btnPause" title="打开菜单并暂停" aria-haspopup="dialog" aria-controls="pauseOverlay"><span aria-hidden="true">☰</span>菜单</button>
+          </div>
+        </div>
+      </header>
+      <section class="table-arena" aria-label="四人牌桌">
+        <div class="seat-lane top-lane">
+          <div class="seat seat-top" id="seat-2">
+            <div class="seat-info">
+              <div class="avatar partner-avatar">对</div>
+              <div class="seat-meta">
+                <div class="seat-name">对家 · 队友</div>
+                <div class="seat-count"><span class="count-label">手牌</span> <b class="count">27</b> 张</div>
+                <div class="seat-state-row"><span class="seat-state">等待出牌</span><span class="rank-badge" id="rank-2"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="seat-play" id="play-2" role="img"></div>
+        </div>
+        <div class="seat-lane west-lane">
+          <div class="seat seat-left" id="seat-3">
+            <div class="seat-info">
+              <div class="avatar">西</div>
+              <div class="seat-meta">
+                <div class="seat-name">西家 · 电脑</div>
+                <div class="seat-count"><span class="count-label">手牌</span> <b class="count">27</b> 张</div>
+                <div class="seat-state-row"><span class="seat-state">等待出牌</span><span class="rank-badge" id="rank-3"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="seat-play" id="play-3" role="img"></div>
+        </div>
+        <section class="table-center" id="tableCenter" aria-label="当前有效牌">
+          <div class="center-hint" id="centerHint" aria-live="polite"></div>
+          <div class="central-play" id="activePlay"></div>
+          <div class="trick-empty" id="trickEmpty" aria-hidden="true"><span>♠ ♥ ♣ ♦</span>新一墩</div>
+          <div class="turn-indicator" id="turnIndicator" role="status" aria-live="polite" aria-atomic="true"></div>
+        </section>
+        <div class="seat-lane east-lane">
+          <div class="seat-play" id="play-1" role="img"></div>
+          <div class="seat seat-right" id="seat-1">
+            <div class="seat-info">
+              <div class="avatar">东</div>
+              <div class="seat-meta">
+                <div class="seat-name">东家 · 电脑</div>
+                <div class="seat-count"><span class="count-label">手牌</span> <b class="count">27</b> 张</div>
+                <div class="seat-state-row"><span class="seat-state">等待出牌</span><span class="rank-badge" id="rank-1"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="self-preview"><div class="seat-play" id="myPlay" role="img"></div></div>
+        <section class="play-history hidden" id="playHistoryPanel" aria-label="最近出牌记录">
+          <div class="history-head"><strong>最近出牌</strong><span>本副最近 12 次</span><button id="historyClose" aria-label="收起出牌记录">×</button></div>
+          <div class="history-list" id="historyList"></div>
+        </section>
+      </section>
+      <div class="hand-dock" role="region" aria-label="你的手牌与操作">
+        <div class="decision-strip">
+          <div class="decision-context">
+            <div class="action-context" id="actionContext"></div>
+            <div class="tribute-banner" id="tributeBanner"></div>
+            <div class="hand-feedback">
+              <div class="hint-bar" id="hintBar" aria-live="polite"></div>
+              <div class="select-info" id="selectInfo" aria-live="polite"></div>
+            </div>
+          </div>
+          <div class="action-bar" role="group" aria-label="出牌操作">
+            <button class="btn btn-pass" id="btnPass">不出</button>
+            <button class="btn btn-hint" id="btnHint">提示</button>
+            <button class="btn btn-primary" id="btnPlay">出牌</button>
+          </div>
+        </div>
+        <div class="hand-viewport">
+          <div class="hand-cards" id="handCards" tabindex="0" role="listbox"
+          aria-label="你的手牌，可用左右方向键移动焦点、空格选中、回车出牌"></div>
+      </div>
+      <p class="mobile-hand-tip">左右滑动查看手牌 · 点按选牌</p>
+      <div class="controls-row">
+        <div class="self-status" id="selfStatus">
+          <div class="avatar self-avatar">你</div>
+          <div class="self-meta">
+            <div class="seat-name">你</div>
+            <div class="seat-count"><span class="count-label">手牌</span> <b class="count">27</b> 张</div>
+            <div class="seat-state-row"><span class="seat-state">等待出牌</span><span class="rank-badge" id="rank-0"></span></div>
+            <div class="auto-tag" id="autoTag"></div>
+          </div>
+        </div>
+        <div class="secondary-actions" role="group" aria-label="手牌工具">
+          <button class="btn" id="btnClear">取消选择</button>
+          <button class="btn" id="btnOrganize">理牌</button>
+          <button class="btn btn-warn" id="btnAuto">托管</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="recorder-panel hidden" id="recorderPanel" aria-label="记牌器">
+    <div class="recorder-head"><strong>记牌器</strong><span>剩余 <b id="recorderTotal">81</b> 张</span><button id="btnRecorderClose" class="recorder-close" aria-label="收起记牌器">×</button></div>
+    <div class="recorder-grid" id="recorderGrid"></div>
+    <p>不含你的手牌和已出牌</p>
+  </section>
+
+</div>
+
+  <!-- 首页 -->
+  <div class="overlay hidden" id="homeOverlay">
+    <div class="panel home-panel">
+      <h1 class="game-title">掼&nbsp;蛋</h1>
+      <p class="subtitle">手机横屏版 · 四人对局 · 离线畅玩</p>
+      <div class="diff-row">
+        <span>电脑难度：</span>
+        <label><input type="radio" name="homeDiff" value="easy" /> 简单</label>
+        <label><input type="radio" name="homeDiff" value="normal" checked /> 普通</label>
+        <label><input type="radio" name="homeDiff" value="hard" /> 困难</label>
+      </div>
+      <button class="btn btn-primary big" id="btnStart">完整对局<span class="mode-desc">升级、进贡，打到过 A</span></button>
+      <button class="btn big" id="btnPractice">快速一局<span class="mode-desc">只打一副，结束即结算</span></button>
+      <button class="btn big hidden" id="btnContinue">继续完整对局</button>
+      <button class="btn big hidden" id="btnPracticeContinue">继续快速一局</button>
+      <div class="home-sub-row">
+        <button class="btn btn-ghost" id="btnHomeSettings">设置</button>
+        <button class="btn btn-ghost" id="btnHomeStats">战绩</button>
+        <button class="btn btn-ghost" id="btnHomeRules">规则</button>
+      </div>
+      <p class="foot-tip">规则、AI、存档均在本地浏览器运行</p>
+      <div class="offline-tools">
+        <p class="offline-status" data-offline-status role="status">正在准备离线资源…</p>
+        <button class="btn hidden" id="btnInstall">添加到手机桌面</button>
+        <details class="install-guide">
+          <summary>安装到手机 / 离线说明</summary>
+          <p>首次联网打开，等上方显示「离线已就绪」，之后断网也能启动和继续对局。</p>
+          <p>请将手机横过来游玩；建议添加到桌面，获得更完整的横屏空间。</p>
+          <p>iPhone：用 Safari 打开，点「分享 → 添加到主屏幕」，开启「作为 Web App 打开」（若显示）。</p>
+          <p>安卓：用 Chrome 打开，点「添加到手机桌面」或浏览器菜单中的「安装应用 / 添加到主屏幕」。</p>
+          <p>存档保存在当前设备和浏览器中；清除网站数据会删除进度。建议在添加到桌面后开始正式对局。</p>
+        </details>
+      </div>
+      <p class="foot-tip version-tip">版本 v<span id="homeVersion"></span> · <a href="../index.html" style="color:#e5cb8a">电脑版</a></p>
+    </div>
+  </div>
+
+  <!-- 规则弹窗 -->
+  <div class="overlay hidden" id="rulesOverlay" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+    <div class="panel rules-panel">
+      <h2 id="rulesTitle">本游戏采用的掼蛋规则</h2>
+      <div class="rules-body" id="rulesBody" tabindex="0" aria-label="规则正文，可用方向键滚动"></div>
+      <button class="btn btn-primary" id="btnRulesClose">我知道了</button>
+    </div>
+  </div>
+
+  <!-- 设置弹窗 -->
+  <div class="overlay hidden" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="panel small-panel settings-panel">
+      <h2 id="settingsTitle">设置</h2>
+      <div class="set-group">
+        <div class="set-label">托管策略（你点「托管」时代打风格）</div>
+        <label class="set-radio"><input type="radio" name="setAuto" value="hard" /> 稳健（困难策略，默认）</label>
+        <label class="set-radio"><input type="radio" name="setAuto" value="follow" /> 跟随当前电脑难度</label>
+      </div>
+      <div class="set-group">
+        <div class="set-label">出牌节奏</div>
+        <label class="set-radio"><input type="radio" name="setSpeed" value="slow" /> 慢</label>
+        <label class="set-radio"><input type="radio" name="setSpeed" value="std" /> 标准</label>
+        <label class="set-radio"><input type="radio" name="setSpeed" value="fast" /> 快速</label>
+      </div>
+      <div class="set-group set-inline">
+        <label><input type="checkbox" id="setSound" /> 音效</label>
+        <label class="vol-label">音量
+          <input type="range" id="setVolume" min="0" max="1" step="0.05" />
+        </label>
+      </div>
+      <div class="set-group">
+        <div class="set-label">对战特效（炸弹 / 同花顺 / 四王炸 / 接风）</div>
+        <label class="set-radio"><input type="radio" name="setFx" value="full" /> 完整（默认）</label>
+        <label class="set-radio"><input type="radio" name="setFx" value="simple" /> 简洁（冲击环、扫光和短标签）</label>
+        <label class="set-radio"><input type="radio" name="setFx" value="off" /> 关闭（仅保留牌型文字）</label>
+      </div>
+      <div class="set-group">
+        <label class="set-radio"><input type="checkbox" id="setMotion" /> 减少动效（关闭动画）</label>
+      </div>
+      <p class="set-note">电脑难度在首页选择；托管策略与电脑难度是两项独立设置。</p>
+      <button class="btn btn-primary" id="btnSettingsClose">完 成</button>
+    </div>
+  </div>
+
+  <!-- 战绩弹窗 -->
+  <div class="overlay hidden" id="statsOverlay" role="dialog" aria-modal="true" aria-labelledby="statsTitle">
+    <div class="panel small-panel stats-panel">
+      <h2 id="statsTitle">本地战绩</h2>
+      <div id="statsBody"></div>
+      <div class="confirm-row">
+        <button class="btn btn-warn" id="btnStatsReset">重置战绩</button>
+        <button class="btn btn-primary" id="btnStatsClose">关 闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 单局结算 -->
+  <div class="overlay hidden" id="settleOverlay" role="dialog" aria-modal="true" aria-label="本局结算">
+    <div class="panel settle-panel">
+      <h2 id="settleTitle">本局结算</h2>
+      <div id="settleBody"></div>
+      <div class="confirm-row">
+        <button class="btn btn-warn hidden" id="btnPracticeAgain">再来一局</button>
+        <button class="btn btn-primary" id="btnSettleNext">继 续</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 整场结算 -->
+  <div class="overlay hidden" id="matchEndOverlay" role="dialog" aria-modal="true" aria-label="整场结束">
+    <div class="panel settle-panel">
+      <h2 id="matchEndTitle">整场结束</h2>
+      <div id="matchEndBody"></div>
+      <div class="confirm-row">
+        <button class="btn" id="btnMatchHome">返回首页</button>
+        <button class="btn btn-primary" id="btnMatchRestart">新开完整对局</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 游戏菜单：打开时暂停，关闭子面板后仍留在菜单 -->
+  <div class="overlay hidden" id="pauseOverlay" role="dialog" aria-modal="true" aria-labelledby="menuTitle" aria-describedby="menuNote">
+    <div class="panel small-panel menu-panel">
+      <h2 id="menuTitle">游戏菜单</h2>
+      <p class="menu-note" id="menuNote">对局已暂停</p>
+      <p class="offline-status menu-offline-status" data-offline-status role="status">正在准备离线资源…</p>
+      <button class="btn big mobile-fullscreen hidden" id="btnFullscreen">横屏全屏</button>
+      <button class="btn btn-primary big" id="btnResume">继续游戏</button>
+      <div class="menu-grid">
+        <button class="btn" id="btnRules">规则</button>
+        <button class="btn" id="btnSettings">设置</button>
+        <button class="btn" id="btnStats">战绩</button>
+        <button class="btn btn-warn" id="btnNew">重开本局</button>
+      </div>
+      <button class="btn big" id="btnPauseHome">返回首页</button>
+    </div>
+  </div>
+
+  <!-- 确认弹窗 -->
+  <div class="overlay hidden" id="confirmOverlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="panel small-panel">
+      <h2 id="confirmTitle">确认</h2>
+      <p id="confirmText"></p>
+      <div class="confirm-row">
+        <button class="btn btn-primary" id="btnConfirmYes">确定</button>
+        <button class="btn" id="btnConfirmNo">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="rotate-overlay" id="rotateOverlay" role="dialog" aria-modal="true" aria-labelledby="rotateTitle">
+    <div class="rotate-phone" aria-hidden="true">↻</div>
+    <h2 id="rotateTitle">把手机横过来，一起掼蛋</h2>
+    <p>横屏可看清牌桌与手牌</p>
+    <p class="rotate-note">若画面没有旋转，请先关闭手机的竖排方向锁定。</p>
+  </div>
+
+  <!-- 存档失败持续提示（非自动消失，带重试） -->
+  <div class="save-warn hidden" id="saveWarn" role="alert">
+    <span id="saveWarnText"></span>
+    <button class="btn btn-mini" id="btnSaveRetry">重试保存</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="../js/version.js?v=1.10.2"></script>
+<script src="../js/util.js?v=1.10.2"></script>
+<script src="../js/cards.js?v=1.10.2"></script>
+<script src="../js/rules.js?v=1.10.2"></script>
+<script src="../js/flow.js?v=1.10.2"></script>
+<script src="../js/ai.js?v=1.10.2"></script>
+<script src="../js/fx.js?v=1.10.2"></script>
+<script src="../js/sound.js?v=1.10.2"></script>
+<script src="../js/stats.js?v=1.10.2"></script>
+<script src="../js/game.js?v=1.10.2"></script>
+<script src="../js/table-tools.js?v=1.10.2"></script>
+<script src="../js/table-view.js?v=1.10.2"></script>
+<script src="../js/active-play.js?v=1.10.2"></script>
+<script src="../js/seat-play.js?v=1.10.2"></script>
+<script src="../js/play-history.js?v=1.10.2"></script>
+<script src="../js/ui.js?v=1.10.2"></script>
+<script src="js/offline.js?v=1.10.2"></script>
+</body>
+</html>
