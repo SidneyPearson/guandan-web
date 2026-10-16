@@ -8,7 +8,7 @@
   const CARD_BY_ID = new Map(GD.buildDeck().map((c) => [c.id, c]));
 
   // 出牌节奏（UI 等待随机，与洗牌/策略随机相互独立）
-  const SPEED_WAIT = { slow: [1000, 400], std: [600, 300], fast: [200, 150] };
+  const SPEED_WAIT = { slow: [1600, 500], std: [1000, 400], fast: [400, 200] };
   const ANTI_WAIT = { slow: 1800, std: 1400, fast: 700 };
   function aiWait() {
     const w = SPEED_WAIT[settings.speed] || SPEED_WAIT.std;
