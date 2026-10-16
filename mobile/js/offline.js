@@ -4,6 +4,19 @@
   const button = document.getElementById("btnInstall");
   let installPrompt = null, ready = false, waiting = false, registration = null;
   const installed = () => window.matchMedia?.("(display-mode: standalone)").matches || navigator.standalone;
+  // Safari/微信工具栏展开时，实际可视高度可能小于布局视口。
+  function fitViewport() {
+    const viewport = window.visualViewport;
+    const height = Math.round(viewport && viewport.scale === 1 ? viewport.height : window.innerHeight);
+    const width = Math.round(viewport && viewport.scale === 1 ? viewport.width : window.innerWidth);
+    document.documentElement.style.setProperty("--mobile-viewport-height", height + "px");
+    document.documentElement.classList.toggle("mobile-short", width <= 1000 && width > height && height <= 340);
+  }
+  fitViewport();
+  window.addEventListener("resize", fitViewport, { passive: true });
+  window.visualViewport?.addEventListener("resize", fitViewport, { passive: true });
+  if (/MicroMessenger/i.test(navigator.userAgent || ""))
+    document.querySelectorAll("[data-browser-hint]").forEach(node => node.classList.remove("hidden"));
 
   // 手机上中途转回竖屏时，通过现有菜单暂停并保存，横回来后手动继续。
   const portrait = window.matchMedia?.("(max-width: 600px) and (orientation: portrait)");

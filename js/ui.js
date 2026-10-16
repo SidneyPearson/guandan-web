@@ -374,10 +374,12 @@
     document.addEventListener("pointerup", onPointerUp);
     document.addEventListener("pointercancel", cancelGesture);
     box.addEventListener("scroll", updateScrollHints, { passive: true });
-    window.addEventListener("resize", () => {
+    const resizeHand = () => {
       if (!state) return;
       requestAnimationFrame(() => { layoutHand(); updateScrollHints(); });
-    });
+    };
+    window.addEventListener("resize", resizeHand);
+    if (window.ResizeObserver) new window.ResizeObserver(resizeHand).observe($("app"));
   }
 
   /* ================= 设置 ================= */
@@ -1436,10 +1438,11 @@
       box.classList.remove("dense-stacks"); delete $("table").dataset.handRows;
       return;
     }
-    const short = window.innerHeight <= 420, compact = window.innerHeight <= 560;
+    const viewportHeight = Math.min(window.innerHeight, $("app").clientHeight || window.innerHeight);
+    const short = viewportHeight <= 420, compact = viewportHeight <= 560;
     const cw = els[0].offsetWidth, ch = els[0].offsetHeight;
     const normalStep = short ? 18 : compact ? 28 : 42, paddingTop = short ? 8 : 12;
-    const handBudget = window.innerHeight * (short ? .37 : compact ? .39 : .35);
+    const handBudget = viewportHeight * (short ? .37 : compact ? .39 : .35);
     const maxRows = Math.max(short ? 3 : 4, Math.min(short ? 3 : 8, Math.floor(
       (handBudget - paddingTop - ch - 8) / normalStep) + 1));
     const items = Array.from(els, (e) => ({
