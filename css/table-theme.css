@@ -220,11 +220,14 @@
 .self-status { position:relative;grid-column: 2; justify-self: center; gap: 8px; }
 .self-status > .turn-clock { position:absolute;top:50%;right:calc(100% + 12px);transform:translateY(-50%); }
 .self-status .avatar { width: 34px; height: 34px; font-size: 18px; }
-.self-meta { display: grid; grid-template-columns: auto auto; align-items: center; column-gap: 8px; }
-.self-meta .seat-count { margin: 0; }
-.self-meta .seat-state-row, .self-meta .auto-tag { grid-column: 1 / -1; min-height: 0; margin: 0; }
+.self-meta { display: grid; width: 140px; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 20px 18px; align-items: center; column-gap: 8px; }
+.self-meta .seat-name { grid-area: 1 / 1; }
+.self-meta .seat-count { grid-area: 1 / 2; margin: 0; }
+/* 状态与托管共用固定的第二行，文字出现/消失时不再撑高手牌区。 */
+.self-meta .seat-state-row { grid-area: 2 / 1; min-height: 0; margin: 0; }
+.self-meta .auto-tag { grid-area: 2 / 2; justify-self: end; min-height: 0; margin: 0; }
 .self-meta .seat-state-row:has(.seat-state:empty):has(.rank-badge:empty) { display: none; }
-.self-meta .auto-tag { font-size: 9px; background: none; padding: 0; font-weight: 400; }
+.self-meta .auto-tag { font-size: 9px; line-height: 18px; background: none; padding: 0; font-weight: 400; }
 .secondary-actions { grid-column: 3; display: flex; justify-self: end; align-items: center; gap: 8px; }
 .secondary-actions .btn { padding: 6px 10px; font-size: 11px; border-radius: 6px; background: transparent; border-color: #c6dec425; box-shadow: none; color: #c9dccd; }
 .secondary-actions #btnOrganize.btn-primary, .secondary-actions #btnAuto.btn-primary { color: #ffe3a1; border-color: #eacb6a44; background: #eacb6a0c; }
@@ -314,6 +317,8 @@
   .action-bar .btn-primary { min-width:88px;min-height:36px; }
   .controls-row { min-height:36px;padding-top:3px; }
   .self-status .avatar { width:30px;height:30px;font-size:16px; }
+  .self-meta { width:126px;grid-template-rows:17px 14px; }
+  .self-meta .auto-tag { line-height:14px; }
   .secondary-actions .btn { padding:5px 8px;font-size:10px; }
   .play-history { width:min(320px,100%);padding:6px 9px; }
   .history-row { min-height:32px;gap:7px; }
@@ -413,7 +418,8 @@
   .controls-row { min-height:30px;padding-top:2px;column-gap:10px; }
   .self-status { gap:6px; }
   .self-status .avatar { width:27px;height:27px;font-size:15px; }
-  .self-meta { column-gap:6px; }
+  .self-meta { width:116px;grid-template-rows:14px 12px;column-gap:6px; }
+  .self-meta .auto-tag { font-size:8px;line-height:12px; }
   .secondary-actions { gap:5px; }
   .secondary-actions .btn { padding:4px 7px;font-size:9px; }
   .play-history { width:min(300px,100%);padding:4px 8px; }

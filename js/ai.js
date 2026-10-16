@@ -131,8 +131,7 @@
     return groups;
   }
 
-  // 轻量残代价：只按同点分组（不调 enumerate）。供束搜索启发与出牌后估值——
-  // 出牌触及的组留下的牌集中在同点，无法再凑 5 张连续型，同点拆分即精确。
+  // 束搜索的轻量下层估值；跨组出牌留下的牌仍可能重新组成顺子、三带二等。
   function lightCost(idSet, level) {
     let c = 0;
     for (const g of residualGroups(idSet, level)) c += g.cost;
@@ -271,7 +270,26 @@
     };
   }
 
-  // 出牌后的整手代价：只重组被触及的组（轻量同点拆分），其余组代价沿用
+  // 重组被触及的组：跨组跟牌后，不能把剩下的连续牌一律当散张。
+  // 只在这些剩牌中尝试一组成型牌，其余按同点分组；规模有界、同集合复用结果。
+  function regroup(ids, level) {
+    let best = { cost: lightCost(ids, level), steps: lightSteps(ids, level) };
+    if (ids.size < 5) return best;
+    const cards = [...ids].map((id) => CARD_BY_ID.get(id));
+    for (const p of rules.enumerate(cards, level)) {
+      if (COMPLEX.indexOf(p.type) < 0) continue;
+      const rest = new Set(ids);
+      for (const c of p.cards) rest.delete(c.id);
+      const cost = groupCost(p.type, level, p.cards[0]) + lightCost(rest, level);
+      const steps = 1 + lightSteps(rest, level);
+      if (cost < best.cost - 1e-9 || (Math.abs(cost - best.cost) < 1e-9 && steps < best.steps)) {
+        best = { cost, steps };
+      }
+    }
+    return best;
+  }
+
+  // 出牌后的整手代价：保留未触及的组，允许受影响的组重新组合。
   function playAftermath(D, play, level) {
     const playIds = new Set(play.cards.map((c) => c.id));
     let removedCost = 0;
@@ -286,11 +304,13 @@
       for (const id of g.ids) if (!playIds.has(id)) localIds.add(id);
     }
     if (!touched) return { cost: D.cost, steps: D.steps };
-    const restCost = localIds.size ? lightCost(localIds, level) : 0;
-    const restSteps = localIds.size ? lightSteps(localIds, level) : 0;
+    if (!D.regroupCache) D.regroupCache = new Map();
+    const key = [...localIds].sort((a, b) => a - b).join(",");
+    let rest = D.regroupCache.get(key);
+    if (!rest) { rest = regroup(localIds, level); D.regroupCache.set(key, rest); }
     return {
-      cost: D.cost - removedCost + restCost,
-      steps: D.steps - touched + restSteps,
+      cost: D.cost - removedCost + rest.cost,
+      steps: D.steps - touched + rest.steps,
     };
   }
 
@@ -377,23 +397,47 @@
   const ID = (p) => p.cards.map((c) => c.id).sort((a, b) => a - b).join(",");
   const wildUsed = (p, level) => p.cards.filter((c) => GD.isWild(c, level)).length;
 
-  // 本手是否拆了既有组（组比本手大、只取其中一部分）；本手之外是否还留着成型大组合
+  // 是否只取走某组的一部分，与本次总出牌张数无关。
   function playFacts(D, play) {
     const ids = new Set(play.cards.map((c) => c.id));
     let splits = false;
     for (const g of D.groups) {
-      let hit = false;
-      for (const id of ids) if (g.ids.has(id)) { hit = true; break; }
-      if (hit && g.ids.size > ids.size) { splits = true; break; }
+      let hits = 0;
+      for (const id of ids) if (g.ids.has(id)) hits++;
+      if (hits > 0 && hits < g.ids.size) { splits = true; break; }
     }
     const keepsComplex = D.groups.some((g) =>
       COMPLEX.indexOf(g.type) >= 0 && [...g.ids].every((id) => !ids.has(id)));
     return { splits, keepsComplex };
   }
 
+  // 规则枚举为同点牌选用固定实体牌。补入“先保留已成型组合，再枚举余牌”的
+  // 合法候选，避免明明有富余对子，却总拿顺子/同花顺里的那一张去配对。
+  function structuredPlays(obs, D) {
+    const plays = [], seen = new Set();
+    const add = (p) => {
+      if (obs.target && !rules.beats(p, obs.target)) return;
+      const key = p.type + "|" + ID(p);
+      if (!seen.has(key)) { seen.add(key); plays.push(p); }
+    };
+    const enumerate = (hand) => { for (const p of rules.enumerate(hand, obs.level)) add(p); };
+    enumerate(obs.hand);
+    const protectedIds = new Set();
+    for (const g of D.groups) {
+      // 分组本身也是候选；最终解释与游戏提交保持一致。
+      const r = rules.resolveSubmission(g.cards, obs.target, obs.level);
+      if (r.ok) add(r.play);
+      if (COMPLEX.indexOf(g.type) < 0) continue;
+      for (const id of g.ids) protectedIds.add(id);
+      enumerate(obs.hand.filter((c) => !g.ids.has(c.id)));
+    }
+    if (protectedIds.size) enumerate(obs.hand.filter((c) => !protectedIds.has(c.id)));
+    return plays;
+  }
+
   function leadCandidates(obs, D, tier, rng, metrics, budget) {
     const level = obs.level;
-    const cands = rules.enumerate(obs.hand, level).map((p) => {
+    const cands = structuredPlays(obs, D).map((p) => {
       const after = playAftermath(D, p, level);
       let s = after.cost + wildUsed(p, level) * 0.8;
       if (p.type === "jokers") s += 22;
@@ -458,13 +502,14 @@
     const minOppN = minOpponentCount(obs);
 
     const cands = [];
-    for (const p of rules.findBeats(obs.hand, target, level)) {
+    for (const p of structuredPlays(obs, D)) {
       if (emptiesHand(obs.hand, p)) {
         cands.push({ action: "play", play: p, score: -1e9, tag: "goout",
           after: { cost: 0, steps: 0 }, facts: { restSteps: 0, exactG: null } });
         continue;
       }
       const after = playAftermath(D, p, level);
+      const facts = playFacts(D, p);
       let s = after.cost + wildUsed(p, level) * 0.8;
       if (isBomb(p)) {
         s += p.type === "jokers" ? 10 : p.type === "sflush" ? 6 : 4.5;
@@ -478,12 +523,19 @@
         s -= T * 0.9;
         if (partnerLeading) s += 1.0;
       }
+      // 队友还很长时，顺势走掉一张无须拆组的普通散牌；A、级牌、王与配牌
+      // 留作控制，队友报单/报双及接风时继续让牌。不是一律接，也不是一律不要。
+      const shedSingle = tier !== "easy" && partnerLeading && target.type === "single" &&
+        p.type === "single" && !facts.splits && after.steps < D.steps &&
+        !GD.isWild(p.cards[0], level) && GD.cardWeight(p.cards[0], level) < 14 &&
+        (partnerN > 5 || (partnerN > 2 && obs.hand.length <= partnerN && after.steps <= 2));
+      if (shedSingle) s -= 2.2;
       const bomb = isBomb(p);
       cands.push({
         action: "play", play: p, score: s, after,
-        tag: bomb ? "bomb-block" : T >= 2.6 ? "block"
+        tag: shedSingle ? "shed-single" : bomb ? "bomb-block" : T >= 2.6 ? "block"
           : partnerLeading ? "cover-partner" : "beat",
-        facts: Object.assign(playFacts(D, p), {
+        facts: Object.assign(facts, {
           restSteps: after.steps, exactG: null, minOppN, partnerN,
           canCollect: bomb && after.steps <= 2, // "炸后还能收"必须确有此事实
         }),
@@ -620,6 +672,8 @@
       case "cover-partner":
         return `队友领牌，用${brief}接管` +
           (f.restSteps < D.steps ? `，出牌后手牌更整（约 ${f.restSteps} 组）` : "") + exactSuffix(c);
+      case "shed-single":
+        return `顺着队友的单牌跟${brief}，走掉散张${f.keepsComplex ? "，保留成型组合" : ""}${exactSuffix(c)}`;
       case "block":
         return `对手最少只剩 ${f.minOppN} 张，用${brief}拦截${exactSuffix(c)}`;
       case "cut-feed":
