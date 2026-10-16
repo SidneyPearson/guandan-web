@@ -32,7 +32,7 @@
   let statsFrom = null;
   let savedFocus = null;  // 打开弹窗前的焦点元素
   let activeModal = null; // 当前最上层模态窗口（焦点陷阱用）
-  let activePlayView, seatPlayView, historyView;
+  let activePlayView, seatPlayView, historyView, turnClock;
   const MODAL_IDS = ["confirmOverlay", "rulesOverlay", "settingsOverlay", "statsOverlay",
     "pauseOverlay", "settleOverlay", "matchEndOverlay"];
 
@@ -67,6 +67,7 @@
     historyView = GD.createPlayHistory({ toggle: $("historyToggle"), panel: $("playHistoryPanel"),
       list: $("historyList"), summary: $("historySummary"), close: $("historyClose"),
       renderCard: cardEl, cardsById: CARD_BY_ID, names: NAMES });
+    turnClock = GD.createTurnClock({ roots: [0, 1, 2, 3].map((seat) => $("turn-clock-" + seat)), names: NAMES });
     bindStatic();
     applyUISettings();
     $("homeVersion").textContent = GD.VERSION;
@@ -114,6 +115,7 @@
     modalPause = false;
     resetTemp();
     seatPlayView.clear();
+    turnClock.clear();
     historyView.close();
     if (GD.fx) GD.fx.cancel(); // 新开/恢复：清掉一切在途特效
     hideAllOverlays();
@@ -135,9 +137,11 @@
     document.addEventListener("pointerdown", unlock);
     document.addEventListener("keydown", unlock);
     // 导航/刷新/关页：停止所有异步推进，避免旧执行上下文排空时操作已销毁的 DOM
-    window.addEventListener("pagehide", () => { unloading = true; seatPlayView.clear(); });
+    window.addEventListener("pagehide", () => { unloading = true; seatPlayView.clear(); turnClock.suspend(); });
     // iOS Safari 回退可能从 bfcache 恢复同一上下文：恢复推进
-    window.addEventListener("pageshow", (e) => { if (e.persisted) unloading = false; });
+    window.addEventListener("pageshow", (e) => {
+      if (e.persisted) { unloading = false; if (state) renderSeats(); }
+    });
 
     $("btnStart").onclick = () => {
       const diff = homeDiff();
@@ -365,6 +369,8 @@
     $("btnRecorderClose").onclick = () => { toggleRecorder(false); $("btnRecorder").focus(); };
 
     const box = $("handCards");
+    $("btnHandLeft").onclick = () => scrollHand(-1);
+    $("btnHandRight").onclick = () => scrollHand(1);
     box.addEventListener("pointerdown", onPointerDown);
     // 点击/拖选/触屏按下：立刻撤掉键盘焦点框（focus 事件随后也不会再加回）
     box.addEventListener("pointerdown", onHandPointerNav);
@@ -534,6 +540,7 @@
       modalPause = true;
       noteSaveResult(GD.store.save(state));
     }
+    if (state) renderSeats();
     seatPlayView.clear();
     historyView.close();
     if (GD.fx) GD.fx.cancel(); // 暂停/开弹窗：立即清理在途特效与定时器
@@ -687,7 +694,7 @@
     const onTable = state.table[r.seat];
     const fullPlay = onTable && onTable.play ? onTable.play : null;
     const COMBO_SHORT = { straight: "顺子", dpairs: "三连对", steel: "钢板" };
-    let detail = fullPlay ? playTypeText(fullPlay) : GD.TYPE_LABEL[t] || "";
+    let detail = fullPlay ? playTypeText(fullPlay) : t === "bomb" ? playTypeText(r.play) : GD.TYPE_LABEL[t] || "";
     // 配牌替代如实写在说明里（仅列真正替成别的牌的红桃级牌）
     if (fullPlay && Array.isArray(fullPlay.mapping)) {
       const wl = wildLines(fullPlay);
@@ -696,11 +703,12 @@
     GD.fx.act({
       key: state.matchId + ":" + state.gen,
       kind: kind || "none",
+      size: r.play && r.play.size,
       seat: r.seat,
-      title: (kind === "combo" ? COMBO_SHORT[t] : GD.TYPE_LABEL[t]) || "",
-      detail: kind === "jokers" ? "四张王牌" : detail,
+      title: (kind === "jokers" ? "四大天王" : kind === "combo" ? COMBO_SHORT[t] : GD.TYPE_LABEL[t]) || "",
+      detail: kind === "jokers" ? "四王炸 · 四张王牌" : detail,
       mode: settings.fx || "full",
-      // 快速档主效果约 250–400ms；慢速略放宽，标准 1
+      // 快速档缩短，慢速略放宽，标准 1
       speedMul: settings.speed === "fast" ? 0.62 : settings.speed === "slow" ? 1.15 : 1,
       reduceMotion: !!settings.reduceMotion,
       ending: state.phase === "handEnd",
@@ -1100,8 +1108,8 @@
       // 活动头像的金色光圈指向座位，回合文字只在中央显示一次。
     } else if (state.phase === "play" && state.table[seat] === "pass") {
       kind = "passed"; label = "已不出";
-    } else if (state.phase === "play" && state.table[seat]) {
-      kind = "played";
+    } else if (GD.tableView.seatAction(state, seat)?.kind === "play") {
+      kind = "played"; label = "已出牌";
     }
     el.dataset.state = kind;
     el.classList.toggle("is-turn", turn);
@@ -1146,7 +1154,7 @@
     $("rank-0").textContent =
       state.finished.indexOf(0) >= 0 ? RANK_WORDS[state.finished.indexOf(0)] : "";
     renderTurnIndicator();
-
+    turnClock.sync(state);
   }
 
   function renderCenterHint() {
@@ -1373,8 +1381,9 @@
       e.dataset.id = c.id;
       e.dataset.rank = c.rank;
       const group = groupAt.get(i);
+      // 已理出的整组牌共用一列，包括点数不同的同花顺。
       e.dataset.stack = group
-        ? `group-${group.start}-${group.type === "sflush" ? c.rank : "bomb"}`
+        ? `group-${group.start}-${group.type}`
         : `rank-${c.rank}`;
       if (selected.has(c.id)) e.classList.add("selected");
       if (inGroupIdx.has(i)) e.classList.add("in-group");
@@ -1425,8 +1434,21 @@
     const box = $("handCards");
     const viewport = box.parentElement;
     const max = box.scrollWidth - box.clientWidth;
-    viewport.classList.toggle("can-left", box.scrollLeft > 2);
-    viewport.classList.toggle("can-right", box.scrollLeft < max - 2);
+    const left = box.scrollLeft > 2, right = box.scrollLeft < max - 2;
+    viewport.classList.toggle("can-left", left);
+    viewport.classList.toggle("can-right", right);
+    for (const [id, visible] of [["btnHandLeft", left], ["btnHandRight", right]]) {
+      const button = $(id);
+      button.disabled = !visible;
+      button.classList.toggle("hidden", !visible);
+      if (!visible && document.activeElement === button) box.focus({ preventScroll: true });
+    }
+  }
+
+  function scrollHand(direction) {
+    const box = $("handCards");
+    const reduced = settings.reduceMotion || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    box.scrollBy({ left: direction * box.clientWidth * .75, behavior: reduced ? "auto" : "smooth" });
   }
 
   function layoutHand() {
@@ -1462,11 +1484,25 @@
     box.style.setProperty("--stack-pitch", stepY + "px");
     box.style.setProperty("--stack-corner-size", Math.max(8, Math.floor((stepY - (short ? 4 : 6)) / 1.05)) + "px");
     $("table").dataset.handRows = rows;
-    const layout = GD.tableTools.stackLayout(items, {
+    // 按真实牌角测量最小露出宽度；空间稍紧时增加重叠，保留完整点数和花色。
+    const cornerWidth = Math.max(...Array.from(els, (e) => {
+      const corner = e.querySelector(".corner");
+      return (corner.offsetLeft || 0) + corner.offsetWidth;
+    }));
+    const minStepX = Math.ceil(cornerWidth + 4);
+    const options = {
       cardWidth: cw, cardHeight: ch, availableWidth: box.clientWidth, stepY, maxRows, keepFiveTogether: true,
-      minStepX: cw - (short ? 4 : compact ? 14 : 24),
-      maxStepX: cw - (short ? 4 : compact ? 12 : 22),
-      gap: short ? 8 : 16, paddingTop, paddingX: 16 });
+      minStepX, maxStepX: Math.max(minStepX, cw - (short ? 4 : compact ? 12 : 22)),
+      gap: short ? 8 : 16, paddingTop, paddingX: 16 };
+    let layout = GD.tableTools.stackLayout(items, options);
+    // 真正需要滚动时，两端留出翻看按钮和选中描边的空间。
+    if (layout.width > box.clientWidth + .5) layout = GD.tableTools.stackLayout(items, { ...options, paddingX: 40 });
+    // 收紧排列时，选中和悬停的横移也不能遮住下一列的牌角。
+    const columnLefts = [...new Set(layout.positions.map((p) => p.left))];
+    const pitch = columnLefts.length > 1 ? Math.min(...columnLefts.slice(1).map((left, i) => left - columnLefts[i])) : cw;
+    const shift = Math.max(0, Math.min(short ? 4 : 8, Math.floor(pitch - cornerWidth - 2)));
+    box.style.setProperty("--hand-select-shift", shift + "px");
+    box.style.setProperty("--hand-hover-shift", Math.min(4, shift) + "px");
     box.style.height = layout.height + "px";
     box.style.setProperty("--hand-width", Math.max(layout.width, box.clientWidth) + "px");
     for (let i = 0; i < n; i++) {

@@ -13,9 +13,9 @@
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="manifest" href="manifest.webmanifest" />
-<link rel="stylesheet" href="../css/style.css?v=1.10.3" />
-<link rel="stylesheet" href="../css/table-theme.css?v=1.10.3" />
-<link rel="stylesheet" href="css/mobile.css?v=1.10.3" />
+<link rel="stylesheet" href="../css/style.css?v=1.12.1" />
+<link rel="stylesheet" href="../css/table-theme.css?v=1.12.1" />
+<link rel="stylesheet" href="css/mobile.css?v=1.12.1" />
 </head>
 <body>
 <div id="app">
@@ -44,6 +44,7 @@
                 <div class="seat-state-row"><span class="seat-state">等待出牌</span><span class="rank-badge" id="rank-2"></span></div>
               </div>
             </div>
+            <span class="turn-clock hidden" id="turn-clock-2" role="timer"></span>
           </div>
           <div class="seat-play" id="play-2" role="img"></div>
         </div>
@@ -57,6 +58,7 @@
                 <div class="seat-state-row"><span class="seat-state">等待出牌</span><span class="rank-badge" id="rank-3"></span></div>
               </div>
             </div>
+            <span class="turn-clock hidden" id="turn-clock-3" role="timer"></span>
           </div>
           <div class="seat-play" id="play-3" role="img"></div>
         </div>
@@ -77,6 +79,7 @@
                 <div class="seat-state-row"><span class="seat-state">等待出牌</span><span class="rank-badge" id="rank-1"></span></div>
               </div>
             </div>
+            <span class="turn-clock hidden" id="turn-clock-1" role="timer"></span>
           </div>
         </div>
         <div class="self-preview"><div class="seat-play" id="myPlay" role="img"></div></div>
@@ -102,8 +105,10 @@
           </div>
         </div>
         <div class="hand-viewport">
+          <button class="hand-scroll hand-scroll-left hidden" id="btnHandLeft" type="button" aria-label="向左查看手牌" aria-controls="handCards" title="向左查看手牌" disabled>‹</button>
           <div class="hand-cards" id="handCards" tabindex="0" role="listbox"
           aria-label="你的手牌，可用左右方向键移动焦点、空格选中、回车出牌"></div>
+          <button class="hand-scroll hand-scroll-right hidden" id="btnHandRight" type="button" aria-label="向右查看手牌" aria-controls="handCards" title="向右查看手牌" disabled>›</button>
       </div>
       <p class="mobile-hand-tip">左右滑动查看手牌 · 点按选牌</p>
       <div class="controls-row">
@@ -115,6 +120,7 @@
             <div class="seat-state-row"><span class="seat-state">等待出牌</span><span class="rank-badge" id="rank-0"></span></div>
             <div class="auto-tag" id="autoTag"></div>
           </div>
+          <span class="turn-clock hidden" id="turn-clock-0" role="timer"></span>
         </div>
         <div class="secondary-actions" role="group" aria-label="手牌工具">
           <button class="btn" id="btnClear">取消选择</button>
@@ -297,22 +303,23 @@
   <div class="toast" id="toast"></div>
 </div>
 
-<script src="../js/version.js?v=1.10.3"></script>
-<script src="../js/util.js?v=1.10.3"></script>
-<script src="../js/cards.js?v=1.10.3"></script>
-<script src="../js/rules.js?v=1.10.3"></script>
-<script src="../js/flow.js?v=1.10.3"></script>
-<script src="../js/ai.js?v=1.10.3"></script>
-<script src="../js/fx.js?v=1.10.3"></script>
-<script src="../js/sound.js?v=1.10.3"></script>
-<script src="../js/stats.js?v=1.10.3"></script>
-<script src="../js/game.js?v=1.10.3"></script>
-<script src="../js/table-tools.js?v=1.10.3"></script>
-<script src="../js/table-view.js?v=1.10.3"></script>
-<script src="../js/active-play.js?v=1.10.3"></script>
-<script src="../js/seat-play.js?v=1.10.3"></script>
-<script src="../js/play-history.js?v=1.10.3"></script>
-<script src="../js/ui.js?v=1.10.3"></script>
-<script src="js/offline.js?v=1.10.3"></script>
+<script src="../js/version.js?v=1.12.1"></script>
+<script src="../js/util.js?v=1.12.1"></script>
+<script src="../js/cards.js?v=1.12.1"></script>
+<script src="../js/rules.js?v=1.12.1"></script>
+<script src="../js/flow.js?v=1.12.1"></script>
+<script src="../js/ai.js?v=1.12.1"></script>
+<script src="../js/fx.js?v=1.12.1"></script>
+<script src="../js/sound.js?v=1.12.1"></script>
+<script src="../js/stats.js?v=1.12.1"></script>
+<script src="../js/game.js?v=1.12.1"></script>
+<script src="../js/table-tools.js?v=1.12.1"></script>
+<script src="../js/table-view.js?v=1.12.1"></script>
+<script src="../js/turn-clock.js?v=1.12.1"></script>
+<script src="../js/active-play.js?v=1.12.1"></script>
+<script src="../js/seat-play.js?v=1.12.1"></script>
+<script src="../js/play-history.js?v=1.12.1"></script>
+<script src="../js/ui.js?v=1.12.1"></script>
+<script src="js/offline.js?v=1.12.1"></script>
 </body>
 </html>

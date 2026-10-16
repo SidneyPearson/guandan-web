@@ -34,7 +34,7 @@ html, body { overscroll-behavior: none; }
 @media (pointer: coarse) {
   .diff-row label, .set-radio, .set-inline label { padding-block: 7px; }
   .hand-cards .card:hover, .hand-cards .card.in-group:not(.selected):hover { transform: none; }
-  .hand-cards .card.selected, .hand-cards .card.selected.in-group { transform: translateX(4px); }
+  .hand-cards .card.selected, .hand-cards .card.selected.in-group { transform: translateX(var(--hand-select-shift,4px)); }
 }
 @media (max-width: 1000px) and (orientation: landscape) {
   .mobile-fullscreen:not(.hidden) { display: inline-block; }
@@ -43,7 +43,7 @@ html, body { overscroll-behavior: none; }
   .table-frame { grid-template-rows: 36px minmax(0, 1fr) auto; gap: 3px; }
   .table-arena { grid-template-rows: 0 minmax(0, 1fr) 27px; row-gap: 2px; }
   .top-lane { grid-area: auto; position: absolute; top: max(4px, env(safe-area-inset-top)); left: 50%; width: 104px; transform: translateX(-50%); display: flex; flex-direction: row; justify-content: center; }
-  .top-lane .seat-play { position: absolute; top: 0; left: 100%; margin: 0; max-width: 60px; }
+  .top-lane .seat-play { position: absolute; top: 0; left: calc(100% + 74px); margin: 0; max-width: 60px; }
   .toolbar-right { gap: 4px; }
   .history-toggle { max-width: 72px; }
   .table:has(#recorderPanel:not(.hidden)) .top-lane { visibility: hidden; }
@@ -78,6 +78,10 @@ html, body { overscroll-behavior: none; }
   .menu-panel .menu-grid .btn { padding: 7px; font-size: 12px; min-height: 32px; }
   .panel { max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 20px); }
   .save-warn { white-space: normal; max-width: calc(100% - 32px); font-size: 12px; }
+}
+/* 为对家右侧的回合提示和短预览保留顶部横向空间。 */
+@media (max-width: 700px) and (max-height: 500px) and (orientation: landscape) {
+  .history-toggle { max-width: 44px; }
 }
 /* 微信等内置浏览器的工具栏会把横屏可用高度压到 240–340px。
  * 操作移到手牌右侧，中央说明与牌面并排，给牌桌保留独立空间。 */

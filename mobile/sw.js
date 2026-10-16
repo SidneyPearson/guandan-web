@@ -9,7 +9,7 @@ const FILES = [
   `./css/mobile.css?v=${VERSION}`, `./js/offline.js?v=${VERSION}`,
   ...["style", "table-theme"].map(name => `../css/${name}.css?v=${VERSION}`),
   ...["version", "util", "cards", "rules", "flow", "ai", "fx", "sound", "stats", "game",
-    "table-tools", "table-view", "active-play", "seat-play", "play-history", "ui"]
+    "table-tools", "table-view", "turn-clock", "active-play", "seat-play", "play-history", "ui"]
     .map(name => `../js/${name}.js?v=${VERSION}`),
 ].map(file => new URL(file, self.registration.scope).href);
 const INDEX = new URL("./index.html", self.registration.scope).href;

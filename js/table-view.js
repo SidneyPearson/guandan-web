@@ -20,5 +20,17 @@
       ...e, kind: e.pass ? "pass" : "play", sequence: null,
     })) : [];
   }
-  GD.tableView = { handKey, target, recent };
+  function seatAction(s, seat) {
+    if (s.phase !== "play" || !s.trick?.target) return null;
+    // 新的压牌会清理 table，已出牌提示仍从本墩的真实动作读取。
+    if (Number.isInteger(s.trick.startLogIndex) && Array.isArray(s.log)) {
+      for (let i = s.log.length - 1; i >= s.trick.startLogIndex; i--) {
+        if (s.log[i].seat === seat) return s.log[i];
+      }
+      return null;
+    }
+    // 旧存档没有本墩起点，只显示其已有快照。
+    return s.table[seat] ? { kind: s.table[seat] === "pass" ? "pass" : "play" } : null;
+  }
+  GD.tableView = { handKey, target, recent, seatAction };
 })();

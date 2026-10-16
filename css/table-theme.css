@@ -23,7 +23,7 @@
 .top-lane { grid-area:1/2;flex-direction:column;justify-content:flex-start;gap:12px; }
 .west-lane { grid-area:2/1; }
 .east-lane { grid-area:2/3; }
-.table-arena .seat { position:static;left:auto;right:auto;top:auto;transform:none; }
+.table-arena .seat { position:relative;left:auto;right:auto;top:auto;transform:none; }
 .avatar { border-radius:50%;width:44px;height:44px;flex:0 0 auto;font-size:21px;border:2px solid #d4e9ce9c;box-shadow:0 2px 6px #00372c30; }
 .seat-info { width:auto;min-width:134px;min-height:62px;gap:11px;flex-direction:row;text-align:left;padding:0;background:none;border:0;box-shadow:none; }
 .seat-right .seat-info { flex-direction:row-reverse;text-align:right; }
@@ -35,6 +35,7 @@
 .seat-state-row { display:flex;align-items:center;gap:5px;min-height:18px;margin-top:3px; }
 .seat-right .seat-state-row { justify-content:flex-end; }
 .seat-state-row:has(.seat-state:empty):has(.rank-badge:empty) { display:none; }
+.seat-top .seat-state-row { position:absolute;top:50%;left:calc(100% + 12px);transform:translateY(-50%);margin:0; }
 .seat-state { display:inline-flex;align-items:center;gap:5px;color:#d5dec5;font-size:11px;line-height:18px;white-space:nowrap; }
 .seat-state:empty { display:none; }
 [data-state="passed"] .seat-state::before { content:"";width:8px;height:1px;background:currentColor; }
@@ -42,11 +43,35 @@
 .seat.is-turn .avatar,.self-status.is-turn .avatar { animation:none;border-color:#ffe095;box-shadow:0 0 0 3px #edce7b18; }
 .seat .rank-badge,.self-meta .rank-badge { min-height:0;margin:0;font-size:10px; }
 .rank-badge:empty { display:none; }
+/* 只有当前出牌座位显示计时；绝对定位保留头像、手牌与座位的原有对齐。 */
+.turn-clock { display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:62px;height:29px;padding:0 9px;border:1px solid #f4d078a6;border-radius:16px;background:#f0cc75;color:#493719;box-shadow:0 2px 8px #002b2633;white-space:nowrap;pointer-events:none; }
+.turn-clock.hidden { display:none; }
+.clock-value { min-width:2ch;font-size:19px;line-height:1;font-variant-numeric:tabular-nums;text-align:center; }
+.clock-unit { font-size:11px; }
+.clock-icon { position:relative;width:12px;height:12px;flex:0 0 auto;border:1.5px solid currentColor;border-radius:50%; }
+.clock-icon::after { content:"";position:absolute;left:4px;top:1px;width:3px;height:4px;border-left:1px solid currentColor;border-bottom:1px solid currentColor; }
+.seat > .turn-clock { position:absolute;top:calc(100% + 7px);left:50%;transform:translateX(-50%); }
+.seat-top > .turn-clock { top:50%;left:calc(100% + 12px);transform:translateY(-50%); }
+.turn-clock.is-urgent { color:#fff5e4;background:#b54635;border-color:#ffb094; }
+.turn-clock.is-paused { color:#d0dacf;background:#275e50;border-color:#a5c0af70;box-shadow:none; }
+[data-state="played"] .seat-state { color:#dbe8cc; }
+@media (max-height:720px) {
+  .turn-clock { min-width:54px;height:24px;gap:4px;padding:0 7px; }
+  .clock-value { font-size:16px; }
+  .clock-icon { width:11px;height:11px; }
+  .seat > .turn-clock { top:calc(100% + 4px); }
+  .seat-top > .turn-clock { top:50%;left:calc(100% + 9px); }
+}
+@media (max-height:420px) {
+  .turn-clock { min-width:48px;height:21px;gap:3px;padding:0 6px; }
+  .clock-value { font-size:14px; }
+  .clock-unit { font-size:10px; }
+}
 /* 四个预览位只在动作发生后短暂显示，不参与中央状态判定。 */
 .seat-play { display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;min-height:66px;max-width:100%;pointer-events:none; }
 .seat-play:empty { visibility:hidden; }
 .seat-play.has-play .preview-cards { animation:seatPlayIn .16s ease-out; }
-.preview-label { font-size:10px;line-height:13px;color:#b5d1bf;letter-spacing:.5px; }
+.preview-label { font-size:10px;line-height:13px;color:#b5d1bf;letter-spacing:.5px;white-space:nowrap; }
 .preview-cards { display:flex;align-items:flex-end;justify-content:center; }
 .seat-play .mini-card { width:33px;height:47px;margin-left:-15px;border-radius:4px;box-shadow:0 2px 5px #00382e30; }
 .seat-play .mini-card:first-child { margin-left:0; }
@@ -137,7 +162,11 @@
 .hand-viewport { width: 100%; }
 .hand-viewport::before { background: linear-gradient(to right, #0e59492e, transparent); }
 .hand-viewport::after { background: linear-gradient(to left, #0e59492e, transparent); }
-.hand-cards { position: relative; display: block; min-height: 172px; padding: 0; }
+.hand-scroll { position:absolute;top:50%;z-index:13;display:grid;place-items:center;width:28px;height:44px;padding:0;transform:translateY(-50%);border:1px solid #d5ddb078;border-radius:14px;background:#155c4e;color:#ffe2a0;font:28px/1 sans-serif;cursor:pointer;touch-action:manipulation;box-shadow:0 2px 6px #00382e40; }
+.hand-scroll-left { left:4px; }
+.hand-scroll-right { right:4px; }
+.hand-scroll:focus-visible { outline:2px solid #ffe39b;outline-offset:2px; }
+.hand-cards { position: relative; isolation:isolate; display: block; min-height: 172px; padding: 0; }
 .hand-cards::after { content: ""; position: absolute; left: 0; top: 0; width: var(--hand-width, 100%); height: 1px; pointer-events: none; }
 .hand-cards .card { position: absolute; width: 110px; height: 134px; margin: 0; border-radius: 7px; z-index: var(--stack-layer, 1); }
 .hand-cards .card:has(.wild-dot) { background: linear-gradient(160deg, #fff6cf, #f3dfa8); border-color: #dcb45e; }
@@ -149,9 +178,9 @@
 .hand-cards .card.joker .corner .r { font-size: 29px; letter-spacing: 1px; }
 .hand-cards .joker-mark .j-word { font-size: 10px; letter-spacing: 2px; }
 .hand-cards .card.in-group:not(.selected) { transform: none; }
-.hand-cards .card:hover, .hand-cards .card.in-group:not(.selected):hover { transform: translateX(4px); }
+.hand-cards .card:hover, .hand-cards .card.in-group:not(.selected):hover { transform: translateX(var(--hand-hover-shift,4px)); }
 .hand-cards .card.selected, .hand-cards .card.selected.in-group {
-  transform: translateX(8px); border-color: #ffc83d;
+  transform: translateX(var(--hand-select-shift,8px)); border-color: #ffc83d;
   background: linear-gradient(160deg, #fff1be, #ffda71);
   box-shadow: 0 0 0 2px #ffc83d, 0 4px 12px #092f2970;
 }
@@ -188,7 +217,8 @@
 .hand-cards .card:has(.group-flag).joker .joker-mark { padding-left: 14px; }
 
 .controls-row { display: grid; grid-template-columns: 1fr auto 1fr; min-height: 42px; width: min(1120px, 100%); padding: 4px 0 0; margin-top: 0; border: 0; column-gap: 16px; }
-.self-status { grid-column: 2; justify-self: center; gap: 8px; }
+.self-status { position:relative;grid-column: 2; justify-self: center; gap: 8px; }
+.self-status > .turn-clock { position:absolute;top:50%;right:calc(100% + 12px);transform:translateY(-50%); }
 .self-status .avatar { width: 34px; height: 34px; font-size: 18px; }
 .self-meta { display: grid; grid-template-columns: auto auto; align-items: center; column-gap: 8px; }
 .self-meta .seat-count { margin: 0; }
@@ -228,9 +258,9 @@
 }
 @media (min-height:721px) and (max-height:800px) {
   .table-arena { grid-template-rows:52px minmax(0,1fr) 47px; }
-  .top-lane { display:grid;grid-template-columns:1fr auto 1fr;gap:0; }
+  .top-lane { display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:0; }
   .top-lane .seat { grid-column:2; }
-  .top-lane .seat-play { grid-column:3;justify-self:start;margin-left:12px; }
+  .top-lane .seat-play { grid-column:3;justify-self:start;margin-left:96px; }
 }
 @media (max-height:720px) {
   .table-frame { grid-template-rows:32px minmax(0,1fr) auto;gap:8px;padding:8px 18px; }
@@ -242,9 +272,9 @@
   .toolbar-right { gap:14px; }
   .history-toggle { font-size:10px;gap:5px;padding:4px 0; }
   .table-arena { grid-template-rows:52px minmax(0,1fr) 32px;row-gap:4px; }
-  .top-lane { display:grid;grid-template-columns:1fr auto 1fr;gap:0; }
+  .top-lane { display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:0; }
   .top-lane .seat { grid-column:2; }
-  .top-lane .seat-play { grid-column:3;justify-self:start;margin-left:12px; }
+  .top-lane .seat-play { grid-column:3;justify-self:start;margin-left:96px; }
   .avatar { width:38px;height:38px;font-size:18px; }
   .seat-info { min-width:120px;min-height:54px;gap:8px; }
   .seat-top .seat-info { min-height:40px;gap:9px; }
@@ -393,7 +423,7 @@
   .history-row { font-size:10px;min-height:29px;padding:3px 0; }
   .hand-cards { min-height: 94px; }
   .hand-cards .card { width: 50px; height: 62px; }
-  .hand-cards .card.selected, .hand-cards .card.selected.in-group { transform: translateX(4px); }
+  .hand-cards .card.selected, .hand-cards .card.selected.in-group { transform: translateX(var(--hand-select-shift,4px)); }
   .hand-cards .card.selected::before { height: 17px; }
   .hand-cards .card.joker { --joker-size: 25px; --joker-top: 19px; --joker-bottom: 3px; }
   .hand-cards .card.joker .corner .r { font-size: 13px; }
