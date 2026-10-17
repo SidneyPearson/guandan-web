@@ -221,8 +221,7 @@
 .self-status > .turn-clock { position:absolute;top:50%;right:calc(100% + 12px);transform:translateY(-50%); }
 .self-status .avatar { width: 34px; height: 34px; font-size: 18px; }
 .self-meta { display: grid; width: 140px; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 20px 18px; align-items: center; column-gap: 8px; }
-.self-meta .seat-name { grid-area: 1 / 1; }
-.self-meta .seat-count { grid-area: 1 / 2; margin: 0; }
+.self-meta .seat-count { grid-area: 1 / 1 / 2 / 3; justify-self: start; margin: 0; }
 /* 状态与托管共用固定的第二行，文字出现/消失时不再撑高手牌区。 */
 .self-meta .seat-state-row { grid-area: 2 / 1; min-height: 0; margin: 0; }
 .self-meta .auto-tag { grid-area: 2 / 2; justify-self: end; min-height: 0; margin: 0; }
