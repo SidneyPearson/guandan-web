@@ -1,12 +1,12 @@
-/* ====== fx.js：对战出牌特效（v1.12.1 五档炸弹与四大天王） ======
+/* ====== fx.js：对战出牌特效（v1.14 顺子、连对与钢板） ======
  *
  * 纯展示模块，零依赖、零外链。所有"播什么"由调用方（ui.afterAct）从
  * GD.game.act 的真实返回组装后传入；本模块不读手牌、不判牌型、不发声，
  * 也不消耗洗牌/AI 随机流（自带独立 RNG，仅用于火花方向等视觉抖动）。
  *
  * 触发：一次成功 act 只对应一次 fx.act()，去重键 matchId+":"+gen。
- * 并发：同时至多一组主爆发（炸弹/同花顺/四王炸）；新组到来时旧组立即收尾。
- *       接风流光与牌型描边是独立轻量效果，可与一组主爆发并存。
+ * 并发：主爆发与顺子/连对/钢板动画互相抢占；连续动作不排队。
+ *       接风流光是独立轻量效果，可与一组主爆发并存。
  * 输入穿透：#fxLayer 永远 pointer-events:none，不拦截鼠标/触摸/滚动/键盘。
  * 节奏：标准时长见 DUR 与 BOMB_PROFILES；快速(speedMul)整体缩短、粒子与烟尘减量。
  * 设置：mode = full（默认，完整）/ simple（环+扫光+短标签，少粒子）/ off（无特效）；
@@ -56,6 +56,7 @@
   /* ---------- 运行状态 ---------- */
   let layer = null;
   let burst = null;        // 当前主爆发 {root, particles, raf}
+  let combo = null;
   let timers = [];
   let lastKey = "";
   let pendingBadge = null; // 大牌直接打完一副时，留给结算面板的短标签
@@ -96,7 +97,8 @@
       perf.cancelled++;
     }
     if (layer) layer.innerHTML = "";
-    document.querySelectorAll(".fx-outline,.fx-seat-glow").forEach((e) => e.remove());
+    combo = null;
+    document.querySelectorAll(".fx-outline,.fx-seat-glow").forEach((e) => e.classList.remove("fx-outline", "fx-seat-glow"));
     lastKey = "";
   }
 
@@ -134,12 +136,13 @@
     if (!req.key || req.key === lastKey) return; // 同一动作绝不重播
     lastKey = req.key;
     perf.plays++;
+    clearCombo();
     const mode = req.mode === "simple" || req.mode === "off" ? req.mode : "full";
     if (mode === "off" || req.reduceMotion) {
       // 减少动效：只短显静态标签（无飞行/粒子/rAF），off 完全不加视觉
-      if (mode !== "off" && MAJOR.has(req.kind)) {
+      if (mode !== "off" && (MAJOR.has(req.kind) || req.kind === "combo")) {
         staticLabel(req);
-        if (req.ending) pendingBadge = badgeOf(req);
+        if (req.ending && MAJOR.has(req.kind)) pendingBadge = badgeOf(req);
       }
       return;
     }
@@ -148,7 +151,7 @@
       startBurst(req, mode);
       if (req.ending) pendingBadge = badgeOf(req);
     } else if (req.kind === "combo") {
-      comboOutline(req);
+      startCombo(req, mode);
     }
     if (req.jiefeng) startFlow(req);
   }
@@ -467,26 +470,56 @@
     onTimeout(() => el.remove(), 460);
   }
 
-  /* ---------- 普通成型牌型：牌面描边 + 短标题滑入 ---------- */
-  function comboOutline(req) {
-    const targetEl = document.getElementById("activePlay");
+  /* ---------- 顺子连飞、连对连锁、钢板合击 ---------- */
+  function clearCombo() {
+    if (combo) combo.remove();
+    combo = null;
+  }
+  function startCombo(req, mode) {
+    const type = req.comboType;
+    if (!["straight", "dpairs", "steel"].includes(type) || !Array.isArray(req.ranks)) return;
+    if (burst) finishBurst(true);
     const L = ensureLayer();
-    if (targetEl) {
-      targetEl.classList.add("fx-outline");
-      targetEl.dataset.fxAction = req.key;
-      onTimeout(() => { if (targetEl.dataset.fxAction === req.key) targetEl.classList.remove("fx-outline"); },
-        Math.round(520 * req.speedMul) + 40);
+    const anchor = playAnchor(req.seat) || { x: L.clientWidth / 2, y: L.clientHeight * .46, w: 160 };
+    const scale = Math.max(.38, Math.min(1, L.clientWidth / 1100, L.clientHeight / 700));
+    const D = Math.round(({ straight: 900, dpairs: 960, steel: 1040 })[type] * req.speedMul);
+    const root = document.createElement("div");
+    root.className = `fx-combo fx-combo-${type} fx-${mode}`;
+    root.dataset.comboType = type;
+    root.style.left = anchor.x + "px"; root.style.top = anchor.y + "px";
+    root.style.width = Math.max(anchor.w + 40 * scale, 240 * scale) + "px";
+    root.style.setProperty("--d", D + "ms"); root.style.setProperty("--cs", scale);
+    const add = (tag, cls, parent = root) => { const e = document.createElement(tag); e.className = cls; parent.appendChild(e); return e; };
+    const title = add("b", "fx-combo-title"); title.textContent = req.title;
+    const stage = add("div", "fx-combo-stage");
+    const tile = (rank, parent) => { const e = add("i", "fx-combo-card", parent); e.textContent = GD.RANK_NAME[rank] || String(rank); return e; };
+    if (type === "straight") {
+      add("div", "fx-run-trail", stage);
+      req.ranks.forEach((rank, i) => {
+        const e = tile(rank, stage), delay = Math.round(i * D * .045);
+        e.style.setProperty("--offset", i - 2); e.style.setProperty("--delay", delay + "ms");
+        e.style.setProperty("--td", (D - delay) + "ms");
+      });
+    } else if (type === "dpairs") {
+      add("div", "fx-pair-chain", stage);
+      req.ranks.forEach((rank, i) => {
+        const group = add("div", "fx-pair-link", stage), delay = Math.round(i * D * .06);
+        group.style.setProperty("--offset", i - 1); group.style.setProperty("--delay", delay + "ms");
+        group.style.setProperty("--td", (D - delay) + "ms");
+        tile(rank, group); tile(rank, group);
+      });
+    } else {
+      req.ranks.forEach((rank, i) => {
+        const slab = add("div", "fx-steel-slab", stage); slab.style.setProperty("--side", i ? 1 : -1);
+        for (let j = 0; j < 3; j++) tile(rank, slab);
+      });
+      add("div", "fx-steel-impact", stage);
+      for (let i = 0; i < (mode === "simple" ? 4 : 10); i++) {
+        const spark = add("i", "fx-steel-spark", stage); spark.style.setProperty("--angle", (i * 36) + "deg");
+      }
     }
-    const anchor = playAnchor(req.seat) ||
-      { x: L.clientWidth / 2, y: L.clientHeight * 0.46 };
-    const tag = document.createElement("div");
-    tag.className = "fx-title-mini";
-    tag.style.left = anchor.x + "px";
-    tag.style.top = (anchor.y - 40) + "px";
-    tag.style.setProperty("--d", Math.round(420 * req.speedMul) + "ms");
-    tag.textContent = req.title; // 顺子 / 三连对 / 钢板
-    L.appendChild(tag);
-    onTimeout(() => tag.remove(), Math.round(520 * req.speedMul) + 60);
+    L.appendChild(root); combo = root;
+    onTimeout(() => { if (combo === root) clearCombo(); }, D + 100);
   }
 
   /* ---------- 接风：金色流光从出完者传向实际接风队友 ---------- */
@@ -535,11 +568,11 @@
   function getPerf() {
     return Object.assign({}, perf, {
       avgFrameMs: perf.sparkFrames ? perf.totalFrameMs / perf.sparkFrames : 0,
-      active: !!burst,
+      active: !!burst || !!combo,
     });
   }
 
-  GD.fx = { act, cancel, takeBadge, getPerf,
+  GD.fx = { act, cancel, clearCombo, takeBadge, getPerf,
     // 测试钩子：确定性视觉随机
     __setRng(fn) { if (typeof fn === "function") rng = fn; } };
 })();

@@ -30,8 +30,10 @@
 .seat-top .seat-info { min-width:0;min-height:46px;flex-direction:row;text-align:left;gap:10px; }
 .seat-meta { min-width:0; }
 .seat-name { font-size:13px;line-height:20px;color:#f1f2de; }
-.seat-count { margin-top:3px;font-size:11px;line-height:17px;color:#bcd7c6; }
-.seat-count b { font-size:15px; }
+/* 四个座位共用字号，避免自己与另外三家的手牌数量显示不一致。 */
+.table { --seat-count-size:12px;--seat-count-number-size:22px;--seat-count-line-height:24px;--seat-count-number-gap:2px; }
+.seat-count { margin-top:3px;font-size:var(--seat-count-size);line-height:var(--seat-count-line-height);color:#bcd7c6;white-space:nowrap; }
+.seat-count b { margin-inline:var(--seat-count-number-gap);font-size:var(--seat-count-number-size);font-variant-numeric:tabular-nums; }
 .seat-state-row { display:flex;align-items:center;gap:5px;min-height:18px;margin-top:3px; }
 .seat-right .seat-state-row { justify-content:flex-end; }
 .seat-state-row:has(.seat-state:empty):has(.rank-badge:empty) { display:none; }
@@ -216,20 +218,28 @@
 .hand-cards .card:has(.group-flag) .center-suit { padding-left: 10px; }
 .hand-cards .card:has(.group-flag).joker .joker-mark { padding-left: 14px; }
 
-.controls-row { display: grid; grid-template-columns: 1fr auto 1fr; min-height: 42px; width: min(1120px, 100%); padding: 4px 0 0; margin-top: 0; border: 0; column-gap: 16px; }
-.self-status { position:relative;grid-column: 2; justify-self: center; gap: 8px; }
+.controls-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); min-height: 46px; width: min(1120px, 100%); padding: 8px 0 0; margin-top: 0; border: 0; column-gap: 16px; }
+.self-status { position:relative;grid-column: 2; justify-self: center; gap: 10px; }
 .self-status > .turn-clock { position:absolute;top:50%;right:calc(100% + 12px);transform:translateY(-50%); }
-.self-status .avatar { width: 34px; height: 34px; font-size: 18px; }
-.self-meta { display: grid; width: 140px; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 20px 18px; align-items: center; column-gap: 8px; }
-.self-meta .seat-count { grid-area: 1 / 1 / 2 / 3; justify-self: start; margin: 0; }
-/* 状态与托管共用固定的第二行，文字出现/消失时不再撑高手牌区。 */
-.self-meta .seat-state-row { grid-area: 2 / 1; min-height: 0; margin: 0; }
-.self-meta .auto-tag { grid-area: 2 / 2; justify-self: end; min-height: 0; margin: 0; }
+.self-status .avatar { width: 36px; height: 36px; font-size: 19px; }
+/* 数量始终居中，右侧预留状态位；出牌和托管提示不改变底栏尺寸。 */
+.self-meta { display: grid; width: 208px; grid-template-columns: 84px minmax(0, 1fr); grid-template-rows: repeat(2, 17px); align-items: center; column-gap: 12px; }
+.self-meta .seat-count { grid-area: 1 / 1 / 3 / 2; justify-self: start; margin: 0; color: #cfe3d5; }
+.self-meta .seat-count b { color: #fff6dd; }
+.self-meta .seat-state-row { grid-area: 1 / 2 / 3 / 3; min-height: 0; margin: 0; padding-left: 12px; border-left: 1px solid #b4d1bd40; }
+.self-meta .seat-state { color: #cfe0d2; font-size: 12px; line-height: 17px; }
+.self-meta .auto-tag { grid-area: 1 / 2 / 3 / 3; min-height: 0; margin: 0; width: auto; color: #f3d996; font-size: 11px; line-height: 17px; background: none; padding: 0 0 0 12px; border-left: 1px solid #b4d1bd40; font-weight: 400; white-space: nowrap; }
+.self-meta:has(.auto-tag:not(:empty)) .seat-state-row { grid-row: 1; }
+.self-meta:has(.seat-state:not(:empty), .rank-badge:not(:empty)) .auto-tag { grid-row: 2; }
 .self-meta .seat-state-row:has(.seat-state:empty):has(.rank-badge:empty) { display: none; }
-.self-meta .auto-tag { font-size: 9px; line-height: 18px; background: none; padding: 0; font-weight: 400; }
 .secondary-actions { grid-column: 3; display: flex; justify-self: end; align-items: center; gap: 8px; }
-.secondary-actions .btn { padding: 6px 10px; font-size: 11px; border-radius: 6px; background: transparent; border-color: #c6dec425; box-shadow: none; color: #c9dccd; }
-.secondary-actions #btnOrganize.btn-primary, .secondary-actions #btnAuto.btn-primary { color: #ffe3a1; border-color: #eacb6a44; background: #eacb6a0c; }
+.secondary-actions .btn { display: inline-flex; align-items: center; justify-content: center; min-width: 68px; height: 36px; padding: 0 12px; font-family: inherit; font-size: 13px; line-height: 18px; font-weight: 500; white-space: nowrap; border-radius: 8px; background: #1d6653; border-color: #b8d4bc66; box-shadow: 0 1px 3px #043e3624; color: #eef2df; touch-action: manipulation; }
+.secondary-actions #btnClear, .secondary-actions #btnAuto { min-width: 86px; }
+.secondary-actions .btn:disabled { opacity: 1; color: #91b2a2; background: #104e402e; border-color: #b8d4bc26; box-shadow: none; }
+.secondary-actions #btnOrganize.btn-primary, .secondary-actions #btnAuto.btn-primary { color: #ffe3a1; border-color: #dfc57b99; background: #86743b45; }
+@media (hover: hover) {
+  .secondary-actions .btn:not(:disabled):hover { filter: brightness(1.14); border-color: #d3e4c7; }
+}
 .recorder-panel {
   position: absolute; top: 72px; right: 24px; z-index: 25; width: 430px;
   padding: 12px; background: #043e36f5; border: 1px solid #c8dfb580; border-radius: 12px;
@@ -281,8 +291,8 @@
   .seat-info { min-width:120px;min-height:54px;gap:8px; }
   .seat-top .seat-info { min-height:40px;gap:9px; }
   .seat-name { font-size:11px;line-height:16px; }
-  .seat-count { font-size:10px;line-height:15px;margin-top:2px; }
-  .seat-count b { font-size:14px; }
+  .table { --seat-count-size:11px;--seat-count-number-size:20px;--seat-count-line-height:22px; }
+  .seat-count { margin-top:2px; }
   .seat-state-row { min-height:14px;margin-top:2px; }
   .seat-state { font-size:10px;line-height:14px; }
   .seat-play { min-height:47px;gap:3px; }
@@ -314,11 +324,13 @@
   .action-bar { gap:7px; }
   .action-bar .btn { min-width:62px;min-height:32px;font-size:12px;padding:5px 14px; }
   .action-bar .btn-primary { min-width:88px;min-height:36px; }
-  .controls-row { min-height:36px;padding-top:3px; }
-  .self-status .avatar { width:30px;height:30px;font-size:16px; }
-  .self-meta { width:126px;grid-template-rows:17px 14px; }
-  .self-meta .auto-tag { line-height:14px; }
-  .secondary-actions .btn { padding:5px 8px;font-size:10px; }
+  .controls-row { min-height:40px;padding-top:6px; }
+  .self-status .avatar { width:32px;height:32px;font-size:17px; }
+  .self-meta { width:190px;grid-template-columns:76px minmax(0,1fr);grid-template-rows:repeat(2,16px);column-gap:10px; }
+  .self-meta .seat-state { font-size:11px;line-height:16px; }
+  .self-meta .auto-tag { font-size:10px;line-height:16px; }
+  .secondary-actions .btn { height:34px;min-width:62px;padding-inline:10px;font-size:12px; }
+  .secondary-actions #btnClear, .secondary-actions #btnAuto { min-width:80px; }
   .play-history { width:min(320px,100%);padding:6px 9px; }
   .history-row { min-height:32px;gap:7px; }
   .history-cards .mini-card { width:20px;height:27px;margin-left:-10px; }
@@ -380,8 +392,7 @@
   .seat-info { min-width:98px;min-height:46px;gap:6px; }
   .seat-top .seat-info { min-height:32px;gap:7px; }
   .seat-name { font-size:10px;line-height:14px; }
-  .seat-count { font-size:9px;line-height:13px;margin-top:2px; }
-  .seat-count b { font-size:12px; }
+  .table { --seat-count-size:10px;--seat-count-number-size:18px;--seat-count-line-height:20px;--seat-count-number-gap:1px; }
   .seat-state { font-size:9px;line-height:12px; }
   .seat-state-row { min-height:12px; }
   .seat-play { min-height:27px;gap:0; }
@@ -414,13 +425,16 @@
   .action-bar { gap:6px; }
   .action-bar .btn { min-width:52px;min-height:28px;padding:4px 11px;font-size:11px; }
   .action-bar .btn-primary { min-width:74px;min-height:30px; }
-  .controls-row { min-height:30px;padding-top:2px;column-gap:10px; }
+  .controls-row { min-height:32px;padding-top:4px;column-gap:10px; }
   .self-status { gap:6px; }
-  .self-status .avatar { width:27px;height:27px;font-size:15px; }
-  .self-meta { width:116px;grid-template-rows:14px 12px;column-gap:6px; }
-  .self-meta .auto-tag { font-size:8px;line-height:12px; }
+  .self-status .avatar { width:28px;height:28px;font-size:15px; }
+  .self-meta { width:164px;grid-template-columns:65px minmax(0,1fr);grid-template-rows:repeat(2,14px);column-gap:7px; }
+  .self-meta .seat-state-row,.self-meta .auto-tag { padding-left:8px; }
+  .self-meta .seat-state { font-size:10px;line-height:14px; }
+  .self-meta .auto-tag { font-size:9px;line-height:14px; }
   .secondary-actions { gap:5px; }
-  .secondary-actions .btn { padding:4px 7px;font-size:9px; }
+  .secondary-actions .btn { height:30px;min-width:54px;padding-inline:8px;font-size:11px; }
+  .secondary-actions #btnClear, .secondary-actions #btnAuto { min-width:70px; }
   .play-history { width:min(300px,100%);padding:4px 8px; }
   .history-head { padding-bottom:3px; }
   .history-head strong { font-size:11px; }

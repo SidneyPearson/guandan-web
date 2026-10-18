@@ -13,9 +13,9 @@
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="manifest" href="manifest.webmanifest" />
-<link rel="stylesheet" href="../css/style.css?v=1.13.1" />
-<link rel="stylesheet" href="../css/table-theme.css?v=1.13.1" />
-<link rel="stylesheet" href="css/mobile.css?v=1.13.1" />
+<link rel="stylesheet" href="../css/style.css?v=1.14.1" />
+<link rel="stylesheet" href="../css/table-theme.css?v=1.14.1" />
+<link rel="stylesheet" href="css/mobile.css?v=1.14.1" />
 </head>
 <body>
 <div id="app">
@@ -200,13 +200,25 @@
         <label class="set-radio"><input type="radio" name="setSpeed" value="fast" /> 快速</label>
       </div>
       <div class="set-group set-inline">
-        <label><input type="checkbox" id="setSound" /> 音效</label>
+        <label><input type="checkbox" id="setSound" /> 声音</label>
         <label class="vol-label">音量
           <input type="range" id="setVolume" min="0" max="1" step="0.05" />
         </label>
       </div>
+      <div class="set-group voice-settings">
+        <label class="set-radio"><input type="checkbox" id="setVoice" /> 中文报牌</label>
+        <div class="voice-options">
+          <label for="setVoiceStyle">角色声线</label>
+          <select id="setVoiceStyle">
+            <option value="roles">角色搭配（男女声）</option>
+            <option value="bright">明快女声</option>
+            <option value="calm">沉稳男声</option>
+          </select>
+          <button class="btn" id="btnVoicePreview" type="button">试听</button>
+        </div>
+      </div>
       <div class="set-group">
-        <div class="set-label">对战特效（炸弹 / 同花顺 / 四王炸 / 接风）</div>
+        <div class="set-label">对战特效（顺子 / 连对 / 钢板 / 炸弹等）</div>
         <label class="set-radio"><input type="radio" name="setFx" value="full" /> 完整（默认）</label>
         <label class="set-radio"><input type="radio" name="setFx" value="simple" /> 简洁（冲击环、扫光和短标签）</label>
         <label class="set-radio"><input type="radio" name="setFx" value="off" /> 关闭（仅保留牌型文字）</label>
@@ -302,23 +314,24 @@
   <div class="toast" id="toast"></div>
 </div>
 
-<script src="../js/version.js?v=1.13.1"></script>
-<script src="../js/util.js?v=1.13.1"></script>
-<script src="../js/cards.js?v=1.13.1"></script>
-<script src="../js/rules.js?v=1.13.1"></script>
-<script src="../js/flow.js?v=1.13.1"></script>
-<script src="../js/ai.js?v=1.13.1"></script>
-<script src="../js/fx.js?v=1.13.1"></script>
-<script src="../js/sound.js?v=1.13.1"></script>
-<script src="../js/stats.js?v=1.13.1"></script>
-<script src="../js/game.js?v=1.13.1"></script>
-<script src="../js/table-tools.js?v=1.13.1"></script>
-<script src="../js/table-view.js?v=1.13.1"></script>
-<script src="../js/turn-clock.js?v=1.13.1"></script>
-<script src="../js/active-play.js?v=1.13.1"></script>
-<script src="../js/seat-play.js?v=1.13.1"></script>
-<script src="../js/play-history.js?v=1.13.1"></script>
-<script src="../js/ui.js?v=1.13.1"></script>
-<script src="js/offline.js?v=1.13.1"></script>
+<script src="../js/version.js?v=1.14.1"></script>
+<script src="../js/util.js?v=1.14.1"></script>
+<script src="../js/cards.js?v=1.14.1"></script>
+<script src="../js/rules.js?v=1.14.1"></script>
+<script src="../js/flow.js?v=1.14.1"></script>
+<script src="../js/ai.js?v=1.14.1"></script>
+<script src="../js/fx.js?v=1.14.1"></script>
+<script src="../js/voice-lines.js?v=1.14.1"></script>
+<script src="../js/sound.js?v=1.14.1"></script>
+<script src="../js/stats.js?v=1.14.1"></script>
+<script src="../js/game.js?v=1.14.1"></script>
+<script src="../js/table-tools.js?v=1.14.1"></script>
+<script src="../js/table-view.js?v=1.14.1"></script>
+<script src="../js/turn-clock.js?v=1.14.1"></script>
+<script src="../js/active-play.js?v=1.14.1"></script>
+<script src="../js/seat-play.js?v=1.14.1"></script>
+<script src="../js/play-history.js?v=1.14.1"></script>
+<script src="../js/ui.js?v=1.14.1"></script>
+<script src="js/offline.js?v=1.14.1"></script>
 </body>
 </html>

@@ -1,0 +1,635 @@
+{
+  "engine": "Microsoft Edge neural TTS",
+  "profiles": {
+    "bright": {
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "pitch": "-4Hz"
+    },
+    "calm": {
+      "voice": "zh-CN-YunxiNeural",
+      "pitch": "-10Hz"
+    }
+  },
+  "clips": {
+    "bright/straight": {
+      "durationMs": 831,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/dpairs": {
+      "durationMs": 1126,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "bright/steel": {
+      "durationMs": 887,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "bright/fullhouse": {
+      "durationMs": 1079,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/sflush": {
+      "durationMs": 1122,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "bright/jokers": {
+      "durationMs": 1510,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "bright/jiefeng": {
+      "durationMs": 1086,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pass-0": {
+      "durationMs": 569,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pass-1": {
+      "durationMs": 523,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/last1": {
+      "durationMs": 1059,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/last2": {
+      "durationMs": 1192,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/preview": {
+      "durationMs": 5465,
+      "rate": "-14%",
+      "emphatic": true
+    },
+    "bright/single-2": {
+      "durationMs": 520,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-2": {
+      "durationMs": 767,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-2": {
+      "durationMs": 839,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-3": {
+      "durationMs": 522,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-3": {
+      "durationMs": 825,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-3": {
+      "durationMs": 847,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-4": {
+      "durationMs": 522,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-4": {
+      "durationMs": 836,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-4": {
+      "durationMs": 844,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-5": {
+      "durationMs": 516,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-5": {
+      "durationMs": 844,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-5": {
+      "durationMs": 849,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-6": {
+      "durationMs": 509,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-6": {
+      "durationMs": 779,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-6": {
+      "durationMs": 842,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-7": {
+      "durationMs": 522,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-7": {
+      "durationMs": 834,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-7": {
+      "durationMs": 851,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-8": {
+      "durationMs": 524,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-8": {
+      "durationMs": 762,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-8": {
+      "durationMs": 838,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-9": {
+      "durationMs": 517,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-9": {
+      "durationMs": 820,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-9": {
+      "durationMs": 844,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-10": {
+      "durationMs": 526,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-10": {
+      "durationMs": 892,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-10": {
+      "durationMs": 896,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-11": {
+      "durationMs": 507,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-11": {
+      "durationMs": 804,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-11": {
+      "durationMs": 845,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-12": {
+      "durationMs": 523,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-12": {
+      "durationMs": 846,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-12": {
+      "durationMs": 865,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-13": {
+      "durationMs": 517,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-13": {
+      "durationMs": 836,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-13": {
+      "durationMs": 859,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-14": {
+      "durationMs": 524,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-14": {
+      "durationMs": 803,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/triple-14": {
+      "durationMs": 859,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-16": {
+      "durationMs": 614,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-16": {
+      "durationMs": 989,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/single-17": {
+      "durationMs": 617,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/pair-17": {
+      "durationMs": 996,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "bright/bomb-4": {
+      "durationMs": 1252,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "bright/bomb-5": {
+      "durationMs": 1222,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "bright/bomb-6": {
+      "durationMs": 1222,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "bright/bomb-7": {
+      "durationMs": 1232,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "bright/bomb-8": {
+      "durationMs": 1226,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "bright/bomb-9": {
+      "durationMs": 1226,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "bright/bomb-10": {
+      "durationMs": 1313,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/straight": {
+      "durationMs": 829,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/dpairs": {
+      "durationMs": 1113,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/steel": {
+      "durationMs": 869,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/fullhouse": {
+      "durationMs": 1085,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/sflush": {
+      "durationMs": 1123,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/jokers": {
+      "durationMs": 1515,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/jiefeng": {
+      "durationMs": 1081,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pass-0": {
+      "durationMs": 514,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pass-1": {
+      "durationMs": 518,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/last1": {
+      "durationMs": 952,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/last2": {
+      "durationMs": 1041,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/preview": {
+      "durationMs": 5444,
+      "rate": "-14%",
+      "emphatic": true
+    },
+    "calm/single-2": {
+      "durationMs": 510,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-2": {
+      "durationMs": 729,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-2": {
+      "durationMs": 835,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-3": {
+      "durationMs": 540,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-3": {
+      "durationMs": 749,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-3": {
+      "durationMs": 843,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-4": {
+      "durationMs": 572,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-4": {
+      "durationMs": 736,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-4": {
+      "durationMs": 843,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-5": {
+      "durationMs": 524,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-5": {
+      "durationMs": 733,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-5": {
+      "durationMs": 835,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-6": {
+      "durationMs": 649,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-6": {
+      "durationMs": 734,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-6": {
+      "durationMs": 837,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-7": {
+      "durationMs": 517,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-7": {
+      "durationMs": 768,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-7": {
+      "durationMs": 841,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-8": {
+      "durationMs": 663,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-8": {
+      "durationMs": 726,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-8": {
+      "durationMs": 834,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-9": {
+      "durationMs": 574,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-9": {
+      "durationMs": 778,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-9": {
+      "durationMs": 845,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-10": {
+      "durationMs": 547,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-10": {
+      "durationMs": 852,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-10": {
+      "durationMs": 841,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-11": {
+      "durationMs": 518,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-11": {
+      "durationMs": 745,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-11": {
+      "durationMs": 842,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-12": {
+      "durationMs": 525,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-12": {
+      "durationMs": 744,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-12": {
+      "durationMs": 845,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-13": {
+      "durationMs": 684,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-13": {
+      "durationMs": 840,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-13": {
+      "durationMs": 888,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-14": {
+      "durationMs": 521,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-14": {
+      "durationMs": 745,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/triple-14": {
+      "durationMs": 839,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-16": {
+      "durationMs": 664,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-16": {
+      "durationMs": 879,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/single-17": {
+      "durationMs": 519,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/pair-17": {
+      "durationMs": 798,
+      "rate": "-14%",
+      "emphatic": false
+    },
+    "calm/bomb-4": {
+      "durationMs": 1348,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/bomb-5": {
+      "durationMs": 1301,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/bomb-6": {
+      "durationMs": 1417,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/bomb-7": {
+      "durationMs": 1483,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/bomb-8": {
+      "durationMs": 1280,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/bomb-9": {
+      "durationMs": 1446,
+      "rate": "-22%",
+      "emphatic": true
+    },
+    "calm/bomb-10": {
+      "durationMs": 1401,
+      "rate": "-22%",
+      "emphatic": true
+    }
+  }
+}

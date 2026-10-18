@@ -1,5 +1,6 @@
 /* 同一版本的完整资源一起缓存；新版等待所有旧窗口关闭后启用。 */
 importScripts("../js/version.js");
+importScripts("../js/voice-lines.js");
 const VERSION = self.GD.VERSION;
 const PREFIX = "guandan-offline:" + self.registration.scope + ":";
 const CACHE = PREFIX + VERSION;
@@ -8,9 +9,11 @@ const FILES = [
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png",
   `./css/mobile.css?v=${VERSION}`, `./js/offline.js?v=${VERSION}`,
   ...["style", "table-theme"].map(name => `../css/${name}.css?v=${VERSION}`),
-  ...["version", "util", "cards", "rules", "flow", "ai", "fx", "sound", "stats", "game",
+  ...["version", "util", "cards", "rules", "flow", "ai", "fx", "voice-lines", "sound", "stats", "game",
     "table-tools", "table-view", "turn-clock", "active-play", "seat-play", "play-history", "ui"]
     .map(name => `../js/${name}.js?v=${VERSION}`),
+  ...self.GD.VOICE_PROFILES.flatMap(profile => Object.keys(self.GD.VOICE_LINES)
+    .map(id => `../audio/voice/${profile}/${id}.mp3`)),
 ].map(file => new URL(file, self.registration.scope).href);
 const INDEX = new URL("./index.html", self.registration.scope).href;
 
@@ -51,7 +54,7 @@ self.addEventListener("fetch", event => {
     const cached = await cache.match(key);
     if (cached) return cached;
     const response = await fetch(request);
-    if (response.ok) await cache.put(key, response.clone());
+    if (response.ok && response.status !== 206) await cache.put(key, response.clone());
     return response;
   })());
 });

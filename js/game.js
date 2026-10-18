@@ -13,6 +13,8 @@
     difficulty: "normal",   // 电脑对手难度：easy/normal/hard
     autoStrategy: "hard",   // 托管策略：hard=稳健（默认）/ "follow"=跟随电脑难度
     sound: true,
+    voice: true,            // 中文报牌（随声音总开关静音）
+    voiceStyle: "roles",   // roles / bright / calm
     volume: 0.6,
     speed: "std",           // slow / std / fast
     fx: "full",             // 对战特效：full / simple / off

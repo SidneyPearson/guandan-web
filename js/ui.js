@@ -118,6 +118,7 @@
     turnClock.clear();
     historyView.close();
     if (GD.fx) GD.fx.cancel(); // 新开/恢复：清掉一切在途特效
+    GD.sound.cancel();
     hideAllOverlays();
     renderAll();
     kick();
@@ -137,7 +138,8 @@
     document.addEventListener("pointerdown", unlock);
     document.addEventListener("keydown", unlock);
     // 导航/刷新/关页：停止所有异步推进，避免旧执行上下文排空时操作已销毁的 DOM
-    window.addEventListener("pagehide", () => { unloading = true; seatPlayView.clear(); turnClock.suspend(); });
+    window.addEventListener("pagehide", () => { unloading = true; seatPlayView.clear(); turnClock.suspend(); GD.sound.cancel(); });
+    document.addEventListener("visibilitychange", () => { if (document.hidden) GD.sound.cancel(); });
     // iOS Safari 回退可能从 bfcache 恢复同一上下文：恢复推进
     window.addEventListener("pageshow", (e) => {
       if (e.persisted) { unloading = false; if (state) renderSeats(); }
@@ -252,6 +254,7 @@
       noteSaveResult(GD.store.save(state));
       thinkingSeat = -1;
       if (GD.fx) GD.fx.cancel(); // 暂停：立即清理在途特效/rAF/定时器
+      GD.sound.cancel();
       renderAll();
       show("pauseOverlay");
       $("btnResume").focus();
@@ -270,6 +273,7 @@
       state.paused = true; // 回首页期间暂停一切
       noteSaveResult(GD.store.save(state));
       if (GD.fx) GD.fx.cancel();
+      GD.sound.cancel();
       show("homeOverlay");
       refreshContinueEntry();
     };
@@ -308,6 +312,7 @@
       state.paused = true;
       noteSaveResult(GD.store.save(state));
       if (GD.fx) GD.fx.cancel();
+      GD.sound.cancel();
       show("homeOverlay");
       refreshContinueEntry();
     };
@@ -393,6 +398,7 @@
     settings = GD.store.loadSettings();
     GD.sound.setMuted(!settings.sound);
     GD.sound.setVolume(settings.volume);
+    GD.sound.setVoice(settings.voice, settings.voiceStyle);
     document.body.classList.toggle("reduce-motion", !!settings.reduceMotion);
     if (state) renderAutoTag();
   }
@@ -413,12 +419,16 @@
       cur.fx = radioGet("setFx", "full");
       cur.speed = radioGet("setSpeed", "std");
       cur.sound = $("setSound").checked;
+      cur.voice = $("setVoice").checked;
+      cur.voiceStyle = $("setVoiceStyle").value;
       cur.volume = Number($("setVolume").value);
       cur.reduceMotion = $("setMotion").checked;
       GD.store.saveSettings(cur);
       settings = cur;
       GD.sound.setMuted(!cur.sound);
       GD.sound.setVolume(cur.volume);
+      GD.sound.setVoice(cur.voice, cur.voiceStyle);
+      updateVoiceControls(cur);
       if (cur.sound) GD.sound.play("click");
       document.body.classList.toggle("reduce-motion", cur.reduceMotion);
       if (state) renderAutoTag();
@@ -427,6 +437,9 @@
       document.querySelectorAll(`input[name="${name}"]`).forEach((r) => r.onchange = handler);
     });
     $("setSound").onchange = handler;
+    $("setVoice").onchange = handler;
+    $("setVoiceStyle").onchange = handler;
+    $("btnVoicePreview").onclick = () => GD.sound.preview($("setVoiceStyle").value);
     $("setMotion").onchange = handler;
     $("setVolume").oninput = handler;
   }
@@ -437,8 +450,17 @@
     radioSet("setFx", s.fx || "full");
     radioSet("setSpeed", s.speed);
     $("setSound").checked = !!s.sound;
+    $("setVoice").checked = s.voice !== false;
+    $("setVoiceStyle").value = s.voiceStyle || "roles";
     $("setVolume").value = s.volume;
     $("setMotion").checked = !!s.reduceMotion;
+    updateVoiceControls(s);
+  }
+
+  function updateVoiceControls(s) {
+    $("setVoice").disabled = !s.sound;
+    $("setVoiceStyle").disabled = !s.sound || s.voice === false;
+    $("btnVoicePreview").disabled = !s.sound || s.voice === false || !s.volume;
   }
 
   function openPanel(which) {
@@ -467,6 +489,7 @@
   }
 
   function closeSettings() {
+    GD.sound.cancel();
     hide("settingsOverlay");
     const from = settingsFrom;
     settingsFrom = null;
@@ -544,6 +567,7 @@
     seatPlayView.clear();
     historyView.close();
     if (GD.fx) GD.fx.cancel(); // 暂停/开弹窗：立即清理在途特效与定时器
+    GD.sound.cancel();
   }
   function modalResume() {
     if (modalPause && state) {
@@ -657,6 +681,8 @@
   // 音效与动作同源：类型直接取 act 返回的 play 摘要，不靠界面猜测
   function playActionSound(r) {
     if (!settings.sound) return;
+    GD.sound.announce(r, { key: state.matchId + ":" + state.gen, sequence: state.gen,
+      level: state.currentLevel, remaining: state.hands[r.seat].length, speed: settings.speed });
     // 确认接风事件落在真正关墩的那次动作上（通常是最后一次“不要”，kind=pass）。
     // 必须在 pass 提前返回之前处理，并直接发声——不能用延迟回调，否则快速档
     // 局面推进或过期回调守卫会把这声接风铃吞掉。
@@ -669,6 +695,7 @@
     if (t === "jokers") GD.sound.play("jokers");
     else if (t === "sflush") GD.sound.play("sflush");
     else if (t && GD.rules.isBombType(r.play)) GD.sound.play("bomb");
+    else if (t === "straight" || t === "dpairs" || t === "steel") GD.sound.play(t);
     else if (t) GD.sound.play("play", { pitch: r.seat === 0 ? 0 : 2 });
   }
 
@@ -690,7 +717,7 @@
     // 确认接风：事件来自真正关墩（最后一次不要），from=出完者、to=实际接风队友
     const jie = r.event && r.event.type === "jiefeng"
       ? { from: r.event.outSeat, to: r.event.seat } : null;
-    if (!kind && !jie) return;
+    if (!kind && !jie) { if (GD.fx.clearCombo) GD.fx.clearCombo(); return; }
     const onTable = state.table[r.seat];
     const fullPlay = onTable && onTable.play ? onTable.play : null;
     const COMBO_SHORT = { straight: "顺子", dpairs: "三连对", steel: "钢板" };
@@ -704,6 +731,8 @@
       key: state.matchId + ":" + state.gen,
       kind: kind || "none",
       size: r.play && r.play.size,
+      comboType: kind === "combo" ? t : null,
+      ranks: kind === "combo" ? GD.rules.seqWindow(t, r.play.value).ranks : null,
       seat: r.seat,
       title: (kind === "jokers" ? "四大天王" : kind === "combo" ? COMBO_SHORT[t] : GD.TYPE_LABEL[t]) || "",
       detail: kind === "jokers" ? "四王炸 · 四张王牌" : detail,
