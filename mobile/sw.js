@@ -13,7 +13,7 @@ const FILES = [
     "table-tools", "table-view", "turn-clock", "active-play", "seat-play", "play-history", "ui"]
     .map(name => `../js/${name}.js?v=${VERSION}`),
   ...self.GD.VOICE_PROFILES.flatMap(profile => Object.keys(self.GD.VOICE_LINES)
-    .map(id => `../audio/voice/${profile}/${id}.mp3`)),
+    .map(id => `../audio/voice/${profile}/${id}.mp3?v=${VERSION}`)),
 ].map(file => new URL(file, self.registration.scope).href);
 const INDEX = new URL("./index.html", self.registration.scope).href;
 

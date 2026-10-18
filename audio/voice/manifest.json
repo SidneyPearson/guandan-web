@@ -3,632 +3,1788 @@
   "profiles": {
     "bright": {
       "voice": "zh-CN-XiaoxiaoNeural",
-      "pitch": "-4Hz"
+      "pitch": "+2Hz",
+      "character": "清亮女声",
+      "bass": 0.4,
+      "lines": {
+        "pass-0": "不要！",
+        "pass-1": "过！",
+        "last1": "就剩一张！",
+        "last2": "还剩两张！"
+      }
+    },
+    "bold": {
+      "voice": "zh-CN-YunjianNeural",
+      "pitch": "+0Hz",
+      "character": "有力男声",
+      "bass": 1.2,
+      "lines": {
+        "pass-0": "不出！",
+        "pass-1": "过！",
+        "last1": "注意，还剩一张！",
+        "last2": "还剩两张！"
+      }
+    },
+    "spark": {
+      "voice": "zh-CN-XiaoyiNeural",
+      "pitch": "+4Hz",
+      "character": "俏皮女声",
+      "bass": 0,
+      "lines": {
+        "pass-0": "不要啦！",
+        "pass-1": "过啦！",
+        "last1": "只剩一张啦！",
+        "last2": "只剩两张啦！"
+      }
     },
     "calm": {
       "voice": "zh-CN-YunxiNeural",
-      "pitch": "-10Hz"
+      "pitch": "-2Hz",
+      "character": "爽朗男声",
+      "bass": 0.8,
+      "lines": {
+        "pass-0": "这手不要！",
+        "pass-1": "我过！",
+        "last1": "我就剩一张了！",
+        "last2": "我还剩两张！"
+      }
     }
   },
   "clips": {
     "bright/straight": {
-      "durationMs": 831,
-      "rate": "-14%",
+      "text": "顺子！",
+      "durationMs": 774,
+      "rate": "-6%",
+      "tempo": 0.70028,
       "emphatic": false
     },
     "bright/dpairs": {
-      "durationMs": 1126,
-      "rate": "-22%",
+      "text": "三连对！",
+      "durationMs": 989,
+      "rate": "-12%",
+      "tempo": 0.84397,
       "emphatic": true
     },
     "bright/steel": {
-      "durationMs": 887,
-      "rate": "-22%",
+      "text": "钢板！",
+      "durationMs": 781,
+      "rate": "-12%",
+      "tempo": 0.73872,
       "emphatic": true
     },
     "bright/fullhouse": {
-      "durationMs": 1079,
-      "rate": "-14%",
+      "text": "三带二！",
+      "durationMs": 994,
+      "rate": "-6%",
+      "tempo": 0.74501,
       "emphatic": false
     },
     "bright/sflush": {
-      "durationMs": 1122,
-      "rate": "-22%",
+      "text": "同花顺！",
+      "durationMs": 997,
+      "rate": "-12%",
+      "tempo": 0.84089,
       "emphatic": true
     },
     "bright/jokers": {
-      "durationMs": 1510,
-      "rate": "-22%",
+      "text": "四大天王！",
+      "durationMs": 1373,
+      "rate": "-12%",
+      "tempo": 0.76804,
       "emphatic": true
     },
     "bright/jiefeng": {
-      "durationMs": 1086,
-      "rate": "-14%",
+      "text": "对家接风！",
+      "durationMs": 995,
+      "rate": "-6%",
+      "tempo": 0.96914,
       "emphatic": false
     },
     "bright/pass-0": {
-      "durationMs": 569,
-      "rate": "-14%",
+      "text": "不要！",
+      "durationMs": 481,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/pass-1": {
-      "durationMs": 523,
-      "rate": "-14%",
+      "text": "过！",
+      "durationMs": 452,
+      "rate": "-6%",
+      "tempo": 0.69923,
       "emphatic": false
     },
     "bright/last1": {
-      "durationMs": 1059,
-      "rate": "-14%",
+      "text": "就剩一张！",
+      "durationMs": 851,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/last2": {
-      "durationMs": 1192,
-      "rate": "-14%",
+      "text": "还剩两张！",
+      "durationMs": 970,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/preview": {
-      "durationMs": 5465,
-      "rate": "-14%",
+      "text": "顺子！三连对！钢板！四大天王！",
+      "durationMs": 4938,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": true
     },
     "bright/single-2": {
-      "durationMs": 520,
-      "rate": "-14%",
+      "text": "二！",
+      "durationMs": 452,
+      "rate": "-6%",
+      "tempo": 0.71231,
       "emphatic": false
     },
     "bright/pair-2": {
-      "durationMs": 767,
-      "rate": "-14%",
+      "text": "一对二！",
+      "durationMs": 671,
+      "rate": "-6%",
+      "tempo": 0.95319,
       "emphatic": false
     },
     "bright/triple-2": {
-      "durationMs": 839,
-      "rate": "-14%",
+      "text": "三个二！",
+      "durationMs": 766,
+      "rate": "-6%",
+      "tempo": 0.8933,
       "emphatic": false
     },
     "bright/single-3": {
-      "durationMs": 522,
-      "rate": "-14%",
+      "text": "三！",
+      "durationMs": 463,
+      "rate": "-6%",
+      "tempo": 0.81647,
       "emphatic": false
     },
     "bright/pair-3": {
-      "durationMs": 825,
-      "rate": "-14%",
+      "text": "一对三！",
+      "durationMs": 693,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/triple-3": {
-      "durationMs": 847,
-      "rate": "-14%",
+      "text": "三个三！",
+      "durationMs": 772,
+      "rate": "-6%",
+      "tempo": 0.9089,
       "emphatic": false
     },
     "bright/single-4": {
-      "durationMs": 522,
-      "rate": "-14%",
+      "text": "四！",
+      "durationMs": 465,
+      "rate": "-6%",
+      "tempo": 0.80203,
       "emphatic": false
     },
     "bright/pair-4": {
-      "durationMs": 836,
-      "rate": "-14%",
+      "text": "一对四！",
+      "durationMs": 740,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/triple-4": {
-      "durationMs": 844,
-      "rate": "-14%",
+      "text": "三个四！",
+      "durationMs": 775,
+      "rate": "-6%",
+      "tempo": 0.93874,
       "emphatic": false
     },
     "bright/single-5": {
-      "durationMs": 516,
-      "rate": "-14%",
+      "text": "五！",
+      "durationMs": 454,
+      "rate": "-6%",
+      "tempo": 0.77587,
       "emphatic": false
     },
     "bright/pair-5": {
-      "durationMs": 844,
-      "rate": "-14%",
+      "text": "一对五！",
+      "durationMs": 747,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/triple-5": {
-      "durationMs": 849,
-      "rate": "-14%",
+      "text": "三个五！",
+      "durationMs": 776,
+      "rate": "-6%",
+      "tempo": 0.95845,
       "emphatic": false
     },
     "bright/single-6": {
-      "durationMs": 509,
-      "rate": "-14%",
+      "text": "六！",
+      "durationMs": 465,
+      "rate": "-6%",
+      "tempo": 0.71657,
       "emphatic": false
     },
     "bright/pair-6": {
-      "durationMs": 779,
-      "rate": "-14%",
+      "text": "一对六！",
+      "durationMs": 673,
+      "rate": "-6%",
+      "tempo": 0.96608,
       "emphatic": false
     },
     "bright/triple-6": {
-      "durationMs": 842,
-      "rate": "-14%",
+      "text": "三个六！",
+      "durationMs": 770,
+      "rate": "-6%",
+      "tempo": 0.88857,
       "emphatic": false
     },
     "bright/single-7": {
-      "durationMs": 522,
-      "rate": "-14%",
+      "text": "七！",
+      "durationMs": 463,
+      "rate": "-6%",
+      "tempo": 0.76327,
       "emphatic": false
     },
     "bright/pair-7": {
-      "durationMs": 834,
-      "rate": "-14%",
+      "text": "一对七！",
+      "durationMs": 730,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/triple-7": {
-      "durationMs": 851,
-      "rate": "-14%",
+      "text": "三个七！",
+      "durationMs": 778,
+      "rate": "-6%",
+      "tempo": 0.99094,
       "emphatic": false
     },
     "bright/single-8": {
-      "durationMs": 524,
-      "rate": "-14%",
+      "text": "八！",
+      "durationMs": 457,
+      "rate": "-6%",
+      "tempo": 0.71831,
       "emphatic": false
     },
     "bright/pair-8": {
-      "durationMs": 762,
-      "rate": "-14%",
+      "text": "一对八！",
+      "durationMs": 685,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/triple-8": {
-      "durationMs": 838,
-      "rate": "-14%",
+      "text": "三个八！",
+      "durationMs": 769,
+      "rate": "-6%",
+      "tempo": 0.90704,
       "emphatic": false
     },
     "bright/single-9": {
-      "durationMs": 517,
-      "rate": "-14%",
+      "text": "九！",
+      "durationMs": 450,
+      "rate": "-6%",
+      "tempo": 0.67984,
       "emphatic": false
     },
     "bright/pair-9": {
-      "durationMs": 820,
-      "rate": "-14%",
+      "text": "一对九！",
+      "durationMs": 687,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/triple-9": {
-      "durationMs": 844,
-      "rate": "-14%",
+      "text": "三个九！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.9415,
       "emphatic": false
     },
     "bright/single-10": {
-      "durationMs": 526,
-      "rate": "-14%",
+      "text": "十！",
+      "durationMs": 463,
+      "rate": "-6%",
+      "tempo": 0.90233,
       "emphatic": false
     },
     "bright/pair-10": {
-      "durationMs": 892,
-      "rate": "-14%",
+      "text": "一对十！",
+      "durationMs": 757,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/triple-10": {
-      "durationMs": 896,
-      "rate": "-14%",
+      "text": "三个十！",
+      "durationMs": 777,
+      "rate": "-6%",
+      "tempo": 0.98834,
       "emphatic": false
     },
     "bright/single-11": {
-      "durationMs": 507,
-      "rate": "-14%",
+      "text": "勾！",
+      "durationMs": 444,
+      "rate": "-6%",
+      "tempo": 0.6686,
       "emphatic": false
     },
     "bright/pair-11": {
-      "durationMs": 804,
-      "rate": "-14%",
+      "text": "一对勾！",
+      "durationMs": 692,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/triple-11": {
-      "durationMs": 845,
-      "rate": "-14%",
+      "text": "三个勾！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.89206,
       "emphatic": false
     },
     "bright/single-12": {
-      "durationMs": 523,
-      "rate": "-14%",
+      "text": "圈！",
+      "durationMs": 453,
+      "rate": "-6%",
+      "tempo": 0.75378,
       "emphatic": false
     },
     "bright/pair-12": {
-      "durationMs": 846,
-      "rate": "-14%",
+      "text": "一对圈！",
+      "durationMs": 679,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/triple-12": {
-      "durationMs": 865,
-      "rate": "-14%",
+      "text": "三个圈！",
+      "durationMs": 776,
+      "rate": "-6%",
+      "tempo": 0.97607,
       "emphatic": false
     },
     "bright/single-13": {
-      "durationMs": 517,
-      "rate": "-14%",
+      "text": "凯！",
+      "durationMs": 459,
+      "rate": "-6%",
+      "tempo": 0.75126,
       "emphatic": false
     },
     "bright/pair-13": {
-      "durationMs": 836,
-      "rate": "-14%",
+      "text": "一对凯！",
+      "durationMs": 709,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/triple-13": {
-      "durationMs": 859,
-      "rate": "-14%",
+      "text": "三个凯！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.99003,
       "emphatic": false
     },
     "bright/single-14": {
-      "durationMs": 524,
-      "rate": "-14%",
+      "text": "尖！",
+      "durationMs": 458,
+      "rate": "-6%",
+      "tempo": 0.66095,
       "emphatic": false
     },
     "bright/pair-14": {
-      "durationMs": 803,
-      "rate": "-14%",
+      "text": "一对尖！",
+      "durationMs": 675,
+      "rate": "-6%",
+      "tempo": 0.99075,
       "emphatic": false
     },
     "bright/triple-14": {
-      "durationMs": 859,
-      "rate": "-14%",
+      "text": "三个尖！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.93671,
       "emphatic": false
     },
     "bright/single-16": {
-      "durationMs": 614,
-      "rate": "-14%",
+      "text": "小王！",
+      "durationMs": 541,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/pair-16": {
-      "durationMs": 989,
-      "rate": "-14%",
+      "text": "一对小王！",
+      "durationMs": 829,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/single-17": {
-      "durationMs": 617,
-      "rate": "-14%",
+      "text": "大王！",
+      "durationMs": 471,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/pair-17": {
-      "durationMs": 996,
-      "rate": "-14%",
+      "text": "一对大王！",
+      "durationMs": 833,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "bright/bomb-4": {
-      "durationMs": 1252,
-      "rate": "-22%",
+      "text": "四张炸弹！",
+      "durationMs": 1108,
+      "rate": "-12%",
+      "tempo": 0.94973,
       "emphatic": true
     },
     "bright/bomb-5": {
-      "durationMs": 1222,
-      "rate": "-22%",
+      "text": "五张炸弹！",
+      "durationMs": 1110,
+      "rate": "-12%",
+      "tempo": 0.87095,
       "emphatic": true
     },
     "bright/bomb-6": {
-      "durationMs": 1222,
-      "rate": "-22%",
+      "text": "六张炸弹！",
+      "durationMs": 1117,
+      "rate": "-12%",
+      "tempo": 0.89583,
       "emphatic": true
     },
     "bright/bomb-7": {
-      "durationMs": 1232,
-      "rate": "-22%",
+      "text": "七张炸弹！",
+      "durationMs": 1112,
+      "rate": "-12%",
+      "tempo": 0.91138,
       "emphatic": true
     },
     "bright/bomb-8": {
-      "durationMs": 1226,
-      "rate": "-22%",
+      "text": "八张炸弹！",
+      "durationMs": 1111,
+      "rate": "-12%",
+      "tempo": 0.88654,
       "emphatic": true
     },
     "bright/bomb-9": {
-      "durationMs": 1226,
-      "rate": "-22%",
+      "text": "九张炸弹！",
+      "durationMs": 1112,
+      "rate": "-12%",
+      "tempo": 0.90984,
       "emphatic": true
     },
     "bright/bomb-10": {
-      "durationMs": 1313,
-      "rate": "-22%",
+      "text": "十张炸弹！",
+      "durationMs": 1115,
+      "rate": "-12%",
+      "tempo": 0.98295,
+      "emphatic": true
+    },
+    "bold/straight": {
+      "text": "顺子！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.88228,
+      "emphatic": false
+    },
+    "bold/dpairs": {
+      "text": "三连对！",
+      "durationMs": 978,
+      "rate": "-12%",
+      "tempo": 0.8181,
+      "emphatic": true
+    },
+    "bold/steel": {
+      "text": "钢板！",
+      "durationMs": 781,
+      "rate": "-12%",
+      "tempo": 0.65428,
+      "emphatic": true
+    },
+    "bold/fullhouse": {
+      "text": "三带二！",
+      "durationMs": 984,
+      "rate": "-6%",
+      "tempo": 0.87127,
+      "emphatic": false
+    },
+    "bold/sflush": {
+      "text": "同花顺！",
+      "durationMs": 995,
+      "rate": "-12%",
+      "tempo": 0.87695,
+      "emphatic": true
+    },
+    "bold/jokers": {
+      "text": "四大天王！",
+      "durationMs": 1375,
+      "rate": "-12%",
+      "tempo": 0.8241,
+      "emphatic": true
+    },
+    "bold/jiefeng": {
+      "text": "对家接风！",
+      "durationMs": 997,
+      "rate": "-6%",
+      "tempo": 0.94991,
+      "emphatic": false
+    },
+    "bold/pass-0": {
+      "text": "不出！",
+      "durationMs": 621,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/pass-1": {
+      "text": "过！",
+      "durationMs": 445,
+      "rate": "-6%",
+      "tempo": 0.71618,
+      "emphatic": false
+    },
+    "bold/last1": {
+      "text": "注意，还剩一张！",
+      "durationMs": 1619,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/last2": {
+      "text": "还剩两张！",
+      "durationMs": 1025,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/preview": {
+      "text": "顺子！三连对！钢板！四大天王！",
+      "durationMs": 5054,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": true
+    },
+    "bold/single-2": {
+      "text": "二！",
+      "durationMs": 456,
+      "rate": "-6%",
+      "tempo": 0.53324,
+      "emphatic": false
+    },
+    "bold/pair-2": {
+      "text": "一对二！",
+      "durationMs": 667,
+      "rate": "-6%",
+      "tempo": 0.93854,
+      "emphatic": false
+    },
+    "bold/triple-2": {
+      "text": "三个二！",
+      "durationMs": 771,
+      "rate": "-6%",
+      "tempo": 0.96267,
+      "emphatic": false
+    },
+    "bold/single-3": {
+      "text": "三！",
+      "durationMs": 459,
+      "rate": "-6%",
+      "tempo": 0.83411,
+      "emphatic": false
+    },
+    "bold/pair-3": {
+      "text": "一对三！",
+      "durationMs": 685,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-3": {
+      "text": "三个三！",
+      "durationMs": 782,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/single-4": {
+      "text": "四！",
+      "durationMs": 464,
+      "rate": "-6%",
+      "tempo": 0.81463,
+      "emphatic": false
+    },
+    "bold/pair-4": {
+      "text": "一对四！",
+      "durationMs": 746,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-4": {
+      "text": "三个四！",
+      "durationMs": 772,
+      "rate": "-6%",
+      "tempo": 0.97675,
+      "emphatic": false
+    },
+    "bold/single-5": {
+      "text": "五！",
+      "durationMs": 496,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/pair-5": {
+      "text": "一对五！",
+      "durationMs": 764,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-5": {
+      "text": "三个五！",
+      "durationMs": 921,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/single-6": {
+      "text": "六！",
+      "durationMs": 457,
+      "rate": "-6%",
+      "tempo": 0.61802,
+      "emphatic": false
+    },
+    "bold/pair-6": {
+      "text": "一对六！",
+      "durationMs": 673,
+      "rate": "-6%",
+      "tempo": 0.95749,
+      "emphatic": false
+    },
+    "bold/triple-6": {
+      "text": "三个六！",
+      "durationMs": 768,
+      "rate": "-6%",
+      "tempo": 0.90304,
+      "emphatic": false
+    },
+    "bold/single-7": {
+      "text": "七！",
+      "durationMs": 439,
+      "rate": "-6%",
+      "tempo": 0.61977,
+      "emphatic": false
+    },
+    "bold/pair-7": {
+      "text": "一对七！",
+      "durationMs": 739,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-7": {
+      "text": "三个七！",
+      "durationMs": 768,
+      "rate": "-6%",
+      "tempo": 0.95856,
+      "emphatic": false
+    },
+    "bold/single-8": {
+      "text": "八！",
+      "durationMs": 462,
+      "rate": "-6%",
+      "tempo": 0.71066,
+      "emphatic": false
+    },
+    "bold/pair-8": {
+      "text": "一对八！",
+      "durationMs": 740,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-8": {
+      "text": "三个八！",
+      "durationMs": 764,
+      "rate": "-6%",
+      "tempo": 0.91239,
+      "emphatic": false
+    },
+    "bold/single-9": {
+      "text": "九！",
+      "durationMs": 465,
+      "rate": "-6%",
+      "tempo": 0.7811,
+      "emphatic": false
+    },
+    "bold/pair-9": {
+      "text": "一对九！",
+      "durationMs": 730,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-9": {
+      "text": "三个九！",
+      "durationMs": 805,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/single-10": {
+      "text": "十！",
+      "durationMs": 459,
+      "rate": "-6%",
+      "tempo": 0.73847,
+      "emphatic": false
+    },
+    "bold/pair-10": {
+      "text": "一对十！",
+      "durationMs": 795,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-10": {
+      "text": "三个十！",
+      "durationMs": 775,
+      "rate": "-6%",
+      "tempo": 0.99307,
+      "emphatic": false
+    },
+    "bold/single-11": {
+      "text": "勾！",
+      "durationMs": 446,
+      "rate": "-6%",
+      "tempo": 0.59738,
+      "emphatic": false
+    },
+    "bold/pair-11": {
+      "text": "一对勾！",
+      "durationMs": 744,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-11": {
+      "text": "三个勾！",
+      "durationMs": 786,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/single-12": {
+      "text": "圈！",
+      "durationMs": 444,
+      "rate": "-6%",
+      "tempo": 0.69903,
+      "emphatic": false
+    },
+    "bold/pair-12": {
+      "text": "一对圈！",
+      "durationMs": 764,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-12": {
+      "text": "三个圈！",
+      "durationMs": 772,
+      "rate": "-6%",
+      "tempo": 0.98975,
+      "emphatic": false
+    },
+    "bold/single-13": {
+      "text": "凯！",
+      "durationMs": 435,
+      "rate": "-6%",
+      "tempo": 0.52452,
+      "emphatic": false
+    },
+    "bold/pair-13": {
+      "text": "一对凯！",
+      "durationMs": 722,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-13": {
+      "text": "三个凯！",
+      "durationMs": 766,
+      "rate": "-6%",
+      "tempo": 0.94426,
+      "emphatic": false
+    },
+    "bold/single-14": {
+      "text": "尖！",
+      "durationMs": 450,
+      "rate": "-6%",
+      "tempo": 0.69893,
+      "emphatic": false
+    },
+    "bold/pair-14": {
+      "text": "一对尖！",
+      "durationMs": 768,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/triple-14": {
+      "text": "三个尖！",
+      "durationMs": 784,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/single-16": {
+      "text": "小王！",
+      "durationMs": 636,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/pair-16": {
+      "text": "一对小王！",
+      "durationMs": 950,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/single-17": {
+      "text": "大王！",
+      "durationMs": 543,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/pair-17": {
+      "text": "一对大王！",
+      "durationMs": 919,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "bold/bomb-4": {
+      "text": "四张炸弹！",
+      "durationMs": 1178,
+      "rate": "-12%",
+      "tempo": 1,
+      "emphatic": true
+    },
+    "bold/bomb-5": {
+      "text": "五张炸弹！",
+      "durationMs": 1106,
+      "rate": "-12%",
+      "tempo": 0.94167,
+      "emphatic": true
+    },
+    "bold/bomb-6": {
+      "text": "六张炸弹！",
+      "durationMs": 1120,
+      "rate": "-12%",
+      "tempo": 1,
+      "emphatic": true
+    },
+    "bold/bomb-7": {
+      "text": "七张炸弹！",
+      "durationMs": 1113,
+      "rate": "-12%",
+      "tempo": 0.93407,
+      "emphatic": true
+    },
+    "bold/bomb-8": {
+      "text": "八张炸弹！",
+      "durationMs": 1107,
+      "rate": "-12%",
+      "tempo": 0.92905,
+      "emphatic": true
+    },
+    "bold/bomb-9": {
+      "text": "九张炸弹！",
+      "durationMs": 1105,
+      "rate": "-12%",
+      "tempo": 0.9463,
+      "emphatic": true
+    },
+    "bold/bomb-10": {
+      "text": "十张炸弹！",
+      "durationMs": 1194,
+      "rate": "-12%",
+      "tempo": 1,
+      "emphatic": true
+    },
+    "spark/straight": {
+      "text": "顺子！",
+      "durationMs": 776,
+      "rate": "-6%",
+      "tempo": 0.58783,
+      "emphatic": false
+    },
+    "spark/dpairs": {
+      "text": "三连对！",
+      "durationMs": 986,
+      "rate": "-12%",
+      "tempo": 0.65035,
+      "emphatic": true
+    },
+    "spark/steel": {
+      "text": "钢板！",
+      "durationMs": 758,
+      "rate": "-12%",
+      "tempo": 0.49944,
+      "emphatic": true
+    },
+    "spark/fullhouse": {
+      "text": "三带二！",
+      "durationMs": 972,
+      "rate": "-6%",
+      "tempo": 0.55577,
+      "emphatic": false
+    },
+    "spark/sflush": {
+      "text": "同花顺！",
+      "durationMs": 982,
+      "rate": "-12%",
+      "tempo": 0.72083,
+      "emphatic": true
+    },
+    "spark/jokers": {
+      "text": "四大天王！",
+      "durationMs": 1361,
+      "rate": "-12%",
+      "tempo": 0.66421,
+      "emphatic": true
+    },
+    "spark/jiefeng": {
+      "text": "对家接风！",
+      "durationMs": 991,
+      "rate": "-6%",
+      "tempo": 0.74262,
+      "emphatic": false
+    },
+    "spark/pass-0": {
+      "text": "不要啦！",
+      "durationMs": 492,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "spark/pass-1": {
+      "text": "过啦！",
+      "durationMs": 450,
+      "rate": "-6%",
+      "tempo": 0.66327,
+      "emphatic": false
+    },
+    "spark/last1": {
+      "text": "只剩一张啦！",
+      "durationMs": 964,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "spark/last2": {
+      "text": "只剩两张啦！",
+      "durationMs": 944,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "spark/preview": {
+      "text": "顺子！三连对！钢板！四大天王！",
+      "durationMs": 4324,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": true
+    },
+    "spark/single-2": {
+      "text": "二！",
+      "durationMs": 413,
+      "rate": "-6%",
+      "tempo": 0.37752,
+      "emphatic": false
+    },
+    "spark/pair-2": {
+      "text": "一对二！",
+      "durationMs": 658,
+      "rate": "-6%",
+      "tempo": 0.71185,
+      "emphatic": false
+    },
+    "spark/triple-2": {
+      "text": "三个二！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.64842,
+      "emphatic": false
+    },
+    "spark/single-3": {
+      "text": "三！",
+      "durationMs": 460,
+      "rate": "-6%",
+      "tempo": 0.76434,
+      "emphatic": false
+    },
+    "spark/pair-3": {
+      "text": "一对三！",
+      "durationMs": 671,
+      "rate": "-6%",
+      "tempo": 0.75768,
+      "emphatic": false
+    },
+    "spark/triple-3": {
+      "text": "三个三！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.81852,
+      "emphatic": false
+    },
+    "spark/single-4": {
+      "text": "四！",
+      "durationMs": 455,
+      "rate": "-6%",
+      "tempo": 0.73944,
+      "emphatic": false
+    },
+    "spark/pair-4": {
+      "text": "一对四！",
+      "durationMs": 671,
+      "rate": "-6%",
+      "tempo": 0.88854,
+      "emphatic": false
+    },
+    "spark/triple-4": {
+      "text": "三个四！",
+      "durationMs": 763,
+      "rate": "-6%",
+      "tempo": 0.87128,
+      "emphatic": false
+    },
+    "spark/single-5": {
+      "text": "五！",
+      "durationMs": 444,
+      "rate": "-6%",
+      "tempo": 0.59806,
+      "emphatic": false
+    },
+    "spark/pair-5": {
+      "text": "一对五！",
+      "durationMs": 674,
+      "rate": "-6%",
+      "tempo": 0.91055,
+      "emphatic": false
+    },
+    "spark/triple-5": {
+      "text": "三个五！",
+      "durationMs": 786,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "spark/single-6": {
+      "text": "六！",
+      "durationMs": 438,
+      "rate": "-6%",
+      "tempo": 0.55271,
+      "emphatic": false
+    },
+    "spark/pair-6": {
+      "text": "一对六！",
+      "durationMs": 664,
+      "rate": "-6%",
+      "tempo": 0.8026,
+      "emphatic": false
+    },
+    "spark/triple-6": {
+      "text": "三个六！",
+      "durationMs": 761,
+      "rate": "-6%",
+      "tempo": 0.71622,
+      "emphatic": false
+    },
+    "spark/single-7": {
+      "text": "七！",
+      "durationMs": 454,
+      "rate": "-6%",
+      "tempo": 0.77083,
+      "emphatic": false
+    },
+    "spark/pair-7": {
+      "text": "一对七！",
+      "durationMs": 673,
+      "rate": "-6%",
+      "tempo": 0.90404,
+      "emphatic": false
+    },
+    "spark/triple-7": {
+      "text": "三个七！",
+      "durationMs": 775,
+      "rate": "-6%",
+      "tempo": 0.8857,
+      "emphatic": false
+    },
+    "spark/single-8": {
+      "text": "八！",
+      "durationMs": 426,
+      "rate": "-6%",
+      "tempo": 0.37374,
+      "emphatic": false
+    },
+    "spark/pair-8": {
+      "text": "一对八！",
+      "durationMs": 668,
+      "rate": "-6%",
+      "tempo": 0.70221,
+      "emphatic": false
+    },
+    "spark/triple-8": {
+      "text": "三个八！",
+      "durationMs": 770,
+      "rate": "-6%",
+      "tempo": 0.73069,
+      "emphatic": false
+    },
+    "spark/single-9": {
+      "text": "九！",
+      "durationMs": 454,
+      "rate": "-6%",
+      "tempo": 0.65223,
+      "emphatic": false
+    },
+    "spark/pair-9": {
+      "text": "一对九！",
+      "durationMs": 673,
+      "rate": "-6%",
+      "tempo": 0.88145,
+      "emphatic": false
+    },
+    "spark/triple-9": {
+      "text": "三个九！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.85946,
+      "emphatic": false
+    },
+    "spark/single-10": {
+      "text": "十！",
+      "durationMs": 464,
+      "rate": "-6%",
+      "tempo": 0.95824,
+      "emphatic": false
+    },
+    "spark/pair-10": {
+      "text": "一对十！",
+      "durationMs": 674,
+      "rate": "-6%",
+      "tempo": 0.92467,
+      "emphatic": false
+    },
+    "spark/triple-10": {
+      "text": "三个十！",
+      "durationMs": 795,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "spark/single-11": {
+      "text": "勾！",
+      "durationMs": 460,
+      "rate": "-6%",
+      "tempo": 0.2726,
+      "emphatic": false
+    },
+    "spark/pair-11": {
+      "text": "一对勾！",
+      "durationMs": 666,
+      "rate": "-6%",
+      "tempo": 0.71406,
+      "emphatic": false
+    },
+    "spark/triple-11": {
+      "text": "三个勾！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.84555,
+      "emphatic": false
+    },
+    "spark/single-12": {
+      "text": "圈！",
+      "durationMs": 443,
+      "rate": "-6%",
+      "tempo": 0.56802,
+      "emphatic": false
+    },
+    "spark/pair-12": {
+      "text": "一对圈！",
+      "durationMs": 672,
+      "rate": "-6%",
+      "tempo": 0.83828,
+      "emphatic": false
+    },
+    "spark/triple-12": {
+      "text": "三个圈！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.79488,
+      "emphatic": false
+    },
+    "spark/single-13": {
+      "text": "凯！",
+      "durationMs": 461,
+      "rate": "-6%",
+      "tempo": 0.75766,
+      "emphatic": false
+    },
+    "spark/pair-13": {
+      "text": "一对凯！",
+      "durationMs": 757,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "spark/triple-13": {
+      "text": "三个凯！",
+      "durationMs": 764,
+      "rate": "-6%",
+      "tempo": 0.88896,
+      "emphatic": false
+    },
+    "spark/single-14": {
+      "text": "尖！",
+      "durationMs": 437,
+      "rate": "-6%",
+      "tempo": 0.45213,
+      "emphatic": false
+    },
+    "spark/pair-14": {
+      "text": "一对尖！",
+      "durationMs": 672,
+      "rate": "-6%",
+      "tempo": 0.78171,
+      "emphatic": false
+    },
+    "spark/triple-14": {
+      "text": "三个尖！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.78812,
+      "emphatic": false
+    },
+    "spark/single-16": {
+      "text": "小王！",
+      "durationMs": 461,
+      "rate": "-6%",
+      "tempo": 0.86483,
+      "emphatic": false
+    },
+    "spark/pair-16": {
+      "text": "一对小王！",
+      "durationMs": 672,
+      "rate": "-6%",
+      "tempo": 0.97637,
+      "emphatic": false
+    },
+    "spark/single-17": {
+      "text": "大王！",
+      "durationMs": 461,
+      "rate": "-6%",
+      "tempo": 0.86657,
+      "emphatic": false
+    },
+    "spark/pair-17": {
+      "text": "一对大王！",
+      "durationMs": 693,
+      "rate": "-6%",
+      "tempo": 1,
+      "emphatic": false
+    },
+    "spark/bomb-4": {
+      "text": "四张炸弹！",
+      "durationMs": 1105,
+      "rate": "-12%",
+      "tempo": 0.77164,
+      "emphatic": true
+    },
+    "spark/bomb-5": {
+      "text": "五张炸弹！",
+      "durationMs": 1099,
+      "rate": "-12%",
+      "tempo": 0.69784,
+      "emphatic": true
+    },
+    "spark/bomb-6": {
+      "text": "六张炸弹！",
+      "durationMs": 1103,
+      "rate": "-12%",
+      "tempo": 0.7527,
+      "emphatic": true
+    },
+    "spark/bomb-7": {
+      "text": "七张炸弹！",
+      "durationMs": 1104,
+      "rate": "-12%",
+      "tempo": 0.80972,
+      "emphatic": true
+    },
+    "spark/bomb-8": {
+      "text": "八张炸弹！",
+      "durationMs": 1109,
+      "rate": "-12%",
+      "tempo": 0.71879,
+      "emphatic": true
+    },
+    "spark/bomb-9": {
+      "text": "九张炸弹！",
+      "durationMs": 1100,
+      "rate": "-12%",
+      "tempo": 0.78692,
+      "emphatic": true
+    },
+    "spark/bomb-10": {
+      "text": "十张炸弹！",
+      "durationMs": 1107,
+      "rate": "-12%",
+      "tempo": 0.84197,
       "emphatic": true
     },
     "calm/straight": {
-      "durationMs": 829,
-      "rate": "-14%",
+      "text": "顺子！",
+      "durationMs": 760,
+      "rate": "-6%",
+      "tempo": 0.63744,
       "emphatic": false
     },
     "calm/dpairs": {
-      "durationMs": 1113,
-      "rate": "-22%",
+      "text": "三连对！",
+      "durationMs": 980,
+      "rate": "-12%",
+      "tempo": 0.74327,
       "emphatic": true
     },
     "calm/steel": {
-      "durationMs": 869,
-      "rate": "-22%",
+      "text": "钢板！",
+      "durationMs": 765,
+      "rate": "-12%",
+      "tempo": 0.61939,
       "emphatic": true
     },
     "calm/fullhouse": {
-      "durationMs": 1085,
-      "rate": "-14%",
+      "text": "三带二！",
+      "durationMs": 987,
+      "rate": "-6%",
+      "tempo": 0.80122,
       "emphatic": false
     },
     "calm/sflush": {
-      "durationMs": 1123,
-      "rate": "-22%",
+      "text": "同花顺！",
+      "durationMs": 977,
+      "rate": "-12%",
+      "tempo": 0.68255,
       "emphatic": true
     },
     "calm/jokers": {
-      "durationMs": 1515,
-      "rate": "-22%",
+      "text": "四大天王！",
+      "durationMs": 1358,
+      "rate": "-12%",
+      "tempo": 0.76371,
       "emphatic": true
     },
     "calm/jiefeng": {
-      "durationMs": 1081,
-      "rate": "-14%",
+      "text": "对家接风！",
+      "durationMs": 990,
+      "rate": "-6%",
+      "tempo": 0.71971,
       "emphatic": false
     },
     "calm/pass-0": {
-      "durationMs": 514,
-      "rate": "-14%",
+      "text": "这手不要！",
+      "durationMs": 805,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/pass-1": {
-      "durationMs": 518,
-      "rate": "-14%",
+      "text": "我过！",
+      "durationMs": 582,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/last1": {
-      "durationMs": 952,
-      "rate": "-14%",
+      "text": "我就剩一张了！",
+      "durationMs": 841,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/last2": {
-      "durationMs": 1041,
-      "rate": "-14%",
+      "text": "我还剩两张！",
+      "durationMs": 928,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/preview": {
-      "durationMs": 5444,
-      "rate": "-14%",
+      "text": "顺子！三连对！钢板！四大天王！",
+      "durationMs": 4918,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": true
     },
     "calm/single-2": {
-      "durationMs": 510,
-      "rate": "-14%",
+      "text": "二！",
+      "durationMs": 456,
+      "rate": "-6%",
+      "tempo": 0.84234,
       "emphatic": false
     },
     "calm/pair-2": {
-      "durationMs": 729,
-      "rate": "-14%",
+      "text": "一对二！",
+      "durationMs": 669,
+      "rate": "-6%",
+      "tempo": 0.84642,
       "emphatic": false
     },
     "calm/triple-2": {
-      "durationMs": 835,
-      "rate": "-14%",
+      "text": "三个二！",
+      "durationMs": 769,
+      "rate": "-6%",
+      "tempo": 0.81931,
       "emphatic": false
     },
     "calm/single-3": {
-      "durationMs": 540,
-      "rate": "-14%",
+      "text": "三！",
+      "durationMs": 475,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/pair-3": {
-      "durationMs": 749,
-      "rate": "-14%",
+      "text": "一对三！",
+      "durationMs": 665,
+      "rate": "-6%",
+      "tempo": 0.94974,
       "emphatic": false
     },
     "calm/triple-3": {
-      "durationMs": 843,
-      "rate": "-14%",
+      "text": "三个三！",
+      "durationMs": 766,
+      "rate": "-6%",
+      "tempo": 0.82477,
       "emphatic": false
     },
     "calm/single-4": {
-      "durationMs": 572,
-      "rate": "-14%",
+      "text": "四！",
+      "durationMs": 515,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/pair-4": {
-      "durationMs": 736,
-      "rate": "-14%",
+      "text": "一对四！",
+      "durationMs": 662,
+      "rate": "-6%",
+      "tempo": 0.89668,
       "emphatic": false
     },
     "calm/triple-4": {
-      "durationMs": 843,
-      "rate": "-14%",
+      "text": "三个四！",
+      "durationMs": 762,
+      "rate": "-6%",
+      "tempo": 0.87275,
       "emphatic": false
     },
     "calm/single-5": {
-      "durationMs": 524,
-      "rate": "-14%",
+      "text": "五！",
+      "durationMs": 456,
+      "rate": "-6%",
+      "tempo": 0.77054,
       "emphatic": false
     },
     "calm/pair-5": {
-      "durationMs": 733,
-      "rate": "-14%",
+      "text": "一对五！",
+      "durationMs": 740,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/triple-5": {
-      "durationMs": 835,
-      "rate": "-14%",
+      "text": "三个五！",
+      "durationMs": 771,
+      "rate": "-6%",
+      "tempo": 0.95355,
       "emphatic": false
     },
     "calm/single-6": {
-      "durationMs": 649,
-      "rate": "-14%",
+      "text": "六！",
+      "durationMs": 615,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/pair-6": {
-      "durationMs": 734,
-      "rate": "-14%",
+      "text": "一对六！",
+      "durationMs": 676,
+      "rate": "-6%",
+      "tempo": 0.99948,
       "emphatic": false
     },
     "calm/triple-6": {
-      "durationMs": 837,
-      "rate": "-14%",
+      "text": "三个六！",
+      "durationMs": 764,
+      "rate": "-6%",
+      "tempo": 0.83007,
       "emphatic": false
     },
     "calm/single-7": {
-      "durationMs": 517,
-      "rate": "-14%",
+      "text": "七！",
+      "durationMs": 458,
+      "rate": "-6%",
+      "tempo": 0.79409,
       "emphatic": false
     },
     "calm/pair-7": {
-      "durationMs": 768,
-      "rate": "-14%",
+      "text": "一对七！",
+      "durationMs": 780,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/triple-7": {
-      "durationMs": 841,
-      "rate": "-14%",
+      "text": "三个七！",
+      "durationMs": 770,
+      "rate": "-6%",
+      "tempo": 0.93671,
       "emphatic": false
     },
     "calm/single-8": {
-      "durationMs": 663,
-      "rate": "-14%",
+      "text": "八！",
+      "durationMs": 621,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/pair-8": {
-      "durationMs": 726,
-      "rate": "-14%",
+      "text": "一对八！",
+      "durationMs": 783,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/triple-8": {
-      "durationMs": 834,
-      "rate": "-14%",
+      "text": "三个八！",
+      "durationMs": 772,
+      "rate": "-6%",
+      "tempo": 0.98992,
       "emphatic": false
     },
     "calm/single-9": {
-      "durationMs": 574,
-      "rate": "-14%",
+      "text": "九！",
+      "durationMs": 461,
+      "rate": "-6%",
+      "tempo": 0.93547,
       "emphatic": false
     },
     "calm/pair-9": {
-      "durationMs": 778,
-      "rate": "-14%",
+      "text": "一对九！",
+      "durationMs": 739,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/triple-9": {
-      "durationMs": 845,
-      "rate": "-14%",
+      "text": "三个九！",
+      "durationMs": 815,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/single-10": {
-      "durationMs": 547,
-      "rate": "-14%",
+      "text": "十！",
+      "durationMs": 466,
+      "rate": "-6%",
+      "tempo": 0.99118,
       "emphatic": false
     },
     "calm/pair-10": {
-      "durationMs": 852,
-      "rate": "-14%",
+      "text": "一对十！",
+      "durationMs": 770,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/triple-10": {
-      "durationMs": 841,
-      "rate": "-14%",
+      "text": "三个十！",
+      "durationMs": 769,
+      "rate": "-6%",
+      "tempo": 0.95873,
       "emphatic": false
     },
     "calm/single-11": {
-      "durationMs": 518,
-      "rate": "-14%",
+      "text": "勾！",
+      "durationMs": 457,
+      "rate": "-6%",
+      "tempo": 0.76395,
       "emphatic": false
     },
     "calm/pair-11": {
-      "durationMs": 745,
-      "rate": "-14%",
+      "text": "一对勾！",
+      "durationMs": 674,
+      "rate": "-6%",
+      "tempo": 0.99525,
       "emphatic": false
     },
     "calm/triple-11": {
-      "durationMs": 842,
-      "rate": "-14%",
+      "text": "三个勾！",
+      "durationMs": 773,
+      "rate": "-6%",
+      "tempo": 0.97691,
       "emphatic": false
     },
     "calm/single-12": {
-      "durationMs": 525,
-      "rate": "-14%",
+      "text": "圈！",
+      "durationMs": 452,
+      "rate": "-6%",
+      "tempo": 0.94864,
       "emphatic": false
     },
     "calm/pair-12": {
-      "durationMs": 744,
-      "rate": "-14%",
+      "text": "一对圈！",
+      "durationMs": 735,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/triple-12": {
-      "durationMs": 845,
-      "rate": "-14%",
+      "text": "三个圈！",
+      "durationMs": 829,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/single-13": {
-      "durationMs": 684,
-      "rate": "-14%",
+      "text": "凯！",
+      "durationMs": 665,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/pair-13": {
-      "durationMs": 840,
-      "rate": "-14%",
+      "text": "一对凯！",
+      "durationMs": 745,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/triple-13": {
-      "durationMs": 888,
-      "rate": "-14%",
+      "text": "三个凯！",
+      "durationMs": 818,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/single-14": {
-      "durationMs": 521,
-      "rate": "-14%",
+      "text": "尖！",
+      "durationMs": 457,
+      "rate": "-6%",
+      "tempo": 0.79738,
       "emphatic": false
     },
     "calm/pair-14": {
-      "durationMs": 745,
-      "rate": "-14%",
+      "text": "一对尖！",
+      "durationMs": 710,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/triple-14": {
-      "durationMs": 839,
-      "rate": "-14%",
+      "text": "三个尖！",
+      "durationMs": 803,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/single-16": {
-      "durationMs": 664,
-      "rate": "-14%",
+      "text": "小王！",
+      "durationMs": 587,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/pair-16": {
-      "durationMs": 879,
-      "rate": "-14%",
+      "text": "一对小王！",
+      "durationMs": 747,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/single-17": {
-      "durationMs": 519,
-      "rate": "-14%",
+      "text": "大王！",
+      "durationMs": 506,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/pair-17": {
-      "durationMs": 798,
-      "rate": "-14%",
+      "text": "一对大王！",
+      "durationMs": 738,
+      "rate": "-6%",
+      "tempo": 1,
       "emphatic": false
     },
     "calm/bomb-4": {
-      "durationMs": 1348,
-      "rate": "-22%",
+      "text": "四张炸弹！",
+      "durationMs": 1139,
+      "rate": "-12%",
+      "tempo": 1,
       "emphatic": true
     },
     "calm/bomb-5": {
-      "durationMs": 1301,
-      "rate": "-22%",
+      "text": "五张炸弹！",
+      "durationMs": 1111,
+      "rate": "-12%",
+      "tempo": 0.9755,
       "emphatic": true
     },
     "calm/bomb-6": {
-      "durationMs": 1417,
-      "rate": "-22%",
+      "text": "六张炸弹！",
+      "durationMs": 1200,
+      "rate": "-12%",
+      "tempo": 1,
       "emphatic": true
     },
     "calm/bomb-7": {
-      "durationMs": 1483,
-      "rate": "-22%",
+      "text": "七张炸弹！",
+      "durationMs": 1251,
+      "rate": "-12%",
+      "tempo": 1,
       "emphatic": true
     },
     "calm/bomb-8": {
-      "durationMs": 1280,
-      "rate": "-22%",
+      "text": "八张炸弹！",
+      "durationMs": 1108,
+      "rate": "-12%",
+      "tempo": 0.96485,
       "emphatic": true
     },
     "calm/bomb-9": {
-      "durationMs": 1446,
-      "rate": "-22%",
+      "text": "九张炸弹！",
+      "durationMs": 1219,
+      "rate": "-12%",
+      "tempo": 1,
       "emphatic": true
     },
     "calm/bomb-10": {
-      "durationMs": 1401,
-      "rate": "-22%",
+      "text": "十张炸弹！",
+      "durationMs": 1183,
+      "rate": "-12%",
+      "tempo": 1,
       "emphatic": true
     }
   }

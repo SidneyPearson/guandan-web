@@ -17,5 +17,7 @@
   const counts = {4:"四",5:"五",6:"六",7:"七",8:"八",9:"九",10:"十"};
   for (const [size, name] of Object.entries(counts)) lines["bomb-" + size] = name + "张炸弹！";
   GD.VOICE_LINES = Object.freeze(lines);
-  GD.VOICE_PROFILES = Object.freeze(["bright", "calm"]);
+  GD.VOICE_PROFILES = Object.freeze(["bright", "bold", "spark", "calm"]);
+  // 自己、东家、对家、西家固定使用四位不同说话者，换回合不换声线。
+  GD.VOICE_SEATS = Object.freeze(["bright", "bold", "spark", "calm"]);
 })();

@@ -461,6 +461,8 @@
     $("setVoice").disabled = !s.sound;
     $("setVoiceStyle").disabled = !s.sound || s.voice === false;
     $("btnVoicePreview").disabled = !s.sound || s.voice === false || !s.volume;
+    $("btnVoicePreview").textContent = s.voiceStyle === "roles" ? "试听四家" : "试听";
+    $("voiceRoleHint").classList.toggle("hidden", s.voiceStyle !== "roles");
   }
 
   function openPanel(which) {

@@ -11,49 +11,71 @@
   let muted = false;
   let volume = 0.6;
   let voiceEnabled = true, voiceStyle = "roles";
-  let player = null, voiceToken = 0, currentVoice = null, lastVoiceKey = "", voiceUnlocked = false;
+  let voiceSerial = 0;
+  // 四家各用自己的媒体元素；试听另占一个，互不抢占或排队。
+  const channels = Array.from({ length: 5 }, (_, seat) => ({
+    seat: seat < 4 ? seat : null, player: null, token: 0, current: null, unlocked: false,
+  }));
+  const recentVoiceKeys = new Set();
+  // 静音 WAV 预热不依赖音量属性，避免 iOS 忽略 volume=0 时听见预热人声。
+  const unlockClip = "data:audio/wav;base64,UklGRmQBAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YUABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==";
   const oscillators = new Set();
   const scriptSrc = document.currentScript && document.currentScript.src;
   const voiceBase = scriptSrc ? new URL("../audio/voice/", scriptSrc).href : "audio/voice/";
 
-  function ensurePlayer() {
-    if (!player && typeof window.Audio === "function") {
-      try { player = new window.Audio(); player.preload = "auto"; } catch (e) {}
+  function voiceUrl(profile, id) {
+    return voiceBase + profile + "/" + id + ".mp3?v=" + encodeURIComponent(GD.VERSION || "local");
+  }
+  function ensurePlayer(channel) {
+    if (!channel.player && typeof window.Audio === "function") {
+      try { channel.player = new window.Audio(); channel.player.preload = "auto"; } catch (e) {}
     }
-    return player;
+    return channel.player;
+  }
+  function refreshMix() {
+    const count = channels.filter(channel => channel.current).length;
+    // 两家同时说话时略收音量，保留各自的力度与辨识度。
+    const gain = volume / Math.sqrt(1 + Math.max(0, count - 1) * .35);
+    channels.forEach(channel => { if (channel.player && channel.current) channel.player.volume = gain; });
+  }
+  function stopChannel(channel) {
+    channel.token++; channel.current = null;
+    const audio = channel.player;
+    if (audio) {
+      audio.onended = null; audio.onerror = null;
+      try { audio.pause(); audio.currentTime = 0; } catch (e) {}
+    }
+    refreshMix();
   }
   function cancelVoice() {
-    voiceToken++; currentVoice = null;
-    if (player) {
-      player.onended = null; player.onerror = null;
-      try { player.pause(); player.currentTime = 0; } catch (e) {}
-    }
+    channels.forEach(stopChannel);
   }
   function profileFor(seat, style) {
-    return style === "bright" || style === "calm" ? style : seat % 2 ? "calm" : "bright";
+    return GD.VOICE_PROFILES.includes(style) ? style : GD.VOICE_SEATS[seat];
   }
   function speak(ids, seat, opts = {}) {
     if (muted || !voiceEnabled || volume === 0) return false;
-    const audio = ensurePlayer();
+    const channel = channels[opts.preview ? 4 : seat];
+    if (!channel) return false;
+    const audio = ensurePlayer(channel);
     if (!audio || !GD.VOICE_LINES || ids.some(id => !GD.VOICE_LINES[id])) return false;
-    cancelVoice();
-    const token = voiceToken, profile = profileFor(seat, opts.style || voiceStyle);
-    currentVoice = { ids: ids.slice(), profile, index: 0,
-      strong: /^(bomb-|jokers$|sflush$|steel$|dpairs$|straight$)/.test(ids[0]) };
+    stopChannel(channel);
+    const token = channel.token, profiles = opts.profiles || ids.map(() => profileFor(seat, opts.style || voiceStyle));
+    const current = channel.current = { ids: ids.slice(), profile: profiles[0], index: 0, order: ++voiceSerial };
     const next = index => {
-      if (token !== voiceToken) return;
-      if (index >= ids.length) { currentVoice = null; return; }
-      currentVoice.index = index;
-      audio.src = voiceBase + profile + "/" + ids[index] + ".mp3";
-      audio.volume = volume;
+      if (token !== channel.token) return;
+      if (index >= ids.length) { stopChannel(channel); return; }
+      current.index = index; current.profile = profiles[index];
+      audio.src = voiceUrl(current.profile, ids[index]);
+      refreshMix();
       // 牌局速度只影响电脑思考与动画，报牌保留原始语速和重音。
       audio.playbackRate = 1;
-      audio.onended = () => next(index + 1);
-      audio.onerror = () => { if (token === voiceToken) cancelVoice(); };
+      audio.onended = () => { if (current.index === index) next(index + 1); };
+      audio.onerror = () => { if (token === channel.token) stopChannel(channel); };
       try {
         const started = audio.play();
-        if (started && started.catch) started.catch(() => { if (token === voiceToken) cancelVoice(); });
-      } catch (e) { if (token === voiceToken) cancelVoice(); }
+        if (started && started.catch) started.catch(() => { if (token === channel.token) stopChannel(channel); });
+      } catch (e) { if (token === channel.token) stopChannel(channel); }
     };
     next(0);
     return true;
@@ -84,7 +106,7 @@
       const g = ctx.createGain();
       osc.type = type || "sine";
       osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
-      const peak = gain * volume * (currentVoice ? .42 : 1);
+      const peak = gain * volume * (channels.some(channel => channel.current) ? .42 : 1);
       g.gain.setValueAtTime(0.0001, ctx.currentTime + start);
       g.gain.exponentialRampToValueAtTime(Math.max(0.0002, peak), ctx.currentTime + start + 0.012);
       g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + dur);
@@ -120,18 +142,20 @@
       if (c && c.state === "suspended") {
         try { c.resume(); } catch (e) {}
       }
-      // 同一个媒体元素在手势内静音启动一次，供后续电脑回合复用（含 iOS）。
-      const audio = ensurePlayer();
-      if (audio && !voiceUnlocked && !currentVoice) {
-        voiceUnlocked = true;
-        const token = voiceToken;
+      // 在同一个手势内预热所有座位的媒体元素，供电脑异步回合复用（含 iOS）。
+      channels.forEach(channel => {
+        const audio = ensurePlayer(channel);
+        if (!audio || channel.unlocked || channel.current) return;
+        channel.unlocked = true;
+        const token = channel.token;
         audio.volume = 0;
-        audio.src = voiceBase + "bright/pass-0.mp3";
+        audio.src = unlockClip;
         try {
           const p = audio.play();
-          if (p && p.then) p.then(() => { if (token === voiceToken && !currentVoice) audio.pause(); }).catch(() => { voiceUnlocked = false; });
-        } catch (e) {}
-      }
+          if (p && p.then) p.then(() => { if (token === channel.token && !channel.current) audio.pause(); })
+            .catch(() => { if (token === channel.token) channel.unlocked = false; });
+        } catch (e) { channel.unlocked = false; }
+      });
     },
     play(name, opts) {
       if (muted || !VOICES[name]) return;
@@ -141,17 +165,19 @@
       try { VOICES[name]((opts && opts.pitch) || 0); } catch (e) {}
     },
     announce(r, opts = {}) {
-      if (!r || !r.ok || !opts.key || opts.key === lastVoiceKey) return false;
-      lastVoiceKey = opts.key;
-      // 重牌先报完整；其后的普通“过”略过，不排队也不截掉尾音。
-      if (r.kind === "pass" && !r.event && currentVoice && currentVoice.strong && currentVoice.index === 0) return false;
+      if (!r || !r.ok || !opts.key || recentVoiceKeys.has(opts.key) || !Number.isInteger(r.seat) || r.seat < 0 || r.seat > 3) return false;
+      recentVoiceKeys.add(opts.key);
+      if (recentVoiceKeys.size > 64) recentVoiceKeys.delete(recentVoiceKeys.values().next().value);
       const id = actionLine(r, opts);
       if (!id) return false;
       const ids = [id];
       if (r.kind === "play" && (opts.remaining === 1 || opts.remaining === 2)) ids.push("last" + opts.remaining);
-      return speak(ids, r.seat, { speed: opts.speed });
+      return speak(ids, r.seat);
     },
-    preview(style) { return speak(["preview"], 0, { style }); },
+    preview(style = voiceStyle) {
+      return style === "roles" ? speak(["straight", "steel", "dpairs", "jokers"], 0,
+        { preview: true, profiles: GD.VOICE_SEATS }) : speak(["preview"], 0, { preview: true, style });
+    },
     setVoice(enabled, style) { voiceEnabled = enabled !== false; voiceStyle = ["roles","bright","calm"].includes(style) ? style : "roles"; if (!voiceEnabled) cancelVoice(); },
     cancel() {
       cancelVoice();
@@ -159,11 +185,16 @@
     },
     setMuted(m) { muted = !!m; if (muted) this.cancel(); },
     isMuted() { return muted; },
-    setVolume(v) { volume = Math.max(0, Math.min(1, Number(v) || 0)); if (player) player.volume = volume; if (!volume) cancelVoice(); },
+    setVolume(v) { volume = Math.max(0, Math.min(1, Number(v) || 0)); if (!volume) cancelVoice(); else refreshMix(); },
     getVolume() { return volume; },
     // 测试/设置页可验证事件接线而不真正发声
     voiceNames() { return Object.keys(VOICES); },
-    getVoiceState() { return currentVoice ? { ...currentVoice, active: true } : { active: false }; },
+    getVoiceState() {
+      const voices = channels.filter(channel => channel.current).map(channel => ({
+        ...channel.current, ids: channel.current.ids.slice(), seat: channel.seat, preview: channel.seat === null,
+      })).sort((a, b) => a.order - b.order);
+      return { ...(voices[voices.length - 1] || {}), active: voices.length > 0, activeCount: voices.length, voices };
+    },
   };
 
   GD.sound = sound;
