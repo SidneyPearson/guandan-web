@@ -15,8 +15,8 @@
     voice: true,            // 中文报牌（随声音总开关静音）
     voiceStyle: "roles",   // roles / bright / calm
     volume: 0.6,
-    speed: "std",           // slow / std / fast
-    fx: "full",             // 对战特效：full / simple / off
+    speed: "std",           // 出牌节奏固定为标准。
+    fx: "full",             // 对战特效固定为完整。
     reduceMotion: false,
   };
 
@@ -77,6 +77,8 @@
         const saved = JSON.parse(localStorage.getItem(SET_KEY)) || {};
         const settings = Object.assign({}, DEFAULT_SETTINGS, saved);
         delete settings.autoStrategy; // 旧版托管偏好退役，托管统一跟随当前对局难度。
+        settings.speed = DEFAULT_SETTINGS.speed; // 忽略旧版保存的慢速/快速偏好。
+        settings.fx = DEFAULT_SETTINGS.fx; // 忽略旧版保存的简洁/关闭特效偏好。
         return settings;
       } catch (e) { return Object.assign({}, DEFAULT_SETTINGS); }
     },

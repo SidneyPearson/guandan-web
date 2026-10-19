@@ -403,20 +403,9 @@
     if (state) renderAutoTag();
   }
 
-  function radioGet(name, def) {
-    const el = document.querySelector(`input[name="${name}"]:checked`);
-    return el ? el.value : def;
-  }
-  function radioSet(name, value) {
-    document.querySelectorAll(`input[name="${name}"]`).forEach(
-      (r) => (r.checked = r.value === value));
-  }
-
   function bindSettingsInputs() {
     const handler = () => {
       const cur = GD.store.loadSettings();
-      cur.fx = radioGet("setFx", "full");
-      cur.speed = radioGet("setSpeed", "std");
       cur.sound = $("setSound").checked;
       cur.voice = $("setVoice").checked;
       cur.voiceStyle = $("setVoiceStyle").value;
@@ -432,9 +421,6 @@
       document.body.classList.toggle("reduce-motion", cur.reduceMotion);
       if (state) renderAutoTag();
     };
-    ["setSpeed", "setFx"].forEach((name) => {
-      document.querySelectorAll(`input[name="${name}"]`).forEach((r) => r.onchange = handler);
-    });
     $("setSound").onchange = handler;
     $("setVoice").onchange = handler;
     $("setVoiceStyle").onchange = handler;
@@ -445,8 +431,6 @@
 
   function fillSettings() {
     const s = GD.store.loadSettings();
-    radioSet("setFx", s.fx || "full");
-    radioSet("setSpeed", s.speed);
     $("setSound").checked = !!s.sound;
     $("setVoice").checked = s.voice !== false;
     $("setVoiceStyle").value = s.voiceStyle || "roles";
@@ -716,7 +700,7 @@
     }
     // 确认接风：事件来自真正关墩（最后一次不要），from=出完者、to=实际接风队友
     const jie = r.event && r.event.type === "jiefeng"
-      ? { from: r.event.outSeat, to: r.event.seat } : null;
+      ? { from: r.event.outSeat, to: r.event.seat, fromName: NAMES[r.event.outSeat], toName: NAMES[r.event.seat] } : null;
     if (!kind && !jie) { if (GD.fx.clearCombo) GD.fx.clearCombo(); return; }
     const onTable = state.table[r.seat];
     const fullPlay = onTable && onTable.play ? onTable.play : null;
@@ -1785,7 +1769,7 @@
       <ul>
         <li>点牌选中、再点取消；「出牌」「不要」出手；「提示」始终使用稳健策略，依次显示首选推荐和备选方案（可能推荐不要并说明理由，但<b>不会替你出手</b>）；「理牌」把同花顺/炸弹/四王炸自动分组；「托管」电脑代打（含进贡还贡），难度与当前对局的电脑一致。</li>
         <li>「快速一局」只打一副、不升级不进贡，有独立存档与战绩，不影响完整对局进度。</li>
-        <li>「菜单」打开时暂停对局，可查看规则、设置、战绩或按当前模式重开；按「继续游戏」返回牌桌。出牌节奏、音效、音量、减少动效均可在设置中调整；进度自动保存，刷新页面可继续。</li>
+        <li>「菜单」打开时暂停对局，可查看规则、设置、战绩或按当前模式重开；按「继续游戏」返回牌桌。出牌节奏固定为标准；音效、音量、减少动效可在设置中调整。进度自动保存，刷新页面可继续。</li>
       </ul>`;
   }
 

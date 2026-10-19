@@ -29,7 +29,7 @@
 
   /* ---------- 标准时长（ms）与阶段比例 ---------- */
   const DUR = {
-    bomb: 620, "bomb-lg": 760, sflush: 700, jokers: 920, combo: 520, flow: 640, glow: 1000,
+    bomb: 620, "bomb-lg": 760, sflush: 700, jokers: 920, combo: 520, flow: 880, glow: 900,
   };
   const CHARGE = 0.26; // 进入（蓄力/聚拢）占比
 
@@ -57,6 +57,7 @@
   let layer = null;
   let burst = null;        // 当前主爆发 {root, particles, raf}
   let combo = null;
+  let flow = null;
   let timers = [];
   let lastKey = "";
   let pendingBadge = null; // 大牌直接打完一副时，留给结算面板的短标签
@@ -98,7 +99,8 @@
     }
     if (layer) layer.innerHTML = "";
     combo = null;
-    document.querySelectorAll(".fx-outline,.fx-seat-glow").forEach((e) => e.classList.remove("fx-outline", "fx-seat-glow"));
+    clearFlow();
+    document.querySelectorAll(".fx-outline,.fx-seat-glow,.fx-seat-send").forEach((e) => e.classList.remove("fx-outline", "fx-seat-glow", "fx-seat-send"));
     lastKey = "";
   }
 
@@ -144,6 +146,8 @@
         staticLabel(req);
         if (req.ending && MAJOR.has(req.kind)) pendingBadge = badgeOf(req);
       }
+      if (mode !== "off" && req.jiefeng) staticLabel({ ...req, title: "默契接风",
+        detail: (req.jiefeng.fromName || "队友") + " → " + (req.jiefeng.toName || "对家") });
       return;
     }
     ensureLayer();
@@ -522,42 +526,74 @@
     onTimeout(() => { if (combo === root) clearCombo(); }, D + 100);
   }
 
-  /* ---------- 接风：金色流光从出完者传向实际接风队友 ---------- */
+  function clearFlow() {
+    if (!flow) return;
+    flow.root.remove();
+    if (flow.fromEl) flow.fromEl.classList.remove("fx-seat-send");
+    if (flow.toEl) flow.toEl.classList.remove("fx-seat-glow");
+    flow = null;
+  }
+
+  /* ---------- 接风：三道风带、接力令与接收落点 ---------- */
   function startFlow(req) {
+    const jie = req.jiefeng;
+    if (!Number.isInteger(jie.from) || jie.from < 0 || jie.from > 3 || jie.to !== (jie.from ^ 2)) return;
+    clearFlow();
     const L = ensureLayer();
-    const from = seatAnchor(req.jiefeng.from);
-    const to = seatAnchor(req.jiefeng.to);
+    const from = seatAnchor(jie.from), to = seatAnchor(jie.to);
     if (!from || !to) return;
     const D = Math.round(DUR.flow * req.speedMul);
+    const dx = to.x - from.x, dy = to.y - from.y, distance = Math.hypot(dx, dy) || 1;
+    const bend = Math.min(100, distance * .18), nx = -dy / distance, ny = dx / distance;
+    const cx = Math.max(18 - from.x, Math.min(L.clientWidth - 18 - from.x, dx / 2 + nx * bend));
+    const cy = Math.max(18 - from.y, Math.min(L.clientHeight - 18 - from.y, dy / 2 + ny * bend));
     const wrap = document.createElement("div");
     wrap.className = "fx-flow";
+    wrap.dataset.from = jie.from; wrap.dataset.to = jie.to;
+    wrap.setAttribute("aria-hidden", "true");
     wrap.style.left = from.x + "px";
     wrap.style.top = from.y + "px";
-    wrap.style.setProperty("--tx", (to.x - from.x) + "px");
-    wrap.style.setProperty("--ty", (to.y - from.y) + "px");
     wrap.style.setProperty("--d", D + "ms");
-    wrap.appendChild(document.createElement("i"));
-    L.appendChild(wrap);
-    onTimeout(() => wrap.remove(), D + 80);
-
-    // 接收座位高亮
-    const seatEl = req.jiefeng.to === 0
-      ? document.querySelector("#selfStatus .avatar")
-      : document.querySelector(`#seat-${req.jiefeng.to} .avatar`);
-    if (seatEl) {
-      seatEl.classList.add("fx-seat-glow");
-      onTimeout(() => seatEl.classList.remove("fx-seat-glow"),
-        Math.round(DUR.glow * req.speedMul));
+    wrap.style.setProperty("--land-delay", Math.round(D * .86) + "ms");
+    wrap.style.setProperty("--tx", dx + "px"); wrap.style.setProperty("--ty", dy + "px");
+    for (let i = 1; i <= 4; i++) {
+      const t = i / 5;
+      wrap.style.setProperty("--x" + i, (2 * (1 - t) * t * cx + t * t * dx).toFixed(2) + "px");
+      wrap.style.setProperty("--y" + i, (2 * (1 - t) * t * cy + t * t * dy).toFixed(2) + "px");
     }
-    // 中点短标题
-    const tag = document.createElement("div");
-    tag.className = "fx-flow-tag";
-    tag.style.left = ((from.x + to.x) / 2) + "px";
-    tag.style.top = ((from.y + to.y) / 2 - 14) + "px";
-    tag.style.animationDuration = D + "ms";
-    tag.textContent = "对家接风";
-    L.appendChild(tag);
-    onTimeout(() => tag.remove(), D + 60);
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.classList.add("fx-wind-ribbons"); svg.setAttribute("width", "1"); svg.setAttribute("height", "1");
+    const strands = req.mode === "simple" ? 1 : 3;
+    for (let i = 0; i < strands; i++) {
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "path"), offset = (i - 1) * 13;
+      line.setAttribute("d", `M 0 0 Q ${cx + nx * offset} ${cy + ny * offset} ${dx} ${dy}`);
+      line.setAttribute("pathLength", "1"); line.style.setProperty("--strand", i);
+      svg.appendChild(line);
+    }
+    wrap.appendChild(svg);
+    const token = document.createElement("b"); token.className = "fx-flow-token"; token.textContent = "风";
+    wrap.appendChild(token);
+    for (let i = 0; i < (req.mode === "simple" ? 2 : 6); i++) {
+      const spark = document.createElement("i"); spark.className = "fx-flow-spark";
+      spark.style.setProperty("--delay", (i * 30) + "ms"); wrap.appendChild(spark);
+    }
+    const landing = document.createElement("div"); landing.className = "fx-flow-landing";
+    landing.style.left = dx + "px"; landing.style.top = dy + "px";
+    landing.innerHTML = "<i></i><i></i><b>接住！</b>"; wrap.appendChild(landing);
+
+    const tag = document.createElement("div"); tag.className = "fx-flow-tag";
+    // Keep the title inside the central table, including short landscape screens.
+    const tagX = Math.max(82, Math.min(L.clientWidth - 82, (from.x + to.x) / 2));
+    const tagY = Math.max(38, Math.min(L.clientHeight - 54, (from.y + to.y) / 2 - 18));
+    tag.style.left = (tagX - from.x) + "px"; tag.style.top = (tagY - from.y) + "px";
+    tag.innerHTML = "<b>默契接风</b><span>" + escapeHtml(jie.fromName || "队友") + " → " +
+      escapeHtml(jie.toName || "对家") + "</span>"; wrap.appendChild(tag);
+    L.appendChild(wrap);
+    const avatar = seat => document.querySelector(seat === 0 ? "#selfStatus .avatar" : `#seat-${seat} .avatar`);
+    const current = flow = { root: wrap, fromEl: avatar(jie.from), toEl: avatar(jie.to) };
+    if (current.fromEl) current.fromEl.classList.add("fx-seat-send");
+    onTimeout(() => { if (flow === current && current.toEl) current.toEl.classList.add("fx-seat-glow"); }, D * .86);
+    onTimeout(() => { if (flow === current) clearFlow(); }, D + DUR.glow);
   }
 
   function escapeHtml(s) {
@@ -568,7 +604,7 @@
   function getPerf() {
     return Object.assign({}, perf, {
       avgFrameMs: perf.sparkFrames ? perf.totalFrameMs / perf.sparkFrames : 0,
-      active: !!burst || !!combo,
+      active: !!burst || !!combo || !!flow,
     });
   }
 

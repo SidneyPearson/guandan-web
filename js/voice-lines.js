@@ -5,6 +5,7 @@
   const lines = {
     straight: "顺子！", dpairs: "三连对！", steel: "钢板！", fullhouse: "三带二！",
     sflush: "同花顺！", jokers: "四大天王！", jiefeng: "对家接风！",
+    "jiefeng-handoff": "队友，交给你！", "jiefeng-reply": "接风，看我的！",
     "pass-0": "不要。", "pass-1": "过。", last1: "我还剩一张！", last2: "我还剩两张！",
     preview: "顺子！三连对！钢板！四大天王！",
   };

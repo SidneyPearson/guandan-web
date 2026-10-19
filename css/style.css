@@ -828,46 +828,102 @@ body.reduce-motion *::after {
   100% { box-shadow: 0 0 0 rgba(255,220,130,0); }
 }
 
-/* 接风流光：wrapper 必须自身绝对定位，inline 的 left/top（出完者头像坐标，
-   相对 #fxLayer）才会生效；否则 wrapper 为 static，子粒子会从层原点(0,0)起飞 */
-.fx-flow {
-  position: absolute; left: 0; top: 0;
-  width: 0; height: 0; pointer-events: none;
+/* 接风：风带沿真实队友头像连线弯曲，接力令抵达后点亮接收方。 */
+.fx-flow { position:absolute;left:0;top:0;width:0;height:0;pointer-events:none; }
+.fx-wind-ribbons { position:absolute;left:0;top:0;overflow:visible; }
+.fx-wind-ribbons path {
+  fill:none;stroke:#ffdb83;stroke-width:3;stroke-linecap:round;
+  stroke-dasharray:1;stroke-dashoffset:1;opacity:0;
+  filter:drop-shadow(0 0 4px #ffd56f);
+  animation:fx-wind-ribbon var(--d) cubic-bezier(.28,.1,.2,1) forwards;
+  animation-delay:calc(var(--strand) * 45ms);
 }
-.fx-flow i {
-  position: absolute; left: 0; top: 0; width: 12px; height: 12px;
-  margin: -6px 0 0 -6px; border-radius: 50%;
-  background: radial-gradient(circle, #fff3c0, #ffcf66 60%, rgba(255,180,60,.2));
-  box-shadow: 0 0 12px 3px rgba(255,200,90,.8), 18px 0 10px -2px rgba(255,210,120,.55);
-  opacity: 0;
-  animation: fx-flow-go var(--d, 640ms) cubic-bezier(.5,0,.35,1) forwards;
+.fx-wind-ribbons path:nth-child(2) { stroke:#ddfff2;stroke-width:5; }
+.fx-wind-ribbons path:nth-child(3) { stroke:#a6ecd5;stroke-width:2; }
+@keyframes fx-wind-ribbon {
+  0% { stroke-dashoffset:1;opacity:0; }
+  18% { opacity:.7; }
+  70% { stroke-dashoffset:0;opacity:.5; }
+  100% { stroke-dashoffset:-1;opacity:0; }
 }
-@keyframes fx-flow-go {
-  0% { opacity: 0; transform: translate(0,0) scale(.6); }
-  12% { opacity: 1; }
-  82% { opacity: 1; }
-  100% { opacity: 0; transform: translate(var(--tx),var(--ty)) scale(1.1); }
+.fx-flow-token,.fx-flow-spark {
+  position:absolute;left:0;top:0;margin:-17px 0 0 -17px;
+  width:34px;height:34px;border-radius:10px;opacity:0;
+  animation:fx-wind-carry var(--d) cubic-bezier(.3,.15,.25,1) forwards;
+}
+.fx-flow-token {
+  display:grid;place-items:center;color:#4c3211;font-size:21px;font-weight:900;
+  border:1px solid #fff6c2;background:linear-gradient(140deg,#fff9d7,#ffcb5c);
+  box-shadow:0 0 17px #ffd574aa,0 0 36px #7feac944;
+}
+.fx-flow-spark {
+  width:7px;height:7px;margin:-3px 0 0 -3px;border-radius:50%;
+  background:#fff7ce;box-shadow:0 0 9px 2px #ffd47588;
+  animation-delay:var(--delay);
+}
+@keyframes fx-wind-carry {
+  0% { opacity:0;transform:translate(0,0) scale(.4) rotate(-16deg); }
+  12% { opacity:1; }
+  20% { transform:translate(var(--x1),var(--y1)) scale(1) rotate(-6deg); }
+  40% { transform:translate(var(--x2),var(--y2)) scale(1.12) rotate(5deg); }
+  60% { transform:translate(var(--x3),var(--y3)) scale(1.08) rotate(-4deg); }
+  80% { opacity:1;transform:translate(var(--x4),var(--y4)) scale(1) rotate(4deg); }
+  100% { opacity:0;transform:translate(var(--tx),var(--ty)) scale(.55) rotate(0); }
 }
 .fx-flow-tag {
-  position: absolute; transform: translate(-50%,-50%);
-  font-size: 13px; font-weight: 700; color: #ffdf86;
-  background: rgba(0,0,0,.42); border-radius: 12px; padding: 1px 10px;
-  text-shadow: 0 0 8px rgba(255,200,80,.8);
-  opacity: 0; animation: fx-flow-tag 640ms ease-out forwards;
+  position:absolute;display:flex;flex-direction:column;align-items:center;gap:2px;
+  transform:translate(-50%,-50%);white-space:nowrap;padding:7px 18px;border-radius:26px;
+  color:#fff1b6;background:linear-gradient(115deg,#143e36ed,#255a46eb);
+  border:1px solid #e8d48b9c;box-shadow:0 3px 18px #041f1a66,0 0 20px #ffe28c24;
+  opacity:0;animation:fx-wind-title calc(var(--d) + 900ms) ease-out forwards;
 }
-@keyframes fx-flow-tag {
-  0%,10% { opacity: 0; }
-  28%,72% { opacity: 1; }
-  100% { opacity: 0; }
+.fx-flow-tag b { font-size:22px;letter-spacing:4px;text-shadow:0 0 12px #ffe28c66; }
+.fx-flow-tag span { font-size:12px;letter-spacing:1px;color:#c7ecdf; }
+@keyframes fx-wind-title {
+  0%,6% { opacity:0;transform:translate(-50%,-40%) scale(.82); }
+  18%,48% { opacity:1;transform:translate(-50%,-50%) scale(1); }
+  72%,100% { opacity:0;transform:translate(-50%,-65%) scale(1.02); }
 }
-.fx-seat-glow {
-  animation: fx-seat-glow 1s ease-out;
-  border-radius: 50%;
+.fx-flow-landing { position:absolute;width:0;height:0; }
+.fx-flow-landing i {
+  position:absolute;left:0;top:0;width:56px;height:56px;margin:-28px 0 0 -28px;
+  border:2px solid #fff0a5;border-radius:50%;box-shadow:0 0 16px #ffd67666;
+  opacity:0;animation:fx-wind-catch 660ms ease-out var(--land-delay) forwards;
 }
+.fx-flow-landing i:nth-child(2) { border-color:#b2f5da;animation-delay:calc(var(--land-delay) + 100ms); }
+.fx-flow-landing b {
+  position:absolute;left:0;top:-40px;transform:translateX(-50%);white-space:nowrap;
+  font-size:15px;color:#fff1b0;text-shadow:0 2px 4px #123d30,0 0 10px #ffcf57;
+  opacity:0;animation:fx-wind-answer 720ms ease-out var(--land-delay) forwards;
+}
+@keyframes fx-wind-catch {
+  0% { opacity:0;transform:scale(.55); }
+  15% { opacity:.95; }
+  100% { opacity:0;transform:scale(1.65); }
+}
+@keyframes fx-wind-answer {
+  0% { opacity:0;translate:0 6px; }
+  24%,66% { opacity:1;translate:0 0; }
+  100% { opacity:0;translate:0 -5px; }
+}
+.fx-seat-send { animation:fx-seat-send 650ms ease-out; }
+@keyframes fx-seat-send {
+  0%,100% { box-shadow:0 0 0 #ffda7a00; }
+  28% { box-shadow:0 0 18px 6px #ffda7a88; }
+}
+.fx-seat-glow { animation:fx-seat-glow 900ms ease-out;border-radius:50%; }
 @keyframes fx-seat-glow {
-  0% { box-shadow: 0 0 0 rgba(255,210,110,0); }
-  30% { box-shadow: 0 0 18px 4px rgba(255,205,100,.9); }
-  100% { box-shadow: 0 0 0 rgba(255,210,110,0); }
+  0% { box-shadow:0 0 0 0 #ffe38900; }
+  24% { box-shadow:0 0 22px 7px #ffe389bb,0 0 38px 10px #9bf0d044; }
+  100% { box-shadow:0 0 0 12px #ffe38900; }
+}
+@media (max-height:560px) {
+  .fx-flow-token { width:26px;height:26px;margin:-13px 0 0 -13px;font-size:16px;border-radius:8px; }
+  .fx-flow-tag { padding:4px 13px;gap:1px; }
+  .fx-flow-tag b { font-size:17px;letter-spacing:3px; }
+  .fx-flow-tag span { font-size:10px; }
+  .fx-wind-ribbons path { stroke-width:2; }
+  .fx-flow-landing b { top:-30px;font-size:12px; }
 }
 
 /* 减少动效下的静态标签 */

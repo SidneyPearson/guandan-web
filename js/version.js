@@ -5,5 +5,5 @@
 (function () {
   const root = typeof window !== "undefined" ? window : self;
   const GD = (root.GD = root.GD || {});
-  GD.VERSION = "1.16.0";
+  GD.VERSION = "1.17.0";
 })();

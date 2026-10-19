@@ -14,7 +14,7 @@
   let voiceSerial = 0;
   // 四家各用自己的媒体元素；试听另占一个，互不抢占或排队。
   const channels = Array.from({ length: 5 }, (_, seat) => ({
-    seat: seat < 4 ? seat : null, player: null, token: 0, current: null, unlocked: false,
+    seat: seat < 4 ? seat : null, player: null, token: 0, current: null, unlocked: false, timer: null,
   }));
   const recentVoiceKeys = new Set();
   // 静音 WAV 预热不依赖音量属性，避免 iOS 忽略 volume=0 时听见预热人声。
@@ -33,12 +33,14 @@
     return channel.player;
   }
   function refreshMix() {
-    const count = channels.filter(channel => channel.current).length;
+    const count = channels.filter(channel => channel.current && !channel.current.pending).length;
     // 两家同时说话时略收音量，保留各自的力度与辨识度。
     const gain = volume / Math.sqrt(1 + Math.max(0, count - 1) * .35);
     channels.forEach(channel => { if (channel.player && channel.current) channel.player.volume = gain; });
   }
   function stopChannel(channel) {
+    if (channel.timer !== null) clearTimeout(channel.timer);
+    channel.timer = null;
     channel.token++; channel.current = null;
     const audio = channel.player;
     if (audio) {
@@ -59,16 +61,25 @@
     if (!channel) return false;
     const audio = ensurePlayer(channel);
     if (!audio || !GD.VOICE_LINES || ids.some(id => !GD.VOICE_LINES[id])) return false;
+    const profiles = opts.profiles || ids.map(() => profileFor(seat, opts.style || voiceStyle));
+    // 接风应答与该玩家紧接着的报牌接在一起；其余座位仍可同时说话。
+    if (!opts.interaction && !opts.preview && channel.current && channel.current.interaction && channel.current.index === 0) {
+      channel.current.ids.push(...ids);
+      channel.current.profiles.push(...profiles);
+      return true;
+    }
     stopChannel(channel);
-    const token = channel.token, profiles = opts.profiles || ids.map(() => profileFor(seat, opts.style || voiceStyle));
-    const current = channel.current = { ids: ids.slice(), profile: profiles[0], index: 0, order: ++voiceSerial };
+    const token = channel.token;
+    const current = channel.current = { ids: ids.slice(), profiles: profiles.slice(), profile: profiles[0], index: 0,
+      order: ++voiceSerial, interaction: !!opts.interaction, pending: !!opts.delayMs };
     const next = index => {
       if (token !== channel.token) return;
-      if (index >= ids.length) { stopChannel(channel); return; }
-      current.index = index; current.profile = profiles[index];
-      audio.src = voiceUrl(current.profile, ids[index]);
+      if (index >= current.ids.length) { stopChannel(channel); return; }
+      current.index = index; current.profile = current.profiles[index]; current.pending = false;
+      if (index > 0) current.interaction = false;
+      audio.src = voiceUrl(current.profile, current.ids[index]);
       refreshMix();
-      // 牌局速度只影响电脑思考与动画，报牌保留原始语速和重音。
+      // 报牌使用素材本身的语调与语速。
       audio.playbackRate = 1;
       audio.onended = () => { if (current.index === index) next(index + 1); };
       audio.onerror = () => { if (token === channel.token) stopChannel(channel); };
@@ -77,11 +88,11 @@
         if (started && started.catch) started.catch(() => { if (token === channel.token) stopChannel(channel); });
       } catch (e) { if (token === channel.token) stopChannel(channel); }
     };
-    next(0);
+    if (opts.delayMs) channel.timer = setTimeout(() => { channel.timer = null; next(0); }, opts.delayMs);
+    else next(0);
     return true;
   }
   function actionLine(r, opts) {
-    if (r.event && r.event.type === "jiefeng") return "jiefeng";
     if (r.kind === "pass") return "pass-" + ((Number(opts.sequence) || 0) % 2);
     const p = r.kind === "play" && r.play;
     if (!p) return null;
@@ -168,6 +179,13 @@
       if (!r || !r.ok || !opts.key || recentVoiceKeys.has(opts.key) || !Number.isInteger(r.seat) || r.seat < 0 || r.seat > 3) return false;
       recentVoiceKeys.add(opts.key);
       if (recentVoiceKeys.size > 64) recentVoiceKeys.delete(recentVoiceKeys.values().next().value);
+      if (r.event && r.event.type === "jiefeng") {
+        const from = r.event.outSeat, to = r.event.seat;
+        if (!Number.isInteger(from) || from < 0 || from > 3 || to !== (from ^ 2)) return false;
+        const started = speak(["jiefeng-handoff"], from, { interaction: true });
+        if (started) speak(["jiefeng-reply"], to, { interaction: true, delayMs: 520 });
+        return started;
+      }
       const id = actionLine(r, opts);
       if (!id) return false;
       const ids = [id];
