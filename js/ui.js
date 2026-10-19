@@ -415,7 +415,6 @@
   function bindSettingsInputs() {
     const handler = () => {
       const cur = GD.store.loadSettings();
-      cur.autoStrategy = radioGet("setAuto", "hard");
       cur.fx = radioGet("setFx", "full");
       cur.speed = radioGet("setSpeed", "std");
       cur.sound = $("setSound").checked;
@@ -433,7 +432,7 @@
       document.body.classList.toggle("reduce-motion", cur.reduceMotion);
       if (state) renderAutoTag();
     };
-    ["setAuto", "setSpeed", "setFx"].forEach((name) => {
+    ["setSpeed", "setFx"].forEach((name) => {
       document.querySelectorAll(`input[name="${name}"]`).forEach((r) => r.onchange = handler);
     });
     $("setSound").onchange = handler;
@@ -446,7 +445,6 @@
 
   function fillSettings() {
     const s = GD.store.loadSettings();
-    radioSet("setAuto", s.autoStrategy);
     radioSet("setFx", s.fx || "full");
     radioSet("setSpeed", s.speed);
     $("setSound").checked = !!s.sound;
@@ -895,15 +893,8 @@
     if (unloading || !valid(caps)) return;
 
     let decision;
-    const opts = {};
-    if (seat === 0) {
-      // 托管是独立设置：默认 hard 稳健，也可跟随电脑难度
-      const s = GD.store.loadSettings();
-      opts.tier = s.autoStrategy === "follow"
-        ? (state.difficulty === "hard" ? "hard" : state.difficulty === "easy" ? "easy" : "normal")
-        : "hard";
-    }
-    try { decision = GD.ai.decide(state, seat, opts); }
+    // 四家调用同一入口，托管与电脑都直接使用当前对局的 difficulty。
+    try { decision = GD.ai.decide(state, seat); }
     catch (e) { console.error("AI decide 异常:", e); decision = null; }
     if (!valid(caps)) return;
 
@@ -1066,7 +1057,7 @@
     const el = $("autoTag");
     if (!el || !state) return;
     el.textContent = state.autoPilot
-      ? (settings.autoStrategy === "follow" ? "托管 · 跟随电脑" : "托管 · 稳健")
+      ? "托管 · " + ({ easy: "简单", normal: "普通", hard: "困难" }[state.difficulty] || "普通")
       : "";
   }
 
@@ -1792,7 +1783,7 @@
       </ul>
       <h3>操作说明</h3>
       <ul>
-        <li>点牌选中、再点取消；「出牌」「不要」出手；「提示」始终使用稳健策略，依次显示首选推荐和备选方案（可能推荐不要并说明理由，但<b>不会替你出手</b>）；「理牌」把同花顺/炸弹/四王炸自动分组；「托管」电脑代打（含进贡还贡），托管策略可在设置中选择。</li>
+        <li>点牌选中、再点取消；「出牌」「不要」出手；「提示」始终使用稳健策略，依次显示首选推荐和备选方案（可能推荐不要并说明理由，但<b>不会替你出手</b>）；「理牌」把同花顺/炸弹/四王炸自动分组；「托管」电脑代打（含进贡还贡），难度与当前对局的电脑一致。</li>
         <li>「快速一局」只打一副、不升级不进贡，有独立存档与战绩，不影响完整对局进度。</li>
         <li>「菜单」打开时暂停对局，可查看规则、设置、战绩或按当前模式重开；按「继续游戏」返回牌桌。出牌节奏、音效、音量、减少动效均可在设置中调整；进度自动保存，刷新页面可继续。</li>
       </ul>`;

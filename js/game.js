@@ -11,7 +11,6 @@
 
   const DEFAULT_SETTINGS = {
     difficulty: "normal",   // 电脑对手难度：easy/normal/hard
-    autoStrategy: "hard",   // 托管策略：hard=稳健（默认）/ "follow"=跟随电脑难度
     sound: true,
     voice: true,            // 中文报牌（随声音总开关静音）
     voiceStyle: "roles",   // roles / bright / calm
@@ -76,7 +75,9 @@
     loadSettings() {
       try {
         const saved = JSON.parse(localStorage.getItem(SET_KEY)) || {};
-        return Object.assign({}, DEFAULT_SETTINGS, saved);
+        const settings = Object.assign({}, DEFAULT_SETTINGS, saved);
+        delete settings.autoStrategy; // 旧版托管偏好退役，托管统一跟随当前对局难度。
+        return settings;
       } catch (e) { return Object.assign({}, DEFAULT_SETTINGS); }
     },
     saveSettings(s) { writeKey(SET_KEY, JSON.stringify(s || {})); },

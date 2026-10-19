@@ -13,9 +13,9 @@
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="manifest" href="manifest.webmanifest" />
-<link rel="stylesheet" href="../css/style.css?v=1.15.0" />
-<link rel="stylesheet" href="../css/table-theme.css?v=1.15.0" />
-<link rel="stylesheet" href="css/mobile.css?v=1.15.0" />
+<link rel="stylesheet" href="../css/style.css?v=1.16.0" />
+<link rel="stylesheet" href="../css/table-theme.css?v=1.16.0" />
+<link rel="stylesheet" href="css/mobile.css?v=1.16.0" />
 </head>
 <body>
 <div id="app">
@@ -189,11 +189,6 @@
     <div class="panel small-panel settings-panel">
       <h2 id="settingsTitle">设置</h2>
       <div class="set-group">
-        <div class="set-label">托管策略（你点「托管」时代打风格）</div>
-        <label class="set-radio"><input type="radio" name="setAuto" value="hard" /> 稳健（困难策略，默认）</label>
-        <label class="set-radio"><input type="radio" name="setAuto" value="follow" /> 跟随当前电脑难度</label>
-      </div>
-      <div class="set-group">
         <div class="set-label">出牌节奏</div>
         <label class="set-radio"><input type="radio" name="setSpeed" value="slow" /> 慢</label>
         <label class="set-radio"><input type="radio" name="setSpeed" value="std" /> 标准</label>
@@ -227,7 +222,7 @@
       <div class="set-group">
         <label class="set-radio"><input type="checkbox" id="setMotion" /> 减少动效（关闭动画）</label>
       </div>
-      <p class="set-note">电脑难度在首页选择；托管策略与电脑难度是两项独立设置。</p>
+      <p class="set-note">难度在首页选择，托管与当前对局的电脑难度一致。</p>
       <button class="btn btn-primary" id="btnSettingsClose">完 成</button>
     </div>
   </div>
@@ -315,24 +310,24 @@
   <div class="toast" id="toast"></div>
 </div>
 
-<script src="../js/version.js?v=1.15.0"></script>
-<script src="../js/util.js?v=1.15.0"></script>
-<script src="../js/cards.js?v=1.15.0"></script>
-<script src="../js/rules.js?v=1.15.0"></script>
-<script src="../js/flow.js?v=1.15.0"></script>
-<script src="../js/ai.js?v=1.15.0"></script>
-<script src="../js/fx.js?v=1.15.0"></script>
-<script src="../js/voice-lines.js?v=1.15.0"></script>
-<script src="../js/sound.js?v=1.15.0"></script>
-<script src="../js/stats.js?v=1.15.0"></script>
-<script src="../js/game.js?v=1.15.0"></script>
-<script src="../js/table-tools.js?v=1.15.0"></script>
-<script src="../js/table-view.js?v=1.15.0"></script>
-<script src="../js/turn-clock.js?v=1.15.0"></script>
-<script src="../js/active-play.js?v=1.15.0"></script>
-<script src="../js/seat-play.js?v=1.15.0"></script>
-<script src="../js/play-history.js?v=1.15.0"></script>
-<script src="../js/ui.js?v=1.15.0"></script>
-<script src="js/offline.js?v=1.15.0"></script>
+<script src="../js/version.js?v=1.16.0"></script>
+<script src="../js/util.js?v=1.16.0"></script>
+<script src="../js/cards.js?v=1.16.0"></script>
+<script src="../js/rules.js?v=1.16.0"></script>
+<script src="../js/flow.js?v=1.16.0"></script>
+<script src="../js/ai.js?v=1.16.0"></script>
+<script src="../js/fx.js?v=1.16.0"></script>
+<script src="../js/voice-lines.js?v=1.16.0"></script>
+<script src="../js/sound.js?v=1.16.0"></script>
+<script src="../js/stats.js?v=1.16.0"></script>
+<script src="../js/game.js?v=1.16.0"></script>
+<script src="../js/table-tools.js?v=1.16.0"></script>
+<script src="../js/table-view.js?v=1.16.0"></script>
+<script src="../js/turn-clock.js?v=1.16.0"></script>
+<script src="../js/active-play.js?v=1.16.0"></script>
+<script src="../js/seat-play.js?v=1.16.0"></script>
+<script src="../js/play-history.js?v=1.16.0"></script>
+<script src="../js/ui.js?v=1.16.0"></script>
+<script src="js/offline.js?v=1.16.0"></script>
 </body>
 </html>

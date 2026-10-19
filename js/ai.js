@@ -435,11 +435,52 @@
     return plays;
   }
 
+  // 炸弹的控牌价值独立于最少手数：不能因“5 张炸弹拆成三张后仍是一组”
+  // 就把拆弹当作免费减牌。6 张起能压同花顺，张数越大越应珍惜。
+  const BOMB_RESERVE = [0, 0, 0, 0, 4.5, 6, 8.5, 11, 13.5, 16, 18.5];
+  function bombReserve(hand, level) {
+    const counts = new Array(18).fill(0);
+    let wilds = 0;
+    for (const c of hand) {
+      if (GD.isWild(c, level)) wilds++;
+      else counts[c.rank]++;
+    }
+    // 配牌最多两张；动态分配，不能把同一张配牌同时算进两颗炸弹。
+    let dp = new Array(wilds + 1).fill(-Infinity); dp[0] = 0;
+    for (let rank = 2; rank <= 14; rank++) {
+      if (counts[rank] + wilds < 4) continue;
+      const next = new Array(wilds + 1).fill(-Infinity);
+      for (let used = 0; used <= wilds; used++) {
+        if (!Number.isFinite(dp[used])) continue;
+        for (let add = 0; add <= wilds - used; add++) {
+          const n = counts[rank] + add;
+          if (add && n < 4) continue;
+          const value = n >= 4 ? BOMB_RESERVE[n] + (GD.cardWeight({ rank }, level) - 2) * .04 : 0;
+          next[used + add] = Math.max(next[used + add], dp[used] + value);
+        }
+      }
+      dp = next;
+    }
+    return Math.max(...dp) + (counts[16] === 2 && counts[17] === 2 ? 20 : 0);
+  }
+
+  function bombLoss(obs, play, reserve, after) {
+    // 整炸已经有使用代价；一手出完优先。这里仅计算普通牌削弱炸弹的损失。
+    if (isBomb(play) || play.cards.length === obs.hand.length || !reserve) return 0;
+    const used = new Set(play.cards.map(c => c.id));
+    const rest = obs.hand.filter(c => !used.has(c.id));
+    const loss = Math.max(0, reserve - bombReserve(rest, obs.level));
+    // 剩牌确实已成一手时，兼顾收尾效率，给合理的拆牌收官留出空间。
+    return loss * (after.steps === 1 ? .3 : 1);
+  }
+
   function leadCandidates(obs, D, tier, rng, metrics, budget) {
     const level = obs.level;
+    const reserve = bombReserve(obs.hand, level);
     const cands = structuredPlays(obs, D).map((p) => {
       const after = playAftermath(D, p, level);
-      let s = after.cost + wildUsed(p, level) * 0.8;
+      const loss = bombLoss(obs, p, reserve, after);
+      let s = after.cost + loss + wildUsed(p, level) * 0.8;
       if (p.type === "jokers") s += 22;
       else if (p.type === "sflush") s += 10;
       else if (p.type === "bomb") s += 6;
@@ -458,7 +499,7 @@
       const tag = ["straight", "dpairs", "steel", "fullhouse", "bomb", "sflush", "jokers"]
         .indexOf(p.type) >= 0 ? "lead-group" : "dump";
       return { action: "play", play: p, score: s, tag, after,
-        facts: Object.assign(playFacts(D, p), { restSteps: after.steps, exactG: null }) };
+        facts: Object.assign(playFacts(D, p), { bombLoss: loss, restSteps: after.steps, exactG: null }) };
     });
     cands.filter((c) => emptiesHand(obs.hand, c.play)).forEach((c) => {
       c.score = -1e9; c.tag = "goout";
@@ -494,6 +535,7 @@
 
   function followCandidates(obs, D, tier, rng, metrics, budget) {
     const level = obs.level;
+    const reserve = bombReserve(obs.hand, level);
     const target = obs.target;
     const T = tier === "easy" ? 0 : threatLevel(obs);
     const partnerLeading = obs.targetSeat === obs.partner;
@@ -505,18 +547,22 @@
     for (const p of structuredPlays(obs, D)) {
       if (emptiesHand(obs.hand, p)) {
         cands.push({ action: "play", play: p, score: -1e9, tag: "goout",
-          after: { cost: 0, steps: 0 }, facts: { restSteps: 0, exactG: null } });
+          after: { cost: 0, steps: 0 }, facts: { restSteps: 0, exactG: null, bombLoss: 0, structureCost: 0 } });
         continue;
       }
       const after = playAftermath(D, p, level);
       const facts = playFacts(D, p);
-      let s = after.cost + wildUsed(p, level) * 0.8;
+      facts.bombLoss = bombLoss(obs, p, reserve, after);
+      const structureCost = after.cost + facts.bombLoss + wildUsed(p, level) * 0.8;
+      let s = structureCost;
       if (isBomb(p)) {
-        s += p.type === "jokers" ? 10 : p.type === "sflush" ? 6 : 4.5;
-        if (after.steps <= 2) s -= 1.5;        // 炸后自己还能收
-        else if (after.steps >= 7) s += 2.6;
+        const useCost = p.type === "jokers" ? 10 : p.type === "sflush" ? 6 : 4.5;
+        // 炸后只剩一手时，控牌正好用于收尾；不能因惜炸一直等、反而拆弹。
+        s += useCost * (after.steps === 1 ? .25 : after.steps === 2 ? .6 : 1);
+        if (after.steps >= 7) s += 2.6;
         else if (after.steps >= 5) s += 1.6;
         s -= T * 0.9;
+        if (!partnerLeading && T >= 4) s -= 1.5;
         if (partnerLeading) s += 3;            // 不炸队友
       } else {
         s += (p.value - target.value) * 0.12;
@@ -536,7 +582,7 @@
         tag: shedSingle ? "shed-single" : bomb ? "bomb-block" : T >= 2.6 ? "block"
           : partnerLeading ? "cover-partner" : "beat",
         facts: Object.assign(facts, {
-          restSteps: after.steps, exactG: null, minOppN, partnerN,
+          restSteps: after.steps, exactG: null, minOppN, partnerN, structureCost,
           canCollect: bomb && after.steps <= 2, // "炸后还能收"必须确有此事实
         }),
       });
@@ -545,14 +591,17 @@
     // 非炸弹压法中整手代价最低者，才有资格说"代价最小"
     let cheapestAfter = Infinity;
     for (const c of cands) {
-      if (!isBomb(c.play) && c.after.cost < cheapestAfter) cheapestAfter = c.after.cost;
+      if (!isBomb(c.play) && c.facts.structureCost < cheapestAfter) cheapestAfter = c.facts.structureCost;
     }
     for (const c of cands) {
-      if (!isBomb(c.play)) c.facts.cheapest = c.after.cost <= cheapestAfter + 1e-9;
+      if (!isBomb(c.play)) c.facts.cheapest = c.facts.structureCost <= cheapestAfter + 1e-9;
     }
     // 主动不要（跟牌的合法候选；领出不存在不要）
     const pass = { action: "pass", play: null, tag: "pass", score: 0, after: null,
       facts: { noLegal: legalBeats === 0, legalBeats, minOppN, partnerN } };
+    const ordinaryBeats = cands.filter(c => !isBomb(c.play));
+    pass.facts.protectBomb = !partnerLeading && ordinaryBeats.length > 0 &&
+      ordinaryBeats.every(c => c.facts.bombLoss > 0);
     if (partnerLeading) {
       pass.score = D.cost - 1.8 + T * 0.5 - P;
       pass.tag = P > 0 ? "partner-near" : "partner";
@@ -647,6 +696,7 @@
       if (f.noLegal) {
         return `没有能压过${playBrief(obs.target, obs.level)}的合法牌，只能不要`;
       }
+      if (f.protectBomb) return "普通压法都会削弱炸弹，当前跟牌代价更高，先保留炸弹";
       switch (c.tag) {
         case "partner": return "队友领牌，让路保持其牌权";
         case "partner-near": return `队友仅剩 ${f.partnerN} 张，让路助其先走`;
@@ -657,7 +707,7 @@
         default: return "跟牌代价过大，主动不要";
       }
     }
-    const brief = playBrief(c.play, obs.level);
+    const brief = playBrief(c.play, obs.level) + (f.bombLoss > 0 ? "（会削弱炸弹）" : "");
     switch (c.tag) {
       case "goout": return `本手可以全部出完：${brief}`;
       case "lead-group":
@@ -747,12 +797,12 @@
     let pick = cands[0];
 
     // easy：只在顶层少量候选里注入随机，绝不超出合法候选集合
-    if (tier === "easy") {
+    if (tier === "easy" && pick.tag !== "goout") {
       if (!obs.target) {
-        const top = cands.filter((c) => c.action === "play" && c.score > -1e8).slice(0, 4);
+        const top = cands.filter((c) => c.action === "play" && !c.facts.bombLoss && c.score > -1e8).slice(0, 4);
         if (top.length > 1 && rng() < 0.4) pick = top[Math.floor(rng() * top.length)];
       } else {
-        const plays = cands.filter((c) => c.action === "play");
+        const plays = cands.filter((c) => c.action === "play" && !c.facts.bombLoss);
         const passC = cands.find((c) => c.action === "pass");
         if (plays.length && rng() < 0.35) {
           const top = plays.slice(0, Math.min(3, plays.length));
