@@ -7,7 +7,7 @@
  *   GD.ai.chooseGive / chooseReturn   —— 进贡/还贡的保结构选择（合法性仍由 game 判定）。
  *
  * 三档：
- *   easy   结构打分但不做局势判断，顶层候选注入随机；
+ *   easy   结构打分 + 基本残局拦截，非紧急局面的顶层候选注入随机；
  *   normal 完整结构代价 + 队友/威胁解析（确定性，平分稳定排序）；
  *   hard   在 normal 基础上增加残局精确路线搜索（仅自己手牌+官方枚举：
  *          出牌后剩 ≤10 张时，记忆化集合覆盖求“最少出牌动作数”校准候选）；
@@ -474,6 +474,47 @@
     return loss * (after.steps === 1 ? .3 : 1);
   }
 
+  // 只判断公开信息下“报单/报双的对手是否可能一手接走”。未知牌池并不
+  // 代表某家的实际手牌；这里只排除张数不符、绝对大牌等明确安全的情况。
+  function mayFinishOver(obs, play, seat) {
+    const n = obs.counts[seat];
+    if ((n !== 1 && n !== 2) || play.size !== n ||
+        play.type !== (n === 1 ? "single" : "pair")) return false;
+    const own = new Set(obs.hand.map(c => c.id));
+    const unknown = obs.unknownIds || Array.from(CARD_BY_ID.keys()).filter(id => !own.has(id));
+    const counts = new Array(18).fill(0);
+    let wilds = 0;
+    for (const id of unknown) {
+      const c = CARD_BY_ID.get(id);
+      if (!c) continue;
+      if (n === 1 && GD.cardWeight(c, obs.level) > play.value) return true;
+      if (GD.isWild(c, obs.level)) wilds++;
+      else counts[c.rank]++;
+    }
+    if (n === 1) return false;
+    for (let rank = 2; rank <= 17; rank++) {
+      if (rank === 15 || GD.cardWeight({ rank }, obs.level) <= play.value) continue;
+      if (counts[rank] + (rank <= 14 ? wilds : 0) >= 2) return true;
+    }
+    return false;
+  }
+
+  function controlPressure(obs) {
+    // 出完者的末手尚未被压时，下一墩可能由其对家接风，不能只看出牌者的 0 张。
+    const controller = obs.counts[obs.targetSeat] > 0 ? obs.targetSeat : obs.floorSeat;
+    const enemyN = obs.opponents.indexOf(controller) >= 0 ? obs.counts[controller] : 0;
+    let dangerN = enemyN > 0 && enemyN <= 2 ? enemyN : 0;
+    const pending = obs.pending || [];
+    const upcoming = pending.slice(pending.indexOf(obs.seat) + 1);
+    for (const seat of upcoming) {
+      if (obs.opponents.indexOf(seat) >= 0 && mayFinishOver(obs, obs.target, seat)) {
+        dangerN = dangerN ? Math.min(dangerN, obs.counts[seat]) : obs.counts[seat];
+      }
+    }
+    const weight = dangerN ? 1 : enemyN === 3 ? .9 : enemyN === 4 ? .8 : enemyN === 5 ? .65 : 0;
+    return { weight, dangerN, critical: dangerN > 0 };
+  }
+
   function leadCandidates(obs, D, tier, rng, metrics, budget) {
     const level = obs.level;
     const reserve = bombReserve(obs.hand, level);
@@ -521,6 +562,29 @@
         }
       }
     }
+    // “炸弹 + 最后一手”不能只按最少手数排序：先送出小单/小对，可能让
+    // 报单/报双的对手直接走掉。真正剩下一手且存在此风险时，先争牌权。
+    if (!cands.some(c => c.tag === "goout")) {
+      const finishes = [];
+      for (const c of cands) {
+        if (!isBomb(c.play) || c.after.steps !== 1) continue;
+        const used = new Set(c.play.cards.map(card => card.id));
+        const rest = obs.hand.filter(card => !used.has(card.id));
+        if (rest.length > 2) continue;
+        const tail = rules.identify(rest, level);
+        const danger = tail ? obs.opponents.find(seat => mayFinishOver(obs, tail, seat)) : undefined;
+        if (danger !== undefined) {
+          c.tag = "control-finish";
+          c.facts.criticalControl = true;
+          c.facts.dangerN = obs.counts[danger];
+          finishes.push(c);
+        }
+      }
+      if (finishes.length) {
+        const best = finishes.reduce((a, b) => a.score <= b.score ? a : b);
+        best.score = Math.min(best.score, Math.min(...cands.map(c => c.score)) - 1);
+      }
+    }
     return cands;
   }
 
@@ -542,6 +606,7 @@
     const partnerN = obs.counts[obs.partner];
     const P = !partnerLeading ? 0 : partnerN <= 2 ? 1.6 : partnerN <= 5 ? 0.6 : 0;
     const minOppN = minOpponentCount(obs);
+    const pressure = controlPressure(obs);
 
     const cands = [];
     for (const p of structuredPlays(obs, D)) {
@@ -558,12 +623,14 @@
       if (isBomb(p)) {
         const useCost = p.type === "jokers" ? 10 : p.type === "sflush" ? 6 : 4.5;
         // 炸后只剩一手时，控牌正好用于收尾；不能因惜炸一直等、反而拆弹。
-        s += useCost * (after.steps === 1 ? .25 : after.steps === 2 ? .6 : 1);
-        if (after.steps >= 7) s += 2.6;
-        else if (after.steps >= 5) s += 1.6;
+        // 对手已进入收尾时，炸弹的价值在于现在拦截，而不是留到自己最后。
+        const spend = useCost * (after.steps === 1 ? .25 : after.steps === 2 ? .6 : 1);
+        const fragmented = after.steps >= 7 ? 2.6 : after.steps >= 5 ? 1.6 : 0;
+        s += spend + fragmented;
+        facts.bombUrgencyBonus = (spend * .9 + fragmented) * pressure.weight;
         s -= T * 0.9;
         if (!partnerLeading && T >= 4) s -= 1.5;
-        if (partnerLeading) s += 3;            // 不炸队友
+        if (partnerLeading) s += 3 * (1 - pressure.weight);
       } else {
         s += (p.value - target.value) * 0.12;
         s -= T * 0.9;
@@ -600,6 +667,13 @@
     const pass = { action: "pass", play: null, tag: "pass", score: 0, after: null,
       facts: { noLegal: legalBeats === 0, legalBeats, minOppN, partnerN } };
     const ordinaryBeats = cands.filter(c => !isBomb(c.play));
+    // 有不拆组、不耗配牌的普通压法时仍优先正常控牌；不能把“及时出炸”
+    // 变成“明明一张 A 能拦住也要炸”。只有缺少这种压法才减轻惜炸代价。
+    const plainCover = ordinaryBeats.some(c => !c.facts.splits && !c.facts.bombLoss &&
+      !wildUsed(c.play, level));
+    if (!plainCover) {
+      for (const c of cands) if (isBomb(c.play)) c.score -= c.facts.bombUrgencyBonus || 0;
+    }
     pass.facts.protectBomb = !partnerLeading && ordinaryBeats.length > 0 &&
       ordinaryBeats.every(c => c.facts.bombLoss > 0);
     if (partnerLeading) {
@@ -609,6 +683,7 @@
       pass.score = D.cost + T;
       pass.tag = T >= 2.6 ? "danger-pass" : "pass";
     }
+    pass.score += pressure.weight * 2;
     cands.push(pass);
 
     // hard 专属残局判断
@@ -656,6 +731,21 @@
         }
       }
     }
+    if (pressure.critical && legalBeats) {
+      // 报单/报双者掌墩，或仍待跟牌且可能直接走完时，合法拦截优先于
+      // 固定的惜炸/让队友分数。仍按结构代价选择压法，不强制用最大的炸。
+      const plays = cands.filter(c => c.action === "play");
+      pass.score = Math.max(pass.score, Math.min(...plays.map(c => c.score)) + 1);
+      pass.facts.controlRisk = true;
+      pass.facts.protectBomb = false;
+      pass.facts.dangerN = pressure.dangerN;
+      for (const c of plays) {
+        c.facts.criticalControl = true;
+        c.facts.dangerN = pressure.dangerN;
+        if (c.tag === "goout" || c.tag === "cut-feed") continue;
+        c.tag = partnerLeading ? "guard-partner" : isBomb(c.play) ? "bomb-block" : "block";
+      }
+    }
     return cands;
   }
 
@@ -696,6 +786,7 @@
       if (f.noLegal) {
         return `没有能压过${playBrief(obs.target, obs.level)}的合法牌，只能不要`;
       }
+      if (f.controlRisk) return `对手仅剩 ${f.dangerN} 张，此时让过有失去拦截机会的风险`;
       if (f.protectBomb) return "普通压法都会削弱炸弹，当前跟牌代价更高，先保留炸弹";
       switch (c.tag) {
         case "partner": return "队友领牌，让路保持其牌权";
@@ -710,6 +801,8 @@
     const brief = playBrief(c.play, obs.level) + (f.bombLoss > 0 ? "（会削弱炸弹）" : "");
     switch (c.tag) {
       case "goout": return `本手可以全部出完：${brief}`;
+      case "control-finish":
+        return `对手${f.dangerN === 1 ? "报单" : "报双"}，先用${brief}争取牌权，再处理最后一手${exactSuffix(c)}`;
       case "lead-group":
         return `先出${brief}，减少手数${f.restSteps > 0 ? `，剩牌约 ${f.restSteps} 组` : ""}${exactSuffix(c)}`;
       case "dump": {
@@ -724,6 +817,8 @@
           (f.restSteps < D.steps ? `，出牌后手牌更整（约 ${f.restSteps} 组）` : "") + exactSuffix(c);
       case "shed-single":
         return `顺着队友的单牌跟${brief}，走掉散张${f.keepsComplex ? "，保留成型组合" : ""}${exactSuffix(c)}`;
+      case "guard-partner":
+        return `对手${f.dangerN === 1 ? "报单" : "报双"}且还可跟牌，用${brief}防止其接走队友的牌${exactSuffix(c)}`;
       case "block":
         return `对手最少只剩 ${f.minOppN} 张，用${brief}拦截${exactSuffix(c)}`;
       case "cut-feed":
@@ -797,7 +892,7 @@
     let pick = cands[0];
 
     // easy：只在顶层少量候选里注入随机，绝不超出合法候选集合
-    if (tier === "easy" && pick.tag !== "goout") {
+    if (tier === "easy" && pick.tag !== "goout" && !pick.facts.criticalControl) {
       if (!obs.target) {
         const top = cands.filter((c) => c.action === "play" && !c.facts.bombLoss && c.score > -1e8).slice(0, 4);
         if (top.length > 1 && rng() < 0.4) pick = top[Math.floor(rng() * top.length)];

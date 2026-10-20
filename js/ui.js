@@ -665,8 +665,15 @@
   // 音效与动作同源：类型直接取 act 返回的 play 摘要，不靠界面猜测
   function playActionSound(r) {
     if (!settings.sound) return;
+    let canBeat;
+    if (settings.voice && r.kind === "pass" && r.followed &&
+        r.followed.seat % 2 !== r.seat % 2 && !(r.event && r.event.type === "jiefeng")) {
+      // 区分真的“要不起”和主动过牌；仅用当前说话者自己的手牌判断。
+      try { canBeat = GD.rules.findBeats(state.hands[r.seat], r.followed.play, state.currentLevel).length > 0; }
+      catch (_) { /* 未能确认时使用普通过牌台词 */ }
+    }
     GD.sound.announce(r, { key: state.matchId + ":" + state.gen, sequence: state.gen,
-      level: state.currentLevel, remaining: state.hands[r.seat].length, speed: settings.speed });
+      level: state.currentLevel, remaining: state.hands[r.seat].length, speed: settings.speed, canBeat });
     // 确认接风事件落在真正关墩的那次动作上（通常是最后一次“不要”，kind=pass）。
     // 必须在 pass 提前返回之前处理，并直接发声——不能用延迟回调，否则快速档
     // 局面推进或过期回调守卫会把这声接风铃吞掉。

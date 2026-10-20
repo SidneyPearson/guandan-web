@@ -17,6 +17,9 @@
     seat: seat < 4 ? seat : null, player: null, token: 0, current: null, unlocked: false, timer: null,
   }));
   const recentVoiceKeys = new Set();
+  const PASS_LINES = ["pass-0", "pass-1", "pass-2", "pass-3", "pass-4", "pass-5"];
+  const passBags = Array.from({ length: 4 }, () => ({ neutral: [], unable: [], last: null }));
+  const replyCounts = [0, 0, 0, 0];
   // 静音 WAV 预热不依赖音量属性，避免 iOS 忽略 volume=0 时听见预热人声。
   const unlockClip = "data:audio/wav;base64,UklGRmQBAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YUABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==";
   const oscillators = new Set();
@@ -93,12 +96,45 @@
     return true;
   }
   function actionLine(r, opts) {
-    if (r.kind === "pass") return "pass-" + ((Number(opts.sequence) || 0) % 2);
+    if (r.kind === "pass") {
+      const unable = isOpponentReply(r) && opts.canBeat === false;
+      const memory = passBags[r.seat], kind = unable ? "unable" : "neutral";
+      if (!memory[kind].length) {
+        memory[kind] = unable
+          ? ["pass-unable-0", ...PASS_LINES.slice(0, 2), "pass-unable-1", ...PASS_LINES.slice(2)]
+          : PASS_LINES.slice();
+        // 每位角色独立洗牌，整组说完再换顺序；只使用语音层随机，不消耗 AI 策略随机源。
+        for (let i = memory[kind].length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [memory[kind][i], memory[kind][j]] = [memory[kind][j], memory[kind][i]];
+        }
+      }
+      const bag = memory[kind];
+      if (bag[0] === memory.last && bag.length > 1) [bag[0], bag[1]] = [bag[1], bag[0]];
+      // 两组切换后可能只剩上一句：保留它，先从其他可用话术中选一句，避免连说。
+      if (bag[0] === memory.last) {
+        const alternatives = PASS_LINES.filter(id => id !== memory.last);
+        return memory.last = alternatives[Math.floor(Math.random() * alternatives.length)];
+      }
+      return memory.last = bag.shift();
+    }
     const p = r.kind === "play" && r.play;
     if (!p) return null;
     if (p.type === "bomb") return "bomb-" + Math.max(4, Math.min(10, p.size));
     if (["single", "pair", "triple"].includes(p.type)) return p.type + "-" + (p.value === 15 ? opts.level : p.value);
     return GD.VOICE_LINES && GD.VOICE_LINES[p.type] ? p.type : null;
+  }
+  function isOpponentReply(r) {
+    const seat = r.followed && r.followed.seat;
+    return !!(r.followed && r.followed.play) && Number.isInteger(seat) &&
+      seat >= 0 && seat < 4 && seat % 2 !== r.seat % 2;
+  }
+  function replyLine(r, opts) {
+    // 点数照常报；只给普通跟牌偶尔加一句口吻，领牌、让队友和收尾不加。
+    if (r.kind !== "play" || !r.play || !["single", "pair", "triple", "fullhouse"].includes(r.play.type) ||
+        !isOpponentReply(r) || !(opts.remaining > 2)) return null;
+    const index = replyCounts[r.seat]++;
+    return index % 2 === r.seat % 2 ? "beat-" + ((Math.floor(index / 2) + r.seat) % 3) : null;
   }
 
   function ensureCtx() {
@@ -189,11 +225,13 @@
       const id = actionLine(r, opts);
       if (!id) return false;
       const ids = [id];
+      const reply = replyLine(r, opts);
+      if (reply) ids.unshift(reply);
       if (r.kind === "play" && (opts.remaining === 1 || opts.remaining === 2)) ids.push("last" + opts.remaining);
       return speak(ids, r.seat);
     },
     preview(style = voiceStyle) {
-      return style === "roles" ? speak(["straight", "steel", "dpairs", "jokers"], 0,
+      return style === "roles" ? speak(["pass-unable-0", "beat-0", "beat-1", "beat-2"], 0,
         { preview: true, profiles: GD.VOICE_SEATS }) : speak(["preview"], 0, { preview: true, style });
     },
     setVoice(enabled, style) { voiceEnabled = enabled !== false; voiceStyle = ["roles","bright","calm"].includes(style) ? style : "roles"; if (!voiceEnabled) cancelVoice(); },

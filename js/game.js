@@ -735,6 +735,12 @@
       if (aw.kind !== "follow") return { ok: false, reason: "首家出牌不能不要" };
     }
 
+    // 动作完成后目标牌可能已被替换或清空，保留公开的上手摘要供语音判断跟牌语境。
+    // 不写入存档，也不在规则引擎中计算策略或生成语音。
+    const followed = aw.kind === "follow" && state.trick.target ? {
+      seat: state.trick.targetSeat,
+      play: { type: state.trick.target.type, value: state.trick.target.value, size: state.trick.target.size },
+    } : null;
     if (!Array.isArray(state.log)) state.log = []; // 兼容无日志的旧档/fixture
     let event = null;
     if (play) {
@@ -767,7 +773,7 @@
     const saved = store.save(state);
     // 动作摘要与提交同源：界面音效/评测日志直接读这里，不重新猜动作类型
     return {
-      ok: true, saved, event,
+      ok: true, saved, event, followed,
       kind: play ? "play" : "pass",
       play: play ? { type: play.type, value: play.value, size: play.size } : null,
       seat,
