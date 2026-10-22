@@ -1,7 +1,7 @@
-/* 四向短预览：只接收真实成功动作，生命周期与中央有效牌完全独立。 */
+/* 公开出牌：手机保留本墩动作，桌面显示短预览；均与中央有效牌独立。 */
 (function () {
   const GD = window.GD;
-  GD.createSeatPlay = function ({ roots, renderCard, cardsById, names }) {
+  GD.createSeatPlay = function ({ roots, renderCard, cardsById, names, persistent = false, describe }) {
     const timers = new Map();
     let boundary = "", pending = null, lastKey = "";
     function clearSeat(seat) {
@@ -11,6 +11,36 @@
       root.removeAttribute("aria-label"); delete root.dataset.actionKey;
     }
     function clear() { roots.forEach((_, seat) => clearSeat(seat)); pending = null; }
+    function renderRound(state) {
+      roots.forEach((root, seat) => {
+        const entry = GD.tableView.seatAction(state, seat);
+        const ids = entry?.ids || state.table[seat]?.cards?.map(c => c.id) || [];
+        const key = GD.tableView.handKey(state) + ":" + state.trick.startLogIndex + ":" +
+          (entry ? entry.kind + ":" + ids.join(",") : "empty");
+        root.classList.toggle("current-play", !!entry && state.trick.targetSeat === seat);
+        if (root.dataset.actionKey === key) return;
+        clearSeat(seat);
+        if (!entry) return;
+        if (entry.kind === "play" && ids.length) {
+          const row = GD.el("div", "preview-cards" + (ids.length === 1 ? " single-card" : ""));
+          row.style.setProperty("--play-count", ids.length);
+          row.style.setProperty("--play-columns", Math.max(1, ids.length - 1));
+          for (const id of ids) {
+            const card = cardsById.get(id);
+            if (!card) continue;
+            const el = renderCard(card, true, state.currentLevel);
+            el.dataset.cardId = id; row.appendChild(el);
+          }
+          root.appendChild(row);
+        }
+        const text = entry.kind === "pass" ? "不出" : entry.play && describe
+          ? describe(entry.play, ids.map(id => cardsById.get(id)).filter(Boolean)) : "已出牌";
+        root.appendChild(GD.el("span", "preview-label", text));
+        root.dataset.actionKey = key;
+        root.setAttribute("aria-label", `${names[seat]}本墩：${text}`);
+        root.classList.add("has-play");
+      });
+    }
     return {
       clear,
       notify(state, result) {
@@ -28,6 +58,7 @@
           roots.forEach((_, seat) => clearSeat(seat)); boundary = next;
         }
         if (state.paused || state.phase !== "play" || !state.trick.target) { clear(); return; }
+        if (persistent) { pending = null; renderRound(state); return; }
         const event = pending; pending = null;
         if (!event || event.index < (state.trick.startLogIndex || 0)) return;
         clearSeat(event.seat);

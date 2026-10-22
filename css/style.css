@@ -258,8 +258,9 @@ body {
 .corner .s { font-size: 14px; }
 .center-suit {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  font-size: 34px;
+  font-size: 34px; pointer-events: none;
 }
+.center-suit svg { display: block; width: 1em; height: 1em; max-width: 70%; max-height: 50%; flex: 0 0 auto; fill: currentColor; }
 .red { color: #d4372e; }
 .black { color: #1c1c1c; }
 
@@ -271,7 +272,7 @@ body {
 
 /* 大小王：红金皇冠 / 蓝银小丑帽，缩小后仍保留中文点数角标。 */
 .card.joker, .mini-card.joker {
-  --joker-size: 38px; --joker-top: 28px; --joker-bottom: 8px;
+  --joker-size: 38px;
   background: linear-gradient(145deg, #fff9ec, #f7e4be);
   border-color: #d4b574;
 }
@@ -280,9 +281,8 @@ body {
   border-color: #a2bdd8;
 }
 .joker-mark {
-  position: absolute; inset: var(--joker-top) 0 var(--joker-bottom);
-  display: flex; flex-direction: column; gap: 4px;
-  align-items: center; justify-content: center; pointer-events: none;
+  position: absolute; inset: 0;
+  display: grid; place-items: center; pointer-events: none;
 }
 .joker-emblem {
   width: var(--joker-size); height: var(--joker-size); border-radius: 50%;
@@ -296,9 +296,8 @@ body {
 }
 .joker-emblem svg { width: 85%; height: 85%; fill: currentColor; overflow: visible; }
 .joker-detail { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; }
-.joker-mark .j-word { font: 800 8px/1.1 Georgia, serif; letter-spacing: 1px; }
-.mini-card.joker { --joker-size: 24px; --joker-top: 21px; --joker-bottom: 4px; }
-.mini-card .joker-mark { gap: 2px; }
+.joker-mark .j-word { position: absolute; top: calc(50% + var(--joker-size) / 2 + 3px); left: 50%; transform: translateX(-50%); font: 800 8px/1.1 Georgia, serif; letter-spacing: 1px; }
+.mini-card.joker { --joker-size: 24px; }
 .mini-card .joker-mark .j-word { font-size: 6px; letter-spacing: .5px; }
 .big-joker { color: #ae332a; }
 .small-joker { color: #28548c; }
@@ -550,7 +549,7 @@ body {
 .lt-cards .mini-card .corner .s { font-size: 8px; }
 .lt-cards .mini-card .center-suit { font-size: 11px; }
 .lt-cards .mini-card .wild-dot { width: 9px; height: 9px; font-size: 6px; left: 2px; bottom: 1px; }
-.lt-cards .mini-card.joker { --joker-size: 11px; --joker-top: 12px; --joker-bottom: 1px; }
+.lt-cards .mini-card.joker { --joker-size: 11px; }
 .lt-cards .mini-card.joker .corner { left: 2px; top: 2px; }
 .lt-cards .mini-card.joker .corner .r { font-size: 8px; }
 .lt-cards .mini-card .joker-mark .j-word { display: none; }

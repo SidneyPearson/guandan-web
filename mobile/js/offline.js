@@ -10,7 +10,10 @@
     const height = Math.round(viewport && viewport.scale === 1 ? viewport.height : window.innerHeight);
     const width = Math.round(viewport && viewport.scale === 1 ? viewport.width : window.innerWidth);
     document.documentElement.style.setProperty("--mobile-viewport-height", height + "px");
-    document.documentElement.classList.toggle("mobile-short", width <= 1000 && width > height && height <= 340);
+    const landscape = width > height;
+    document.documentElement.classList.toggle("mobile-landscape", landscape);
+    document.documentElement.classList.toggle("mobile-short", landscape && height <= 340);
+    document.documentElement.classList.toggle("mobile-narrow", landscape && width <= 740);
   }
   fitViewport();
   window.addEventListener("resize", fitViewport, { passive: true });

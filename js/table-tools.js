@@ -64,17 +64,20 @@
   // 同点数/同一炸弹竖向叠放，列高由牌桌可用高度决定；分组与散牌保持独立。
   function stackLayout(items, options) {
     const { cardWidth: cw, cardHeight: ch, availableWidth, stepY,
-      minStepX, maxStepX = cw + 6, maxRows = 4, keepFiveTogether = false,
+      minStepX, maxStepX = cw + 6, maxRows = 4, keepFourTogether = false, keepFiveTogether = false,
+      keepGroupsTogether = false,
       paddingTop = 32, paddingX = 10, gap = 12 } = options;
     if (!items.length) return { positions: [], width: 0, height: 0, columns: 0 };
     const columns = [];
     const limits = new Array(items.length).fill(maxRows);
-    if (keepFiveTogether) {
+    if (keepGroupsTogether || keepFourTogether || keepFiveTogether) {
       let start = 0;
       for (let end = 1; end <= items.length; end++) {
         const next = items[end], current = items[start];
         if (next && !next.break && (next.stack || String(next.rank)) === (current.stack || String(current.rank))) continue;
-        if (end - start === 5) limits.fill(Math.max(5, maxRows), start, end);
+        const size = end - start;
+        if (keepGroupsTogether || (size === 4 && keepFourTogether) || (size === 5 && keepFiveTogether))
+          limits.fill(Math.max(size, maxRows), start, end);
         start = end;
       }
     }

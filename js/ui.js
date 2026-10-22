@@ -63,6 +63,8 @@
     activePlayView = GD.createActivePlay({ root: $("tableCenter"), cards: $("activePlay"), caption: $("centerHint"),
       empty: $("trickEmpty"), renderCard: cardEl, describe: playTypeText, names: NAMES });
     seatPlayView = GD.createSeatPlay({ roots: [$("myPlay"), $("play-1"), $("play-2"), $("play-3")],
+      persistent: document.querySelector("[data-round-plays]") !== null,
+      describe: (play, cards) => playTypeText({ ...play, cards }),
       renderCard: cardEl, cardsById: CARD_BY_ID, names: NAMES });
     historyView = GD.createPlayHistory({ toggle: $("historyToggle"), panel: $("playHistoryPanel"),
       list: $("historyList"), summary: $("historySummary"), close: $("historyClose"),
@@ -390,7 +392,11 @@
       requestAnimationFrame(() => { layoutHand(); updateScrollHints(); });
     };
     window.addEventListener("resize", resizeHand);
-    if (window.ResizeObserver) new window.ResizeObserver(resizeHand).observe($("app"));
+    if (window.ResizeObserver) {
+      const observer = new window.ResizeObserver(resizeHand);
+      observer.observe($("app"));
+      observer.observe(document.querySelector(".decision-context"));
+    }
   }
 
   /* ================= 设置 ================= */
@@ -1109,6 +1115,11 @@
   }
 
   // 四个座位共用同一状态优先级，过牌标记只取当前墩的公开动作。
+  function publicActionText(action) {
+    if (action.kind === "pass") return "不出";
+    return action.play ? playTypeText({ ...action.play,
+      cards: (action.ids || []).map(id => CARD_BY_ID.get(id)).filter(Boolean) }) : "已出牌";
+  }
   function renderSeatState(el, seat) {
     const finished = state.finished.indexOf(seat) >= 0;
     const turn = !state.paused && activeSeat() === seat;
@@ -1119,10 +1130,14 @@
     else if (turn) {
       kind = thinking ? "thinking" : "turn";
       // 活动头像的金色光圈指向座位，回合文字只在中央显示一次。
+      const action = GD.tableView.seatAction(state, seat);
+      if (action && document.querySelector("[data-round-plays]")) label = "上手 " + publicActionText(action);
     } else if (state.phase === "play" && state.table[seat] === "pass") {
       kind = "passed"; label = "已不出";
     } else if (GD.tableView.seatAction(state, seat)?.kind === "play") {
-      kind = "played"; label = "已出牌";
+      const action = GD.tableView.seatAction(state, seat);
+      kind = "played"; label = action.play && document.querySelector("[data-round-plays]")
+        ? publicActionText(action) : "已出牌";
     }
     el.dataset.state = kind;
     el.classList.toggle("is-turn", turn);
@@ -1226,7 +1241,9 @@
   }
 
   function onPointerDown(e) {
-    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    // 新触摸是独立操作，不能吞掉之前鼠标拖选留下的同牌 click。
+    if (e.pointerType !== "mouse") { lastGestureIds = null; return; }
+    if (e.button !== 0) return;
     if (!canHandPick()) return;
     const el = cardAtPoint(e.clientX, e.clientY);
     if (!el) return;
@@ -1470,7 +1487,7 @@
     const n = els.length;
     if (!n) {
       box.style.height = ""; box.style.setProperty("--hand-width", "0px");
-      box.classList.remove("dense-stacks"); delete $("table").dataset.handRows;
+      box.classList.remove("dense-stacks", "scroll-stacks"); delete $("table").dataset.handRows;
       return;
     }
     const viewportHeight = Math.min(window.innerHeight, $("app").clientHeight || window.innerHeight);
@@ -1484,14 +1501,16 @@
       rank: e.dataset.rank, stack: e.dataset.stack, break: e.dataset.break === "1",
     }));
     let rows = 0, run = 0, lastKey;
-    const finishRun = () => { rows = Math.max(rows, run === 5 ? 5 : Math.min(maxRows, run)); };
+    // 完整点数列、炸弹与同花顺都保持一列，不再按固定行数拆开。
+    const finishRun = () => { rows = Math.max(rows, run); };
     for (const item of items) {
       const key = item.stack || item.rank;
       if (key !== lastKey || item.break) { finishRun(); run = 0; }
       run++; lastKey = key;
     }
     finishRun();
-    const stepY = rows >= 5 ? Math.max(short ? 12 : 20, Math.min(normalStep,
+    const minStackStep = document.documentElement.classList.contains("mobile-landscape") || short ? 12 : 20;
+    const stepY = rows >= 4 ? Math.max(minStackStep, Math.min(normalStep,
       Math.floor((handBudget - paddingTop - ch - 8) / (rows - 1)))) : normalStep;
     box.classList.toggle("dense-stacks", stepY < normalStep);
     box.style.setProperty("--stack-pitch", stepY + "px");
@@ -1504,7 +1523,8 @@
     }));
     const minStepX = Math.ceil(cornerWidth + 4);
     const options = {
-      cardWidth: cw, cardHeight: ch, availableWidth: box.clientWidth, stepY, maxRows, keepFiveTogether: true,
+      cardWidth: cw, cardHeight: ch, availableWidth: box.clientWidth, stepY, maxRows,
+      keepGroupsTogether: true,
       minStepX, maxStepX: Math.max(minStepX, cw - (short ? 4 : compact ? 12 : 22)),
       gap: short ? 8 : 16, paddingTop, paddingX: 16 };
     let layout = GD.tableTools.stackLayout(items, options);
@@ -1524,6 +1544,15 @@
       els[i].style.top = p.top + "px";
       els[i].style.setProperty("--stack-layer", p.layer);
     }
+    // 极矮窗口仍为公共出牌留位；长炸弹保留原列，手牌区可上下滑动查看。
+    if (document.documentElement.classList.contains("mobile-landscape")) {
+      const arena = document.querySelector(".table-arena");
+      const reserve = viewportHeight <= 340 ? 52 : Math.max(120, viewportHeight * .30);
+      const visibleHeight = Math.max(ch + 16, layout.height - Math.max(0, reserve - arena.clientHeight));
+      const scrolling = visibleHeight < layout.height - 5;
+      box.style.height = (scrolling ? visibleHeight : layout.height) + "px";
+      box.classList.toggle("scroll-stacks", scrolling);
+    } else box.classList.remove("scroll-stacks");
   }
 
   function updateButtons() {
@@ -1626,6 +1655,13 @@
   }
 
   /* ================= 扑克牌元素 ================= */
+  // 统一 64×64 图案边界，避免不同系统字体的字形基线使花色看起来偏下。
+  const SUIT_MARKS = {
+    S: '<path d="M32 4C26 13 6 26 6 39c0 9 7 15 15 13 4-1 7-5 9-9l-2 12-6 5h20l-6-5-2-12c2 4 5 8 9 9 8 2 15-4 15-13C58 26 38 13 32 4Z"/>',
+    H: '<path d="M32 56C28 51 6 36 6 22 6 14 12 8 20 8c5 0 10 4 12 8 2-4 7-8 12-8 8 0 14 6 14 14 0 14-22 29-26 34Z"/>',
+    D: '<path d="m32 4 20 28-20 28-20-28Z"/>',
+    C: '<circle cx="32" cy="16" r="12"/><circle cx="16" cy="36" r="12"/><circle cx="48" cy="36" r="12"/><circle cx="32" cy="34" r="9"/><path d="M29 32h6c-1 10 0 21 7 28H22c7-7 8-18 7-28Z"/>',
+  };
   function cardEl(card, mini, level) {
     const e = GD.el("div", mini ? "mini-card" : "card");
     if (card.rank >= 16) {
@@ -1653,7 +1689,10 @@
     corner.appendChild(GD.el("div", "r", GD.RANK_NAME[card.rank]));
     corner.appendChild(GD.el("div", "s", GD.SUIT_CHAR[card.suit]));
     e.appendChild(corner);
-    e.appendChild(GD.el("div", "center-suit", GD.SUIT_CHAR[card.suit]));
+    const mark = GD.el("div", "center-suit");
+    mark.setAttribute("aria-hidden", "true");
+    mark.innerHTML = '<svg viewBox="0 0 64 64" focusable="false">' + SUIT_MARKS[card.suit] + '</svg>';
+    e.appendChild(mark);
     if (GD.isWild(card, level)) e.appendChild(GD.el("div", "wild-dot", "配"));
     return e;
   }

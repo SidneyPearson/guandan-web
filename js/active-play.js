@@ -13,6 +13,9 @@
         empty.classList.toggle("hidden", state.phase !== "play" || !!current);
         if (current) {
           cards.dataset.seat = current.seat;
+          cards.style.setProperty("--play-count", current.play.cards.length);
+          cards.style.setProperty("--play-columns", Math.max(1, current.play.cards.length - 1));
+          cards.classList.toggle("single-card", current.play.cards.length === 1);
           caption.textContent = `当前有效：${names[current.seat]} · ${describe(current.play)}`;
         } else {
           delete cards.dataset.seat;
