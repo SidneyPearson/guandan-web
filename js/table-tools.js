@@ -66,7 +66,7 @@
     const { cardWidth: cw, cardHeight: ch, availableWidth, stepY,
       minStepX, maxStepX = cw + 6, maxRows = 4, keepFourTogether = false, keepFiveTogether = false,
       keepGroupsTogether = false,
-      paddingTop = 32, paddingX = 10, gap = 12 } = options;
+      paddingTop = 32, paddingBottom = 8, paddingX = 10, gap = 12 } = options;
     if (!items.length) return { positions: [], width: 0, height: 0, columns: 0 };
     const columns = [];
     const limits = new Array(items.length).fill(maxRows);
@@ -108,7 +108,7 @@
       left += stepX;
     });
     return { positions, columns: columns.length, width: width + paddingX * 2,
-      height: paddingTop + ch + (rows - 1) * stepY + 8 };
+      height: paddingTop + ch + (rows - 1) * stepY + paddingBottom };
   }
 
   // 只从完整双副牌中扣除自己的手牌和公开已出牌，按物理 id 去重。

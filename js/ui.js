@@ -1522,11 +1522,14 @@
       return (corner.offsetLeft || 0) + corner.offsetWidth;
     }));
     const minStepX = Math.ceil(cornerWidth + 4);
+    // 常规手机底部留白移交给独立提示条，总占用高度保持不变。
+    const mobile = document.documentElement.classList.contains("mobile-landscape");
+    const sidebar = document.documentElement.classList.contains("mobile-short") || document.documentElement.classList.contains("mobile-narrow");
     const options = {
       cardWidth: cw, cardHeight: ch, availableWidth: box.clientWidth, stepY, maxRows,
       keepGroupsTogether: true,
       minStepX, maxStepX: Math.max(minStepX, cw - (short ? 4 : compact ? 12 : 22)),
-      gap: short ? 8 : 16, paddingTop, paddingX: 16 };
+      gap: short ? 8 : 16, paddingTop, paddingBottom: mobile && !sidebar ? 2 : 8, paddingX: 16 };
     let layout = GD.tableTools.stackLayout(items, options);
     // 真正需要滚动时，两端留出翻看按钮和选中描边的空间。
     if (layout.width > box.clientWidth + .5) layout = GD.tableTools.stackLayout(items, { ...options, paddingX: 40 });
