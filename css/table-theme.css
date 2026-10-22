@@ -36,7 +36,7 @@
 .seat-count b { margin-inline:var(--seat-count-number-gap);font-size:var(--seat-count-number-size);font-variant-numeric:tabular-nums; }
 .seat-state-row { display:flex;align-items:center;gap:5px;min-height:18px;margin-top:3px; }
 .seat-right .seat-state-row { justify-content:flex-end; }
-.seat-state-row:has(.seat-state:empty):has(.rank-badge:empty) { display:none; }
+.seat-state-row:has(.seat-state:empty):has(.rank-badge:empty):not(:has(.turn-clock:not(.hidden))) { display:none; }
 .seat-top .seat-state-row { position:absolute;top:50%;left:calc(100% + 12px);transform:translateY(-50%);margin:0; }
 .seat-state { display:inline-flex;align-items:center;gap:5px;color:#d5dec5;font-size:11px;line-height:18px;white-space:nowrap; }
 .seat-state:empty { display:none; }

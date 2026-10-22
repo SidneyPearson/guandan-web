@@ -108,7 +108,7 @@ html, body { overscroll-behavior: none; }
 .mobile-landscape .west-lane { grid-area: 1 / 1; align-items: flex-start; }
 .mobile-landscape .east-lane { grid-area: 1 / 3; align-items: flex-end; }
 .mobile-landscape .east-lane > .seat { order: -1; }
-.mobile-landscape :is(.west-lane, .east-lane) { flex-direction: column; justify-content: flex-start; gap: 6px; padding: 4px 0 0; }
+.mobile-landscape :is(.west-lane, .east-lane) { flex-direction: column; justify-content: flex-start; gap: 4px; padding: 0; }
 .mobile-landscape :is(.west-lane, .east-lane) > .seat { width: 100%; }
 .mobile-landscape :is(.west-lane, .east-lane) > .seat-play { display: flex; min-height: 0; width: 100%; gap: 3px; }
 .mobile-landscape .top-lane > .seat-play, .mobile-landscape .self-preview { display: none; }
@@ -126,11 +126,16 @@ html, body { overscroll-behavior: none; }
 .mobile-landscape .seat-name { font-size: clamp(10px, 1.2vw, 13px); line-height: 1.4; }
 .mobile-landscape .seat-state { font-size: 10px; line-height: 14px; }
 .mobile-landscape .seat-state-row { min-height: 14px; margin-top: 1px; }
-.mobile-landscape :is(.west-lane, .east-lane) .seat-meta { display: grid; grid-template-rows: auto auto 14px; }
+.mobile-landscape :is(.west-lane, .east-lane) .seat-meta { display: grid; grid-template-rows: auto auto 20px; }
 .mobile-landscape :is(.west-lane, .east-lane) .seat-info { width: 100%; max-width: 100%; }
 .mobile-landscape :is(.west-lane, .east-lane) .seat-state { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mobile-landscape :is(.west-lane, .east-lane) .seat-state-row { min-width: 0; }
-.mobile-landscape :is(.west-lane, .east-lane) .seat-state-row { display: flex; }
+/* 计时与座位状态共用固定高度的一行，不占用下方保留的本墩出牌位置。 */
+.mobile-landscape :is(.west-lane, .east-lane) .seat-state-row { display: flex; min-width: 0; min-height: 20px; height: 20px; margin-top: 0; }
+.mobile-landscape :is(.west-lane, .east-lane) .seat-state-row:has(.turn-clock:not(.hidden)) .seat-state { display: none; }
+.mobile-landscape :is(.west-lane, .east-lane) .turn-clock { position: static; transform: none; min-width: 48px; height: 20px; gap: 3px; padding-inline: 4px; }
+.mobile-landscape :is(.west-lane, .east-lane) .clock-value { font-size: 14px; }
+.mobile-landscape :is(.west-lane, .east-lane) .clock-icon { width: 11px; height: 11px; }
+.mobile-landscape :is(.west-lane, .east-lane) .clock-unit { font-size: 10px; }
 .mobile-landscape .avatar { width: clamp(30px, calc(var(--mobile-viewport-height) * .08), 44px); height: clamp(30px, calc(var(--mobile-viewport-height) * .08), 44px); font-size: clamp(16px, 2vw, 21px); }
 .mobile-landscape .table .table-center { grid-area: 1 / 2; align-self: end; display: grid; grid-template-columns: minmax(0, auto) auto; grid-template-areas: "caption turn" "cards cards"; gap: 8px 10px; width: 100%; justify-content: center; justify-items: center; padding: 4px 0; }
 .mobile-landscape .table .table-center .center-hint { grid-area: caption; font-size: clamp(10px, 1.25vw, 14px); line-height: 1.4; text-align: center; }
@@ -170,9 +175,9 @@ html, body { overscroll-behavior: none; }
 .mobile-landscape .action-bar .btn-primary { min-width: clamp(72px, 9vw, 112px); }
 .mobile-landscape .self-status { grid-area: self; justify-self: start; gap: 6px; min-width: 0; }
 .mobile-landscape .self-status .avatar { width: 28px; height: 28px; font-size: 16px; }
-.mobile-landscape .self-meta { width: clamp(76px, 11vw, 142px); grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 0; }
+.mobile-landscape .self-meta { width: clamp(76px, 11vw, 142px); grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 14px; column-gap: 0; }
 .mobile-landscape .self-meta .seat-count { grid-area: 1 / 1; }
-.mobile-landscape .self-meta .seat-state-row, .mobile-landscape .self-meta .auto-tag { grid-area: 2 / 1; border: 0; padding: 0; font-size: 10px; line-height: 14px; }
+.mobile-landscape .self-meta .seat-state-row, .mobile-landscape .self-meta .auto-tag { grid-area: 2 / 1; border: 0; padding: 0; margin: 0; font-size: 10px; line-height: 14px; }
 .mobile-landscape .self-meta:has(.auto-tag:not(:empty)) .seat-state-row { display: none; }
 .mobile-landscape .self-status > .turn-clock { position: static; transform: none; margin-left: 2px; }
 .mobile-landscape .secondary-actions { grid-area: tools; justify-self: end; gap: 4px; }
@@ -243,7 +248,7 @@ html, body { overscroll-behavior: none; }
 .mobile-landscape.mobile-short .west-lane, .mobile-landscape.mobile-short .east-lane { padding-bottom: 0; }
 .mobile-landscape.mobile-short :is(.west-lane, .east-lane) .seat { display: flex; align-items: center; gap: 4px; }
 .mobile-landscape.mobile-short .east-lane .seat { flex-direction: row-reverse; }
-.mobile-landscape.mobile-short :is(.west-lane, .east-lane) .seat-meta { grid-template-rows: auto 14px; }
+.mobile-landscape.mobile-short :is(.west-lane, .east-lane) .seat-meta { grid-template-rows: auto 20px; }
 .mobile-landscape.mobile-short :is(.west-lane, .east-lane) .seat-name { display: none; }
 .mobile-landscape.mobile-short :is(.west-lane, .east-lane) .turn-clock { position: static; transform: none; min-width: 44px; height: 20px; padding-inline: 4px; }
 .mobile-landscape.mobile-short .table .central-play .mini-card { height: 44px; }
