@@ -356,6 +356,7 @@
     $("btnHint").onclick = humanHint;
     $("btnClear").onclick = () => { selected = new Set(); clearHint(); renderHand(); updateButtons(); };
     $("btnAuto").onclick = () => {
+      if (!state || $("btnAuto").disabled) return;
       state.autoPilot = !state.autoPilot;
       noteSaveResult(GD.store.save(state));
       selected = new Set();
@@ -885,7 +886,6 @@
     const caps = capsPlay(seat);
     thinkingSeat = seat;
     renderSeats();
-    renderRecorder();
     await GD.wait(aiWait());
     if (unloading || !valid(caps)) return;
 
@@ -1037,6 +1037,7 @@
     renderLevels();
     renderSeats();
     renderHand();
+    renderRecorder();
     updateButtons();
     renderCenterHint();
     renderAutoTag();
@@ -1053,7 +1054,7 @@
   function renderAutoTag() {
     const el = $("autoTag");
     if (!el || !state) return;
-    el.textContent = state.autoPilot
+    el.textContent = state.autoPilot && !state.finished.includes(0)
       ? "托管 · " + ({ easy: "简单", normal: "普通", hard: "困难" }[state.difficulty] || "普通")
       : "";
   }
@@ -1081,7 +1082,9 @@
   function renderRecorder() {
     if (!state) return;
     const played = state.pile.concat(...state.table.filter((item) => item && item !== "pass").map((item) => item.cards));
-    const counts = GD.tableTools.remainingCounts(state.hands[0], played);
+    const handSeat = GD.tableView.handSeat(state);
+    const counts = GD.tableTools.remainingCounts(state.hands[handSeat], played);
+    $("recorderNote").textContent = handSeat === 2 ? "不含对家手牌和已出牌" : "不含你的手牌和已出牌";
     const ranks = [17, 16, state.currentLevel];
     for (let rank = 14; rank >= 2; rank--) if (rank !== state.currentLevel) ranks.push(rank);
     const grid = $("recorderGrid");
@@ -1188,7 +1191,9 @@
   function renderCenterHint() {
     activePlayView.render(state);
     const context = $("actionContext");
-    context.textContent = state.phase === "play" && state.awaiting.seat === 0 && !state.autoPilot
+    context.textContent = GD.tableView.handSeat(state) === 2
+      ? `观战 · 对家手牌 ${state.hands[2].length} 张`
+      : state.phase === "play" && state.awaiting.seat === 0 && !state.autoPilot
       ? (state.awaiting.kind === "lead" ? "选择手牌，开始这一墩" : "选择手牌或不出") : "";
   }
 
@@ -1304,6 +1309,7 @@
   /* ----- 键盘 ----- */
   function onHandFocus() {
     if (!state) return;
+    if (GD.tableView.handSeat(state) === 2) { kbActive = false; clearKbFocus(); return; }
     // 鼠标点击/拖选/触屏引发的聚焦只保留焦点本身，不显示蓝色焦点牌；
     // 只有键盘（Tab/方向键）进入或操作时才显示
     if (pointerNav) { kbActive = false; clearKbFocus(); return; }
@@ -1387,15 +1393,21 @@
   }
   function renderHand() {
     const box = $("handCards");
+    const handSeat = state ? GD.tableView.handSeat(state) : 0, spectating = handSeat === 2;
     // 全量重建会让内容宽度瞬间变化，先记下滚动位置，layoutHand 后恢复
-    const savedScroll = box.scrollLeft;
+    const savedScroll = box.dataset.seat === String(handSeat) ? box.scrollLeft : 0;
     box.innerHTML = "";
+    box.dataset.seat = handSeat;
+    $("table").classList.toggle("spectating", spectating);
+    box.setAttribute("role", spectating ? "list" : "listbox");
+    box.setAttribute("aria-label", spectating ? "对家剩余手牌，仅供观战，仍由电脑出牌" : "你的手牌，可用左右方向键移动焦点、空格选中、回车出牌");
     if (!state) return;
-    const clickable = state.phase === "play" || state.phase === "tribute";
+    const clickable = !spectating && (state.phase === "play" || state.phase === "tribute");
+    if (spectating) { selected.clear(); clearKbFocus(); }
     const pickIds = tributePickIds();
 
-    const display = GD.tableTools.handView(state.hands[0], state.currentLevel,
-      state.phase === "play" && state.organize);
+    const display = GD.tableTools.handView(state.hands[handSeat], state.currentLevel,
+      spectating || (state.phase === "play" && state.organize));
     const view = display.cards;
     let inGroupIdx = new Set();
     const groupAt = new Map();
@@ -1408,6 +1420,7 @@
     for (let i = 0; i < view.length; i++) {
       const c = view[i];
       const e = cardEl(c, false, state.currentLevel);
+      e.setAttribute("role", spectating ? "listitem" : "option");
       e.dataset.id = c.id;
       e.dataset.rank = c.rank;
       const group = groupAt.get(i);
@@ -1431,7 +1444,7 @@
         e.classList.add(pickIds.has(c.id) ? "tribute-pick" : "pick-off");
       } else if (!clickable) e.classList.add("disabled");
 
-      e.addEventListener("click", () => {
+      if (!spectating) e.addEventListener("click", () => {
         if (state.phase === "tribute") { handClickInTribute(c); return; }
         if (state.phase !== "play" || !state.awaiting || state.awaiting.seat !== 0) return;
         // 鼠标手势（含普通点击，已在 pointerdown 处理）/ Shift 范围后的同次 click 必须吞掉，
@@ -1566,11 +1579,13 @@
     $("btnPass").disabled = !(humanPlayTurn && state.awaiting.kind === "follow");
     $("btnHint").disabled = !humanPlayTurn;
     $("btnClear").disabled = !(humanPlayTurn && selected.size);
-    $("btnOrganize").disabled = state.phase !== "play";
+    $("btnOrganize").disabled = state.phase !== "play" || GD.tableView.handSeat(state) === 2;
     $("btnOrganize").classList.toggle("btn-primary", !!state.organize);
     $("btnOrganize").textContent = state.organize ? "恢复" : "理牌";
     $("btnAuto").textContent = state.autoPilot ? "取消托管" : "托管";
     $("btnAuto").classList.toggle("btn-primary", !!state.autoPilot);
+    // 出完后不能开启托管；此前已开启的仍可取消，避免下一副继续代打。
+    $("btnAuto").disabled = state.phase === "play" && state.finished.includes(0) && !state.autoPilot;
     if (humanPlayTurn) {
       const cards = state.hands[0].filter((c) => selected.has(c.id));
       if (cards.length) {
@@ -1818,6 +1833,7 @@
       <ul>
         <li>点牌选中、再点取消；「出牌」「不要」出手；「提示」始终使用稳健策略，依次显示首选推荐和备选方案（可能推荐不要并说明理由，但<b>不会替你出手</b>）；「理牌」把同花顺/炸弹/四王炸自动分组；「托管」电脑代打（含进贡还贡），难度与当前对局的电脑一致。</li>
         <li>「快速一局」只打一副、不升级不进贡，有独立存档与战绩，不影响完整对局进度。</li>
+        <li>自己出完牌后，底部自动显示对家剩余手牌供观战，仍由对家电脑出牌；下一副自动恢复自己的手牌。</li>
         <li>「菜单」打开时暂停对局，可查看规则、设置、战绩或按当前模式重开；按「继续游戏」返回牌桌。出牌节奏固定为标准；音效、音量、减少动效可在设置中调整。进度自动保存，刷新页面可继续。</li>
       </ul>`;
   }

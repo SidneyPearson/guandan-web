@@ -503,7 +503,7 @@
     // 出完者的末手尚未被压时，下一墩可能由其对家接风，不能只看出牌者的 0 张。
     const controller = obs.counts[obs.targetSeat] > 0 ? obs.targetSeat : obs.floorSeat;
     const enemyN = obs.opponents.indexOf(controller) >= 0 ? obs.counts[controller] : 0;
-    let dangerN = enemyN > 0 && enemyN <= 2 ? enemyN : 0;
+    let dangerN = enemyN > 0 && enemyN <= 3 ? enemyN : 0;
     const pending = obs.pending || [];
     const upcoming = pending.slice(pending.indexOf(obs.seat) + 1);
     for (const seat of upcoming) {
@@ -624,10 +624,15 @@
         const useCost = p.type === "jokers" ? 10 : p.type === "sflush" ? 6 : 4.5;
         // 炸后只剩一手时，控牌正好用于收尾；不能因惜炸一直等、反而拆弹。
         // 对手已进入收尾时，炸弹的价值在于现在拦截，而不是留到自己最后。
+        const used = after.steps === 1 && !partnerLeading ? new Set(p.cards.map(c => c.id)) : null;
+        const closing = used && !!rules.identify(obs.hand.filter(c => !used.has(c.id)), level);
+        // 已可接最后一手时，炸弹是在争取收尾机会，不再重复征收惜炸和配牌代价。
         const spend = useCost * (after.steps === 1 ? .25 : after.steps === 2 ? .6 : 1);
+        facts.closingBomb = !!closing;
+        facts.closingBonus = closing ? spend + wildUsed(p, level) * .8 : 0;
         const fragmented = after.steps >= 7 ? 2.6 : after.steps >= 5 ? 1.6 : 0;
         s += spend + fragmented;
-        facts.bombUrgencyBonus = (spend * .9 + fragmented) * pressure.weight;
+        facts.bombUrgencyBonus = closing ? 0 : (spend * .9 + fragmented) * pressure.weight;
         s -= T * 0.9;
         if (!partnerLeading && T >= 4) s -= 1.5;
         if (partnerLeading) s += 3 * (1 - pressure.weight);
@@ -672,7 +677,10 @@
     const plainCover = ordinaryBeats.some(c => !c.facts.splits && !c.facts.bombLoss &&
       !wildUsed(c.play, level));
     if (!plainCover) {
-      for (const c of cands) if (isBomb(c.play)) c.score -= c.facts.bombUrgencyBonus || 0;
+      for (const c of cands) if (isBomb(c.play)) {
+        c.score -= (c.facts.bombUrgencyBonus || 0) + (c.facts.closingBonus || 0);
+        if (c.facts.closingBomb) c.tag = "bomb-finish";
+      }
     }
     pass.facts.protectBomb = !partnerLeading && ordinaryBeats.length > 0 &&
       ordinaryBeats.every(c => c.facts.bombLoss > 0);
@@ -732,7 +740,7 @@
       }
     }
     if (pressure.critical && legalBeats) {
-      // 报单/报双者掌墩，或仍待跟牌且可能直接走完时，合法拦截优先于
+      // 只剩三张以内者掌墩，或报单/报双者仍待跟牌且可能直接走完时，合法拦截优先于
       // 固定的惜炸/让队友分数。仍按结构代价选择压法，不强制用最大的炸。
       const plays = cands.filter(c => c.action === "play");
       pass.score = Math.max(pass.score, Math.min(...plays.map(c => c.score)) + 1);
@@ -827,6 +835,8 @@
         // "炸后还能收"必须真有 after.steps<=2 的计算依据
         return `对手最少只剩 ${f.minOppN} 张，用${brief}拦截` +
           (f.canCollect ? `，炸后还能收（剩约 ${f.restSteps} 组）` : "") + exactSuffix(c);
+      case "bomb-finish":
+        return `用${brief}争取牌权，剩余手牌可一手出完${exactSuffix(c)}`;
       default:
         return `出${brief}`;
     }

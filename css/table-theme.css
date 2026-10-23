@@ -146,6 +146,7 @@
 .decision-strip { display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:min(880px,calc(100% - 32px));min-height:64px;padding:0; }
 .decision-context { min-width:0;width:100%;min-height:18px;text-align:center; }
 .action-context { font-size:12px;line-height:18px;color:#d0e1d5; }
+.table.spectating .action-context { color:#f6d991; }
 .hand-feedback { min-height:0;width:100%; }
 .decision-context:has(.hint-bar:not(:empty)) .action-context,.decision-context:has(.select-info:not(:empty)) .action-context { display:none; }
 .hint-bar,.select-info { width:100%;min-height:18px;font-size:11px;line-height:18px;margin:0;padding:0;text-align:center;justify-content:center;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }

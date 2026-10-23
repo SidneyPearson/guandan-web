@@ -166,6 +166,7 @@ html, body { overscroll-behavior: none; }
 /* 提示占用手牌底部留白，脱离排版，出现或清空时不增高整块手牌。 */
 .mobile-landscape .decision-context { position: absolute; left: 0; right: 0; bottom: calc(var(--mobile-button-height) + 1px); width: 100%; height: 16px; min-height: 0; min-width: 0; overflow: hidden; }
 .mobile-landscape .action-context { display: none; }
+.mobile-landscape .table.spectating .action-context { display: block; font-size: 11px; line-height: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mobile-landscape .hint-bar, .mobile-landscape .select-info { min-height: 0; height: 16px; font-size: 11px; line-height: 16px; }
 .mobile-landscape .select-info { display: flex; flex-wrap: nowrap; }
 .mobile-landscape .select-info .si-wild { min-width: 0; flex: 0 1 auto; }
@@ -223,6 +224,7 @@ html, body { overscroll-behavior: none; }
 .mobile-landscape:is(.mobile-short, .mobile-narrow) .decision-context { position: static; grid-area: feedback; height: 28px; max-height: 28px; align-self: end; }
 .mobile-landscape:is(.mobile-short, .mobile-narrow) .secondary-actions { align-self: center; }
 .mobile-landscape:is(.mobile-short, .mobile-narrow) .hint-bar, .mobile-landscape:is(.mobile-short, .mobile-narrow) .select-info { height: 28px; font-size: 10px; white-space: normal; flex-wrap: wrap; line-height: 14px; }
+.mobile-landscape:is(.mobile-short, .mobile-narrow) .table.spectating .action-context { font-size: 10px; line-height: 14px; white-space: normal; }
 .mobile-landscape.mobile-short .table { --mobile-button-height: 34px; }
 .mobile-landscape.mobile-short .table-frame { grid-template-rows: 32px minmax(0, 1fr) auto; gap: 3px; padding-block: max(4px, var(--mobile-safe-top)) max(4px, var(--mobile-safe-bottom)); }
 .mobile-landscape.mobile-short .top-lane { top: max(4px, var(--mobile-safe-top)); }

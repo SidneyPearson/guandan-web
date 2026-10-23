@@ -2,6 +2,10 @@
 (function () {
   const GD = window.GD;
   const handKey = (s) => s.matchId + ":" + s.handId;
+  function handSeat(s) {
+    return s.phase === "play" && s.finished.includes(0) && !s.hands[0].length &&
+      !s.finished.includes(2) && s.hands[2].length > 0 ? 2 : 0;
+  }
   function target(s) {
     return s.phase === "play" && s.trick && s.trick.target
       ? { seat: s.trick.targetSeat, play: s.trick.target } : null;
@@ -32,5 +36,5 @@
     // 旧存档没有本墩起点，只显示其已有快照。
     return s.table[seat] ? { kind: s.table[seat] === "pass" ? "pass" : "play" } : null;
   }
-  GD.tableView = { handKey, target, recent, seatAction };
+  GD.tableView = { handKey, handSeat, target, recent, seatAction };
 })();
