@@ -19,7 +19,8 @@
   const recentVoiceKeys = new Set();
   const PASS_LINES = ["pass-0", "pass-1", "pass-2", "pass-3", "pass-4", "pass-5"];
   const passBags = Array.from({ length: 4 }, () => ({ neutral: [], unable: [], last: null }));
-  const replyCounts = [0, 0, 0, 0];
+  const ORDINARY_PLAYS = ["single", "pair", "triple", "fullhouse"];
+  const replyTurns = Array.from({ length: 4 }, (_, seat) => ({ count: 0, line: seat }));
   // 静音 WAV 预热不依赖音量属性，避免 iOS 忽略 volume=0 时听见预热人声。
   const unlockClip = "data:audio/wav;base64,UklGRmQBAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YUABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==";
   const oscillators = new Set();
@@ -130,11 +131,12 @@
       seat >= 0 && seat < 4 && seat % 2 !== r.seat % 2;
   }
   function replyLine(r, opts) {
-    // 点数照常报；只给普通跟牌偶尔加一句口吻，领牌、让队友和收尾不加。
-    if (r.kind !== "play" || !r.play || !["single", "pair", "triple", "fullhouse"].includes(r.play.type) ||
+    // 普通跟牌以短句代替点名，三次中留一次报牌；各家独立轮换口吻。
+    if (r.kind !== "play" || !r.play || !ORDINARY_PLAYS.includes(r.play.type) ||
         !isOpponentReply(r) || !(opts.remaining > 2)) return null;
-    const index = replyCounts[r.seat]++;
-    return index % 2 === r.seat % 2 ? "beat-" + ((Math.floor(index / 2) + r.seat) % 3) : null;
+    const turn = replyTurns[r.seat];
+    if (turn.count++ % 3 === 2) return null;
+    return "beat-" + (turn.line++ % 3);
   }
 
   function ensureCtx() {
@@ -224,10 +226,12 @@
       }
       const id = actionLine(r, opts);
       if (!id) return false;
-      const ids = [id];
+      const ordinary = r.kind === "play" && ORDINARY_PLAYS.includes(r.play.type);
+      const low = r.kind === "play" && (opts.remaining === 1 || opts.remaining === 2);
       const reply = replyLine(r, opts);
-      if (reply) ids.unshift(reply);
-      if (r.kind === "play" && (opts.remaining === 1 || opts.remaining === 2)) ids.push("last" + opts.remaining);
+      // 每次普通出牌只说一句，避免“压上 + 具体牌名 + 余牌提醒”连播。
+      const ids = [ordinary && low ? "last" + opts.remaining : reply || id];
+      if (low && !ordinary) ids.push("last" + opts.remaining);
       return speak(ids, r.seat);
     },
     preview(style = voiceStyle) {
