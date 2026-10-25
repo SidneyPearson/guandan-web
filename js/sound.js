@@ -41,6 +41,7 @@
     // 两家同时说话时略收音量，保留各自的力度与辨识度。
     const gain = volume / Math.sqrt(1 + Math.max(0, count - 1) * .35);
     channels.forEach(channel => { if (channel.player && channel.current) channel.player.volume = gain; });
+    GD.music?.setDucked(count > 0);
   }
   function stopChannel(channel) {
     if (channel.timer !== null) clearTimeout(channel.timer);
@@ -191,6 +192,7 @@
       if (c && c.state === "suspended") {
         try { c.resume(); } catch (e) {}
       }
+      GD.music?.unlock();
       // 在同一个手势内预热所有座位的媒体元素，供电脑异步回合复用（含 iOS）。
       channels.forEach(channel => {
         const audio = ensurePlayer(channel);
@@ -243,10 +245,11 @@
       cancelVoice();
       oscillators.forEach(osc => { try { osc.stop(); } catch (e) {} }); oscillators.clear();
     },
-    setMuted(m) { muted = !!m; if (muted) this.cancel(); },
+    setMuted(m) { muted = !!m; GD.music?.setMaster(muted, volume); if (muted) this.cancel(); },
     isMuted() { return muted; },
-    setVolume(v) { volume = Math.max(0, Math.min(1, Number(v) || 0)); if (!volume) cancelVoice(); else refreshMix(); },
+    setVolume(v) { volume = Math.max(0, Math.min(1, Number(v) || 0)); GD.music?.setMaster(muted, volume); if (!volume) cancelVoice(); else refreshMix(); },
     getVolume() { return volume; },
+    getAudioContext() { return ensureCtx(); },
     // 测试/设置页可验证事件接线而不真正发声
     voiceNames() { return Object.keys(VOICES); },
     getVoiceState() {

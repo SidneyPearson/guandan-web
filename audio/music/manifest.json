@@ -1,0 +1,14 @@
+{
+  "title": "牌桌小调",
+  "original": true,
+  "bpm": 112,
+  "bars": 32,
+  "sampleRate": 44100,
+  "durationSeconds": 68.57142857142857,
+  "channels": 2,
+  "peak": 0.56,
+  "rms": 0.13056381806609,
+  "loopBoundaryStep": 0.0017141335796848499,
+  "sha256": "27165b72626fa06648ad668335c543e50d0b656717c69aaf2283c61e3743950c",
+  "source": "tools/build-music.py; original score and synthesis, no sampled recordings"
+}

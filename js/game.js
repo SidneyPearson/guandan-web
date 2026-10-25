@@ -15,6 +15,8 @@
     voice: true,            // 中文报牌（随声音总开关静音）
     voiceStyle: "roles",   // roles / bright / calm
     volume: 0.6,
+    music: true,            // 常驻背景音乐，独立于中文报牌开关。
+    musicVolume: 0.35,
     speed: "std",           // 出牌节奏固定为标准。
     fx: "full",             // 对战特效固定为完整。
     reduceMotion: false,
@@ -79,6 +81,9 @@
         delete settings.autoStrategy; // 旧版托管偏好退役，托管统一跟随当前对局难度。
         settings.speed = DEFAULT_SETTINGS.speed; // 忽略旧版保存的慢速/快速偏好。
         settings.fx = DEFAULT_SETTINGS.fx; // 忽略旧版保存的简洁/关闭特效偏好。
+        settings.music = typeof saved.music === "boolean" ? saved.music : DEFAULT_SETTINGS.music;
+        settings.musicVolume = typeof saved.musicVolume === "number" && Number.isFinite(saved.musicVolume)
+          ? Math.max(0, Math.min(1, saved.musicVolume)) : DEFAULT_SETTINGS.musicVolume;
         return settings;
       } catch (e) { return Object.assign({}, DEFAULT_SETTINGS); }
     },

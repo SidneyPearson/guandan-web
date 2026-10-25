@@ -8,8 +8,9 @@ const FILES = [
   "./", "./index.html", "./manifest.webmanifest", "./icons/icon.svg",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png",
   `./css/mobile.css?v=${VERSION}`, `./js/offline.js?v=${VERSION}`,
+  `../audio/music/table-loop.mp3?v=${VERSION}`,
   ...["style", "table-theme"].map(name => `../css/${name}.css?v=${VERSION}`),
-  ...["version", "util", "cards", "rules", "flow", "ai", "fx", "voice-lines", "sound", "stats", "game",
+  ...["version", "util", "cards", "rules", "flow", "ai", "fx", "voice-lines", "music", "sound", "stats", "game",
     "table-tools", "table-view", "turn-clock", "active-play", "seat-play", "play-history", "ui"]
     .map(name => `../js/${name}.js?v=${VERSION}`),
   ...self.GD.VOICE_PROFILES.flatMap(profile => Object.keys(self.GD.VOICE_LINES)

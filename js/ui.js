@@ -406,6 +406,7 @@
     GD.sound.setMuted(!settings.sound);
     GD.sound.setVolume(settings.volume);
     GD.sound.setVoice(settings.voice, settings.voiceStyle);
+    GD.music.configure(settings.music, settings.musicVolume);
     document.body.classList.toggle("reduce-motion", !!settings.reduceMotion);
     if (state) renderAutoTag();
   }
@@ -417,12 +418,15 @@
       cur.voice = $("setVoice").checked;
       cur.voiceStyle = $("setVoiceStyle").value;
       cur.volume = Number($("setVolume").value);
+      cur.music = $("setMusic").checked;
+      cur.musicVolume = Number($("setMusicVolume").value);
       cur.reduceMotion = $("setMotion").checked;
       GD.store.saveSettings(cur);
       settings = cur;
       GD.sound.setMuted(!cur.sound);
       GD.sound.setVolume(cur.volume);
       GD.sound.setVoice(cur.voice, cur.voiceStyle);
+      GD.music.configure(cur.music, cur.musicVolume);
       updateVoiceControls(cur);
       if (cur.sound) GD.sound.play("click");
       document.body.classList.toggle("reduce-motion", cur.reduceMotion);
@@ -431,9 +435,11 @@
     $("setSound").onchange = handler;
     $("setVoice").onchange = handler;
     $("setVoiceStyle").onchange = handler;
+    $("setMusic").onchange = handler;
     $("btnVoicePreview").onclick = () => GD.sound.preview($("setVoiceStyle").value);
     $("setMotion").onchange = handler;
     $("setVolume").oninput = handler;
+    $("setMusicVolume").oninput = handler;
   }
 
   function fillSettings() {
@@ -442,11 +448,15 @@
     $("setVoice").checked = s.voice !== false;
     $("setVoiceStyle").value = s.voiceStyle || "roles";
     $("setVolume").value = s.volume;
+    $("setMusic").checked = s.music;
+    $("setMusicVolume").value = s.musicVolume;
     $("setMotion").checked = !!s.reduceMotion;
     updateVoiceControls(s);
   }
 
   function updateVoiceControls(s) {
+    $("setMusic").disabled = !s.sound;
+    $("setMusicVolume").disabled = !s.sound || !s.music;
     $("setVoice").disabled = !s.sound;
     $("setVoiceStyle").disabled = !s.sound || s.voice === false;
     $("btnVoicePreview").disabled = !s.sound || s.voice === false || !s.volume;
