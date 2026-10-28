@@ -1,4 +1,4 @@
-/* ====== 电脑玩家决策（v1.3：结构感知 / 配合 / 残局 / 信息边界） ======
+/* ====== 电脑与托管共用决策：结构 / 团队战术 / 公开记牌 / Monte Carlo ======
  *
  * 唯一策略入口：
  *   GD.ai.recommend(obs, {tier, rng}) —— obs 由 GD.observe.build 生成，
@@ -9,13 +9,13 @@
  * 三档：
  *   easy   结构打分 + 基本残局拦截，非紧急局面的顶层候选注入随机；
  *   normal 完整结构代价 + 队友/威胁解析（确定性，平分稳定排序）；
- *   hard   在 normal 基础上增加残局精确路线搜索（仅自己手牌+官方枚举：
- *          出牌后剩 ≤10 张时，记忆化集合覆盖求“最少出牌动作数”校准候选）；
- *          不读隐藏牌、不做随机模拟，超界回退普通口径（始终给合法动作，记 metrics）。
+ *   normal/hard 可通过 ai-search 对公开信息独立采样并模拟，hard 增加模拟量与
+ *          自身残局精确路线（剩 ≤10 张的最少手数）。无搜索模块时仍可独立运行。
  *
- * 时间预算（v1.3.1 修正）：deadline 一律为"绝对截止时刻"，可经 opts.now 注入
+ * 时间预算：deadline 一律为"绝对截止时刻"，可经 opts.now 注入
  *   单调时钟（默认 Date.now）；检查点在束搜索层间、候选生成后、精确路线查找之间，
- *   枚举等同步步骤本身不可打断（耗时计入 timeMs）。超时使用当前最佳合法候选：
+ *   枚举等同步步骤本身不可打断（耗时计入 timeMs），浏览器由 Worker 硬超时隔离。
+ *   超时使用当前最佳规则候选：
  *   跟牌可降级"不要"，领出始终有合法出牌；metrics.timeoutStage 记录超时阶段。
  */
 (function () {
@@ -117,6 +117,7 @@
     let w = wilds.length;
     for (const g of naturalSingles) {
       if (w <= 0) break;
+      if (g.cards[0].rank > 14) continue; // 配牌不能与王配对。
       g.type = "pair";
       g.cards = g.cards.concat(wilds[--w]);
       g.ids = new Set(g.cards.map((c) => c.id));
@@ -153,7 +154,7 @@
     const deadline = opts.deadline != null ? opts.deadline : Infinity;
     const t0 = clock();
 
-    const plays = rules.enumerate(hand, level);
+    const plays = opts.plays || rules.enumerate(hand, level);
     const allIds = hand.map((c) => c.id).sort((a, b) => a - b);
 
     const byIdCandidate = new Map();
@@ -224,7 +225,18 @@
         // 分支有界：覆盖牌多、组代价低者优先（确定性，不用随机）
         list.sort((a, b) => b.idList.length - a.idList.length || a.cost - b.cost ||
           a.idList[0] - b.idList[0]);
-        if (list.length > 8) list = list.slice(0, 8);
+        if (list.length > 12) {
+          // Complete enumeration adds many suit variants of one shape. Keep
+          // each shape family before filling the beam, so those variants cannot
+          // crowd out an intact bomb + fullhouse route.
+          const diverse = new Set();
+          for (const type of COMPLEX) {
+            const first = list.find(rec => rec.type === type);
+            if (first) diverse.add(first);
+          }
+          for (const rec of list) { if (diverse.size >= 12) break; diverse.add(rec); }
+          list = [...diverse];
+        }
         for (const rec of list) {
           const cov = new Set(st.covered);
           for (const id of rec.ids) cov.add(id);
@@ -274,10 +286,12 @@
   // 只在这些剩牌中尝试一组成型牌，其余按同点分组；规模有界、同集合复用结果。
   function regroup(ids, level) {
     let best = { cost: lightCost(ids, level), steps: lightSteps(ids, level) };
-    if (ids.size < 5) return best;
+    if (ids.size < 2) return best;
     const cards = [...ids].map((id) => CARD_BY_ID.get(id));
-    for (const p of rules.enumerate(cards, level)) {
-      if (COMPLEX.indexOf(p.type) < 0) continue;
+    // Only one new complex group is fitted here, so canonical same-rank copies
+    // suffice; exhaustive root actions have already preserved every suit split.
+    for (const p of rules.enumerateRepresentative(cards, level)) {
+      if (p.type === "single") continue;
       const rest = new Set(ids);
       for (const c of p.cards) rest.delete(c.id);
       const cost = groupCost(p.type, level, p.cards[0]) + lightCost(rest, level);
@@ -372,8 +386,9 @@
         return n + 1;
       }
       let best = 127;
+      const pivot = mask & -mask;
       for (const m of uniq) {
-        if ((m & mask) === m) {
+        if ((m & pivot) && (m & mask) === m) {
           const v = solve(mask ^ m) + 1;
           if (v < best) best = v;
         }
@@ -411,28 +426,52 @@
     return { splits, keepsComplex };
   }
 
-  // 规则枚举为同点牌选用固定实体牌。补入“先保留已成型组合，再枚举余牌”的
-  // 合法候选，避免明明有富余对子，却总拿顺子/同花顺里的那一张去配对。
+  // 先完整枚举实体牌与解释，再做提交规范化、等价副牌合并和结构预筛。
   function structuredPlays(obs, D) {
-    const plays = [], seen = new Set();
-    const add = (p) => {
-      if (obs.target && !rules.beats(p, obs.target)) return;
-      const key = p.type + "|" + ID(p);
-      if (!seen.has(key)) { seen.add(key); plays.push(p); }
-    };
-    const enumerate = (hand) => { for (const p of rules.enumerate(hand, obs.level)) add(p); };
-    enumerate(obs.hand);
-    const protectedIds = new Set();
-    for (const g of D.groups) {
-      // 分组本身也是候选；最终解释与游戏提交保持一致。
-      const r = rules.resolveSubmission(g.cards, obs.target, obs.level);
-      if (r.ok) add(r.play);
-      if (COMPLEX.indexOf(g.type) < 0) continue;
-      for (const id of g.ids) protectedIds.add(id);
-      enumerate(obs.hand.filter((c) => !g.ids.has(c.id)));
+    const byCards = new Map();
+    for (const p of D.allPlays || rules.enumerate(obs.hand,obs.level)) {
+      if (obs.target && !rules.beats(p,obs.target)) continue;
+      const key = ID(p), old = byCards.get(key);
+      if (!old || rules.strongest([old,p]) === p) byCards.set(key,p);
     }
-    if (protectedIds.size) enumerate(obs.hand.filter((c) => !protectedIds.has(c.id)));
-    return plays;
+    D.legalCount = byCards.size + (obs.target ? 1 : 0);
+    // Two copies of exactly the same rank+suit are strategically interchangeable.
+    // Collapse only these symmetries AFTER complete physical action generation.
+    // Different suits, wild usage and declarations remain distinct candidates.
+    const equivalent = new Map();
+    for (const p of byCards.values()) {
+      const key = p.type + "|" + p.value + "|" + p.cards.map(c => c.rank + c.suit).sort().join(",");
+      if (!equivalent.has(key)) equivalent.set(key,p);
+    }
+    const list = [...equivalent.values()];
+    D.generatedCandidates = list.length;
+    if (list.length <= 64) return list;
+    // Full physical enumeration is complete above. Bound expensive regrouping
+    // using a cheap structure prior; preserve extremes of every type as well.
+    const cache = new Map();
+    const rough = p => {
+      if (p.cards.length === obs.hand.length) return -1e9;
+      const ids = new Set(p.cards.map(c=>c.id)), loose = new Set();
+      let cost = D.cost;
+      for (const g of D.groups) {
+        if (!g.cards.some(c=>ids.has(c.id))) continue;
+        cost -= g.cost;
+        for (const c of g.cards) if (!ids.has(c.id)) loose.add(c.id);
+      }
+      const key = [...loose].sort((a,b)=>a-b).join(",");
+      if (!cache.has(key)) cache.set(key,lightCost(loose,obs.level));
+      return cost + cache.get(key) + wildUsed(p,obs.level)*.8 +
+        (isBomb(p) ? 6 : p.value*.04) + (p.type === "single" ? p.value*.14 : 0);
+    };
+    const ranked = list.map(p=>({p,s:rough(p)})).sort((a,b)=>a.s-b.s);
+    const keep = new Set(ranked.slice(0,64).map(x=>x.p));
+    for (const type of Object.keys(GD.TYPE_LABEL)) {
+      const same = ranked.filter(x=>x.p.type===type);
+      if (!same.length) continue;
+      keep.add(same[0].p);
+      keep.add(same.reduce((a,b)=>a.p.value>=b.p.value?a:b).p);
+    }
+    return [...keep];
   }
 
   // 炸弹的控牌价值独立于最少手数：不能因“5 张炸弹拆成三张后仍是一组”
@@ -472,6 +511,144 @@
     const loss = Math.max(0, reserve - bombReserve(rest, obs.level));
     // 剩牌确实已成一手时，兼顾收尾效率，给合理的拆牌收官留出空间。
     return loss * (after.steps === 1 ? .3 : 1);
+  }
+
+  // Tactical constraints shared by the root policy and its Monte Carlo actors.
+  // Only this hand, public cards and counts are used; never an opponent's hand.
+  const bombPlanCache=new Map();
+  function bombPlan(hand, level) {
+    const cacheKey=level+'|'+hand.map(c=>c.id).sort((a,b)=>a-b).join(',');
+    if(bombPlanCache.has(cacheKey))return bombPlanCache.get(cacheKey);
+    const flushFrom = cards => {
+      if(cards.length<5)return null;
+      const suited=new Map(),ws=[],suitCounts={S:0,H:0,D:0,C:0};
+      for(const c of cards)if(GD.isWild(c,level))ws.push(c);else if(c.suit&&!suited.has(c.suit+c.rank)){
+        suited.set(c.suit+c.rank,c);suitCounts[c.suit]++;
+      }
+      let best=null,bestWilds=3;
+      for(const suit of GD.SUITS){
+        if(suitCounts[suit]+ws.length<5)continue;
+        for(let high=5;high<=14;high++){
+        const cs=[];let w=0;
+        for(const r of rules.seqWindow('sflush',high).ranks){const c=suited.get(suit+r)||ws[w++];if(!c)break;cs.push(c);}
+        if(cs.length===5&&w<bestWilds){best=cs;bestWilds=w;}
+        }
+      }
+      return best;
+    };
+    const build = flushFirst => {
+      let left=hand.slice(),count=0,value=0;
+      const bombs=[];
+      const take=(cs,v)=>{const ids=new Set(cs.map(c=>c.id));left=left.filter(c=>!ids.has(c.id));count++;value+=v;};
+      const flushes=()=>{for(let cs=flushFrom(left);cs;cs=flushFrom(left))take(cs,7);};
+      if(flushFirst)flushes();
+      const byRank=Array.from({length:18},()=>[]),wilds=[];
+      for(const c of left)(GD.isWild(c,level)?wilds:byRank[c.rank]).push(c);
+      for(let r=2;r<=14;r++)if(byRank[r].length>=4){
+        const n=byRank[r].length;take(byRank[r],BOMB_RESERVE[n]+GD.cardWeight({rank:r},level)*.04);bombs.push({n});
+      }
+      if(byRank[16].length===2&&byRank[17].length===2)take(byRank[16].concat(byRank[17]),20);
+      const deficits=[];let wi=0;
+      for(let r=2;r<=14;r++)if(byRank[r].length===2||byRank[r].length===3)deficits.push({r,need:4-byRank[r].length});
+      deficits.sort((a,b)=>a.need-b.need||b.r-a.r);
+      for(const d of deficits)if(d.need<=wilds.length-wi){
+        take(byRank[d.r].concat(wilds.slice(wi,wi+d.need)),BOMB_RESERVE[4]+GD.cardWeight({rank:d.r},level)*.04);
+        wi+=d.need;bombs.push({n:4});
+      }
+      // Assign remaining wilds once; they cannot simultaneously strengthen two bombs.
+      while(wi<wilds.length&&bombs.length){
+        bombs.sort((a,b)=>(BOMB_RESERVE[b.n+1]-BOMB_RESERVE[b.n])-(BOMB_RESERVE[a.n+1]-BOMB_RESERVE[a.n]));
+        const b=bombs[0];value+=BOMB_RESERVE[b.n+1]-BOMB_RESERVE[b.n];b.n++;
+        const id=wilds[wi++].id;left=left.filter(c=>c.id!==id);
+      }
+      if(!flushFirst)flushes();
+      const counts=new Array(18).fill(0);for(const c of left)counts[c.rank]++;
+      return {count,value,loose:left,onlySingles:left.every(c=>counts[c.rank]===1||GD.isWild(c,level))};
+    };
+    const natural=build(false),suited=build(true);
+    // Taking a four-of-a-kind first can destroy three intact straight flushes.
+    // Compare disjoint plans instead of double-counting both assets.
+    const best=suited.count>natural.count||(suited.count===natural.count&&suited.value>natural.value)?suited:natural;
+    if(bombPlanCache.size>=1024)bombPlanCache.delete(bombPlanCache.keys().next().value);
+    bombPlanCache.set(cacheKey,best);return best;
+  }
+
+  const finishCache=new WeakMap();
+  function possibleFinishes(obs, size) {
+    let cache=finishCache.get(obs);
+    if(!cache){cache=new Map();finishCache.set(obs,cache);}
+    if(cache.has(size))return cache.get(size);
+    const own=new Set(obs.hand.map(c=>c.id)),seen=new Set(obs.seenIds||[]);
+    for(const e of obs.log||[])if(e.kind==='play')for(const id of e.ids||[])seen.add(id);
+    for(const c of obs.target?.cards||[])seen.add(c.id);
+    const ids=obs.unknownIds || [...CARD_BY_ID.keys()].filter(id=>!own.has(id)&&!seen.has(id));
+    const pool=ids.map(id=>CARD_BY_ID.get(id)).filter(c=>c&&!own.has(c.id)&&!seen.has(c.id));
+    const plays=[],keys=new Set();
+    for(const p of rules.enumerateRepresentative(pool,obs.level)){
+      if(p.size!==size)continue;
+      // Representative enumeration may merge ambiguous physical runs. Restore
+      // all interpretations before deciding that a public response is impossible.
+      for(const fit of rules.analyze(p.cards,obs.level)){
+        const k=fit.type+'|'+fit.size+'|'+fit.value;
+        if(!keys.has(k)){keys.add(k);plays.push(fit);}
+      }
+    }
+    cache.set(size,plays);return plays;
+  }
+
+  function exitRisk(obs, play, upcoming) {
+    if(!play||play.size>6)return 0;
+    // Following a single/pair already has a dedicated interception policy.
+    // Do not replace its sound ordinary cover with a speculative bomb/pass.
+    if(obs.target&&play.size<=2)return 0;
+    // The reported hazard is the immediate next enemy taking a five-card exit.
+    // Other multi-card shapes remain for probabilistic search to assess.
+    const multi=play.size===5;
+    if(play.size>2&&!multi)return 0;
+    const seats=(upcoming||obs.opponents).filter(s=>obs.opponents.includes(s)&&obs.counts[s]===play.size&&
+      (!multi||s===(obs.seat+1)%4));
+    if(!seats.length)return 0;
+    return possibleFinishes(obs,play.size).some(p=>rules.beats(p,play)) ? seats.length : 0;
+  }
+
+  function guardActions(obs, actions, metrics) {
+    if(actions.some(c=>c.action==='play'&&c.play.cards.length===obs.hand.length))return actions;
+    const plan=bombPlan(obs.hand,obs.level),tailPlans=new Map();
+    const after=p=>{
+      const k=ID(p);if(!tailPlans.has(k)){
+        const ids=new Set(p.cards.map(c=>c.id));tailPlans.set(k,bombPlan(obs.hand.filter(c=>!ids.has(c.id)),obs.level));
+      }
+      return tailPlans.get(k);
+    };
+    let kept=actions;
+    if(plan.count>=2){
+      const intact=kept.filter(c=>{
+        if(c.action==='pass'||isBomb(c.play))return true;
+        const rest=after(c.play);return rest.count>=plan.count&&rest.value>=plan.value-.5;
+      });
+      if(intact.length){if(metrics)metrics.bombBreaksRejected=kept.length-intact.length;kept=intact;}
+    }
+    const future=(obs.pending||[]).slice((obs.pending||[]).indexOf(obs.seat)+1);
+    const risks=kept.map(c=>c.action==='pass'?exitRisk(obs,obs.target,future):exitRisk(obs,c.play));
+    if(risks.some(n=>n>0)&&risks.some(n=>n===0)){
+      if(metrics)metrics.exitLanesRejected=risks.filter(n=>n>0).length;
+      kept=kept.filter((c,i)=>risks[i]===0);
+      for(const c of kept)if(c.facts&&c.action==='play')c.facts.avoidsExit=true;
+    }
+    const urgent=obs.opponents.some(s=>obs.counts[s]>0&&obs.counts[s]<=5);
+    if(!obs.target&&plan.count>=2&&plan.loose.length>0&&plan.loose.length<=4&&plan.onlySingles&&!urgent){
+      const ordinary=kept.filter(c=>c.action==='play'&&!isBomb(c.play));
+      if(ordinary.length){
+        kept=ordinary;
+        for(const c of kept)if(c.facts)c.facts.clearLooseFirst=true;
+        if(metrics)metrics.bombPlan='clear-loose-first';
+      }
+    }
+    const controller=obs.counts[obs.targetSeat]>0?obs.targetSeat:obs.floorSeat;
+    const mustBlock=actions.some(c=>c.facts?.criticalControl) ||
+      (obs.target&&obs.opponents.includes(controller)&&obs.counts[controller]>0&&obs.counts[controller]<=3);
+    if(mustBlock&&kept.some(c=>c.action==='play'))kept=kept.filter(c=>c.action==='play');
+    return kept;
   }
 
   // 只判断公开信息下“报单/报双的对手是否可能一手接走”。未知牌池并不
@@ -807,6 +984,9 @@
       }
     }
     const brief = playBrief(c.play, obs.level) + (f.bombLoss > 0 ? "（会削弱炸弹）" : "");
+    if(f.clearLooseFirst)return `先出${brief}处理零牌，保留多颗完整炸弹争取后续牌权`;
+    if(f.avoidsExit)return `出${brief}，避免给对手与其余牌张数相同的一手收尾机会`;
+    if (f.feedPartner) return `队友仅剩 ${obs.counts[obs.partner]} 张，领出${brief}尝试帮助队友走牌`;
     switch (c.tag) {
       case "goout": return `本手可以全部出完：${brief}`;
       case "control-finish":
@@ -859,7 +1039,11 @@
     const metrics = { nodes: 0, lookups: 0, timedOut: false, fallback: false,
       timeoutStage: null, timeMs: 0, tier };
     // hard 精确路线共享的预算槽：越过截止时刻即置位并停止后续查找
-    const budget = { now: clock, deadline: t0 + DECISION_MS, timedOut: false };
+    const configured = GD.ai.getConfig ? GD.ai.getConfig(tier) : {};
+    const limit = Number.isFinite(opts.budgetMs) ? Math.max(0,opts.budgetMs) : configured.budgetMs || DECISION_MS;
+    const budget = { now: clock, deadline: t0 + limit, timedOut: false };
+    metrics.budgetMs = limit;
+    const allPlays = rules.enumerate(obs.hand,obs.level);
 
     let D;
     try {
@@ -867,7 +1051,8 @@
       // hard 的增强放在残局精确路线校准（minGroups），不扰动中盘标定。
       // 注意：enumerate 在 decompose 内同步完成、不可中途打断，其耗时计入 timeMs。
       D = decompose(obs.hand, obs.level,
-        { width: 10, nodes: 1200, deadline: t0 + DECOMPOSE_MS, now: clock });
+        { width: 10, nodes: 1200, plays:allPlays, deadline: Math.min(budget.deadline,t0 + DECOMPOSE_MS), now: clock });
+      D.allPlays = allPlays;
       metrics.nodes = D.nodes;
       if (D.timedOut) { metrics.timedOut = true; metrics.timeoutStage = "decompose"; }
     } catch (e) {
@@ -884,7 +1069,7 @@
       if (budget.timedOut && !metrics.timedOut) {
         metrics.timedOut = true; metrics.timeoutStage = "exact";
       }
-      if (!metrics.timedOut && clock() > t0 + DECISION_MS) {
+      if (!metrics.timedOut && clock() > budget.deadline) {
         metrics.timedOut = true; metrics.timeoutStage = "candidates";
       }
     } catch (e) {
@@ -896,10 +1081,20 @@
       return emergency(obs, metrics, clock, t0);
     }
 
+    cands=guardActions(obs,cands,metrics);
+    if(clock()>budget.deadline&&!metrics.timedOut){metrics.timedOut=true;metrics.timeoutStage='tactics';}
     const candKey = (c) => c.action === "pass" ? "9|pass" : "0|" + c.play.type + "|" + ID(c.play);
     cands.sort((a, b) => (a.score - b.score) || (candKey(a) < candKey(b) ? -1 : 1));
 
     let pick = cands[0];
+    metrics.legalActions = D.legalCount;
+    metrics.structureCandidates = D.generatedCandidates;
+    metrics.enumeratedInterpretations = allPlays.length;
+    metrics.phase = obs.hand.length >= 20 && Math.min(...obs.counts.filter(n => n > 0)) > 12 ? "opening"
+      : obs.hand.length <= 10 || obs.counts.some((n,s) => s !== obs.seat && n > 0 && n <= 5) ? "endgame" : "middle";
+    if (GD.aiSearch && opts.search !== false && tier !== "easy" && pick.tag !== "goout" && clock() < budget.deadline) {
+      pick = GD.aiSearch.select(obs,cands,{ ...configured,...opts,tier,phase:metrics.phase,budget,metrics }) || pick;
+    }
 
     // easy：只在顶层少量候选里注入随机，绝不超出合法候选集合
     if (tier === "easy" && pick.tag !== "goout" && !pick.facts.criticalControl) {
@@ -918,6 +1113,12 @@
       }
     }
 
+    // Revalidate the selected physical cards using the same resolver as game.act.
+    if (pick.action === "play") {
+      const legal = rules.resolveSubmission(pick.play.cards,obs.target,obs.level);
+      if (!legal.ok) { metrics.fallback = true; return emergency(obs,metrics,clock,t0); }
+      pick.play = legal.play;
+    }
     metrics.timeMs = clock() - t0;
     const result = {
       action: pick.action,
@@ -927,11 +1128,13 @@
       // 首选与循环备选共用同一解释器，各自陈述本候选的真实事实
       text: explain(pick, obs, D),
       score: pick.score,
+      simulation: pick.simulation || null,
       candidates: cands.map((c) => ({
         action: c.action,
         cards: c.action === "play" ? c.play.cards : null,
         play: c.action === "play" ? c.play : null,
         score: c.score, tag: c.tag,
+        simulation: c.simulation || null,
         text: explain(c, obs, D),
       })),
       metrics,
@@ -993,6 +1196,7 @@
 
   GD.ai = {
     recommend,
+    guardActions,
     decompose,
     minGroups: (cards, level) => minGroups(cards, level),
     decide(state, seat, opts) {
@@ -1002,7 +1206,7 @@
       // 策略随机只来自独立种子（与洗牌/UI 等待隔离）：同 state 同决策，可重现
       const rng = GD.mulberry32(
         (((state.stratSeed || 1) ^ Math.imul(state.gen + 1, 7919) ^ Math.imul(seat + 1, 104729)) >>> 0));
-      const r = recommend(obs, { tier, rng });
+      const r = recommend(obs, { ...opts, tier, rng });
       return r.action === "pass"
         ? { pass: true, reason: r.reason, text: r.text, metrics: r.metrics }
         : { cards: r.cards, reason: r.reason, text: r.text, play: r.play, metrics: r.metrics };

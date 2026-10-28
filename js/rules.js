@@ -341,7 +341,7 @@
     return a.deck - b.deck;
   }
 
-  function enumerate(hand, level) {
+  function enumerateRepresentative(hand, level) {
     const byRank = {};
     const wilds = [];
     for (const c of hand) {
@@ -476,6 +476,92 @@
     return enumerate(hand, level).filter((p) => beats(p, target));
   }
 
+  // 完整实体动作枚举。补配牌不局限于缺牌位置：即使有自然牌也可主动用配牌，
+  // 从而保留另一组顺子/同花顺/对子。先生成全量，策略层才可以裁剪候选。
+  function combinations(pool, n, visit, start, chosen) {
+    start = start || 0; chosen = chosen || [];
+    if (!n) { visit(chosen); return; }
+    for (let i = start; i <= pool.length - n; i++) {
+      chosen.push(pool[i]);
+      combinations(pool, n - 1, visit, i + 1, chosen);
+      chosen.pop();
+    }
+  }
+
+  function enumerate(hand, level) {
+    const ranks = Array.from({ length: 18 }, () => []), wilds = [];
+    for (const c of hand) (GD.isWild(c, level) ? wilds : ranks[c.rank]).push(c);
+    for (const pool of ranks) pool.sort(cardOrder);
+    wilds.sort(cardOrder);
+    const out = [], seen = new Set();
+    const push = (type, cards, value) => {
+      const key = type + "|" + value + "|" + cards.map(c => c.id).sort((a,b) => a-b).join(",");
+      if (seen.has(key)) return;
+      seen.add(key);
+      const p = { type, cards: cards.slice(), value, size: cards.length };
+      p.mapping = buildMapping(p, level);
+      out.push(p);
+    };
+    // 一个模式由互不相交的点数/花色槽组成；每槽选择全部自然牌子集，再补配牌。
+    const pattern = (slots, type, value) => {
+      const walk = (i, usedWilds, cs) => {
+        if (i === slots.length) {
+          combinations(wilds, usedWilds, ws => push(type, cs.concat(ws), value));
+          return;
+        }
+        const { pool, need, allowWild, minNatural } = slots[i];
+        const min = allowWild ? Math.max(minNatural || 0, need - (wilds.length - usedWilds)) : need;
+        for (let take = Math.min(need, pool.length); take >= min; take--) {
+          combinations(pool, take, picked => walk(i + 1, usedWilds + need - take, cs.concat(picked)));
+        }
+      };
+      walk(0, 0, []);
+    };
+    for (const c of hand) push("single", [c], GD.cardWeight(c, level));
+    for (let r = 2; r <= 17; r++) {
+      if (r === 15) continue;
+      const pool = ranks[r], value = GD.cardWeight({ rank: r }, level);
+      for (let n = 2; n <= (r <= 14 ? pool.length + wilds.length : Math.min(2, pool.length)); n++) {
+        // 两张全配仅声明级牌对；三张/炸弹必须有自然牌，王不能被替代。
+        for (let w = 0; w <= Math.min(wilds.length, n - 1, r <= 14 ? 2 : 0); w++) {
+          if (n - w > pool.length) continue;
+          combinations(pool, n - w, ns => combinations(wilds, w,
+            ws => push(n === 2 ? "pair" : n === 3 ? "triple" : "bomb", ns.concat(ws), value)));
+        }
+      }
+    }
+    if (wilds.length === 2) push("pair", wilds, 15);
+    if (ranks[16].length === 2 && ranks[17].length === 2) push("jokers", ranks[16].concat(ranks[17]), 1e12);
+    for (const [need, wins, type] of [[1,W5,"straight"],[2,W3,"dpairs"],[3,W2,"steel"]]) {
+      for (const win of wins) pattern(win.ranks.map(r => ({ pool: ranks[r], need, allowWild: true })), type, win.high);
+    }
+    for (const suit of GD.SUITS) for (const win of W5) {
+      pattern(win.ranks.map(r => ({ pool: ranks[r].filter(c => c.suit === suit), need: 1, allowWild: true })), "sflush", win.high);
+    }
+    // 三带二：至少一个自然三张主体和一个自然对子点（与 analyze 的现有口径一致）。
+    for (let t = 2; t <= 14; t++) for (let p = 2; p <= 17; p++) {
+      if (p === 15 || p === t || !ranks[t].length || !ranks[p].length) continue;
+      pattern([{ pool:ranks[t], need:3, allowWild:true, minNatural:1 },
+        { pool:ranks[p], need:2, allowWild:p <= 14, minNatural:1 }], "fullhouse", GD.cardWeight({rank:t}, level));
+    }
+    return out;
+  }
+
+  // 同一实体牌组可能有多个解释；实际游戏自动取最强可用解释，AI 与之保持一致。
+  // 这也是模拟、Worker 返回与最终提交共用的校验口径。
+  function legalActions(hand, target, level) {
+    const byCards = new Map();
+    for (const p of enumerate(hand, level)) {
+      if (target && !beats(p, target)) continue;
+      const key = p.cards.map(c => c.id).sort((a,b) => a-b).join(",");
+      const old = byCards.get(key);
+      if (!old || strongest([old, p]) === p) byCards.set(key, p);
+    }
+    const actions = Array.from(byCards.values(), play => ({ action:"play", cards:play.cards, play }));
+    if (target) actions.push({ action:"pass", cards:null, play:null });
+    return actions;
+  }
+
   GD.TYPE_LABEL = {
     single: "单张", pair: "对子", triple: "三张", fullhouse: "三带二",
     straight: "顺子", dpairs: "连对", steel: "钢板",
@@ -483,7 +569,7 @@
   };
 
   GD.rules = {
-    analyze, identify, enumerate, findBeats, beats, isBombType,
+    analyze, identify, enumerate, enumerateRepresentative, legalActions, findBeats, beats, isBombType,
     resolveSubmission, bombScore, strongest, seqWindow,
   };
 })();

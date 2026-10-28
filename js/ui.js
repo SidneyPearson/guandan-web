@@ -405,18 +405,40 @@
     settings = GD.store.loadSettings();
     GD.sound.setMuted(!settings.sound);
     GD.sound.setVolume(settings.volume);
-    GD.sound.setVoice(settings.voice, settings.voiceStyle);
+    GD.sound.setVoice(settings.voice, settings.voiceStyle,settings.seatVoices);
     GD.music.configure(settings.music, settings.musicVolume);
     document.body.classList.toggle("reduce-motion", !!settings.reduceMotion);
     if (state) renderAutoTag();
   }
 
   function bindSettingsInputs() {
-    const handler = () => {
+    const list=$('seatVoiceSettings');
+    for(let seat=0;seat<4;seat++){
+      const row=GD.el('div','voice-seat-row');row.setAttribute('role','group');row.setAttribute('aria-label',NAMES[seat]+'的报牌声线');
+      const name=GD.el('strong','voice-seat-name',NAMES[seat]);
+      const language=GD.el('select','voice-seat-language');language.id='setVoiceLanguage'+seat;language.setAttribute('aria-label',NAMES[seat]+'的语言');
+      for(const item of GD.voicePreferences.languages){const option=GD.el('option','',item.name);option.value=item.id;language.appendChild(option);}
+      const gender=GD.el('select','voice-seat-gender');gender.id='setVoiceGender'+seat;gender.setAttribute('aria-label',NAMES[seat]+'的性别');
+      for(const [value,label]of [['female','女声'],['male','男声']]){const option=GD.el('option','',label);option.value=value;gender.appendChild(option);}
+      const preview=GD.el('button','btn','试听');preview.id='btnVoicePreview'+seat;preview.type='button';preview.setAttribute('aria-label','试听'+NAMES[seat]+'的声线');
+      const status=GD.el('span','voice-seat-status');status.id='voiceStatus'+seat;status.setAttribute('role','status');
+      for(const el of [name,language,gender,preview,status])row.appendChild(el);
+      list.appendChild(row);
+    }
+    const handler = function(event) {
+      const target=event?.target||this;
       const cur = GD.store.loadSettings();
       cur.sound = $("setSound").checked;
       cur.voice = $("setVoice").checked;
       cur.voiceStyle = $("setVoiceStyle").value;
+      cur.seatVoices=GD.voicePreferences.normalize([0,1,2,3].map(seat=>({
+        language:$('setVoiceLanguage'+seat).value,gender:$('setVoiceGender'+seat).value,
+      })));
+      if(target?.id==='setVoiceStyle'&&cur.voiceStyle!=='roles'){
+        cur.seatVoices=cur.seatVoices.map(v=>({...v,gender:cur.voiceStyle==='bright'?'female':'male'}));
+      }else if(target?.classList?.contains('voice-seat-language')||target?.classList?.contains('voice-seat-gender')){
+        cur.voiceStyle='roles';$('setVoiceStyle').value='roles';
+      }
       cur.volume = Number($("setVolume").value);
       cur.music = $("setMusic").checked;
       cur.musicVolume = Number($("setMusicVolume").value);
@@ -425,7 +447,7 @@
       settings = cur;
       GD.sound.setMuted(!cur.sound);
       GD.sound.setVolume(cur.volume);
-      GD.sound.setVoice(cur.voice, cur.voiceStyle);
+      GD.sound.setVoice(cur.voice, cur.voiceStyle,cur.seatVoices);
       GD.music.configure(cur.music, cur.musicVolume);
       updateVoiceControls(cur);
       if (cur.sound) GD.sound.play("click");
@@ -437,6 +459,12 @@
     $("setVoiceStyle").onchange = handler;
     $("setMusic").onchange = handler;
     $("btnVoicePreview").onclick = () => GD.sound.preview($("setVoiceStyle").value);
+    for(let seat=0;seat<4;seat++){
+      $('setVoiceLanguage'+seat).onchange=handler;$('setVoiceGender'+seat).onchange=handler;
+      $('btnVoicePreview'+seat).onclick=()=>{
+        if(!GD.sound.previewSeat(seat))toast('这组声线的语音素材尚未就绪');
+      };
+    }
     $("setMotion").onchange = handler;
     $("setVolume").oninput = handler;
     $("setMusicVolume").oninput = handler;
@@ -447,6 +475,9 @@
     $("setSound").checked = !!s.sound;
     $("setVoice").checked = s.voice !== false;
     $("setVoiceStyle").value = s.voiceStyle || "roles";
+    GD.voicePreferences.normalize(s.seatVoices,s.voiceStyle).forEach((v,seat)=>{
+      $('setVoiceLanguage'+seat).value=v.language;$('setVoiceGender'+seat).value=v.gender;
+    });
     $("setVolume").value = s.volume;
     $("setMusic").checked = s.music;
     $("setMusicVolume").value = s.musicVolume;
@@ -459,9 +490,22 @@
     $("setMusicVolume").disabled = !s.sound || !s.music;
     $("setVoice").disabled = !s.sound;
     $("setVoiceStyle").disabled = !s.sound || s.voice === false;
-    $("btnVoicePreview").disabled = !s.sound || s.voice === false || !s.volume;
-    $("btnVoicePreview").textContent = s.voiceStyle === "roles" ? "试听四家" : "试听";
-    $("voiceRoleHint").classList.toggle("hidden", s.voiceStyle !== "roles");
+    let ready=0;
+    GD.voicePreferences.normalize(s.seatVoices,s.voiceStyle).forEach((v,seat)=>{
+      const route=GD.voicePreferences.resolve(seat,v),disabled=!s.sound||s.voice===false;
+      const language=$('setVoiceLanguage'+seat),gender=$('setVoiceGender'+seat);
+      language.value=v.language;gender.value=v.gender;language.disabled=disabled;gender.disabled=disabled;
+      $('btnVoicePreview'+seat).disabled=disabled||!s.volume||!route.ready;
+      const pack=GD.VOICE_PACKS?.[route.profile];
+      const status=$('voiceStatus'+seat);status.textContent=route.ready?(pack?.reviewStatus==='unreviewed'?'新试音，待试听':'已内置，可离线播放'):
+        (pack?.reviewStatus==='rejected'?'待补充（旧素材未通过试听）':'待补充该语言的'+route.genderName+'素材');
+      status.dataset.ready=String(route.ready);if(route.ready)ready++;
+    });
+    $("btnVoicePreview").disabled = !s.sound || s.voice === false || !s.volume || !ready;
+    $("btnVoicePreview").textContent = "试听四家";
+    $("voiceRoleHint").textContent=ready===4?'各家语言和性别分别保存，试听与实际报牌一致。':
+      '已就绪 '+ready+'/4 家。待补充的声线暂不报牌，选择会保留，不会自动换成普通话。';
+    $("voiceRoleHint").classList.remove('hidden');
   }
 
   function openPanel(which) {
@@ -474,9 +518,9 @@
     if (from === "pause") hide("pauseOverlay");
     else if (from === "home") hide("homeOverlay");
     else modalPauseGame();
-    if (tag === "settings") { settingsFrom = from; fillSettings(); show("settingsOverlay"); }
+    if (tag === "settings") { settingsFrom = from; fillSettings(); show("settingsOverlay"); $("settingsOverlay").querySelector('.settings-panel').scrollTop=0; }
     else { statsFrom = from; fillStats(); show("statsOverlay"); }
-    setTimeout(() => $(tag === "settings" ? "btnSettingsClose" : "btnStatsClose").focus(), 30);
+    setTimeout(() => $(tag === "settings" ? "btnSettingsClose" : "btnStatsClose").focus({preventScroll:true}), 30);
   }
   const openSettings = () => openPanel("settings");
   const openStats = () => openPanel("stats");
@@ -791,7 +835,7 @@
       const rng = GD.mulberry32(
         ((((state.stratSeed || 1) ^ Math.imul(state.gen + 1, 7919) ^ 104729) >>> 0)));
       let rec = null;
-      try { rec = GD.ai.recommend(obs, { tier, rng }); } catch (e) { console.error("提示异常:", e); }
+      try { rec = GD.ai.recommend(obs, { tier, rng, search:false, budgetMs:12 }); } catch (e) { console.error("提示异常:", e); }
       if (!rec) return toast("提示暂时不可用");
       let list = rec.candidates.slice();
       if (!list.length) {
@@ -901,7 +945,7 @@
 
     let decision;
     // 四家调用同一入口，托管与电脑都直接使用当前对局的 difficulty。
-    try { decision = GD.ai.decide(state, seat); }
+    try { decision = await GD.ai.decideAsync(state, seat); }
     catch (e) { console.error("AI decide 异常:", e); decision = null; }
     if (!valid(caps)) return;
 

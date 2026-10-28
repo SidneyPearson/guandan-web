@@ -14,6 +14,7 @@
     sound: true,
     voice: true,            // 中文报牌（随声音总开关静音）
     voiceStyle: "roles",   // roles / bright / calm
+    seatVoices: null,       // Normalized by voice-config when the speech UI is present.
     volume: 0.6,
     music: true,            // 常驻背景音乐，独立于中文报牌开关。
     musicVolume: 0.35,
@@ -84,8 +85,9 @@
         settings.music = typeof saved.music === "boolean" ? saved.music : DEFAULT_SETTINGS.music;
         settings.musicVolume = typeof saved.musicVolume === "number" && Number.isFinite(saved.musicVolume)
           ? Math.max(0, Math.min(1, saved.musicVolume)) : DEFAULT_SETTINGS.musicVolume;
+        settings.seatVoices=GD.voicePreferences?GD.voicePreferences.normalize(saved.seatVoices,saved.voiceStyle):null;
         return settings;
-      } catch (e) { return Object.assign({}, DEFAULT_SETTINGS); }
+      } catch (e) { return Object.assign({}, DEFAULT_SETTINGS,{seatVoices:GD.voicePreferences?GD.voicePreferences.normalize(null):null}); }
     },
     saveSettings(s) { writeKey(SET_KEY, JSON.stringify(s || {})); },
   };
@@ -556,6 +558,11 @@
 
     const log = Array.isArray(state.log) ? state.log : [];
     const seenIds = seenIdsFromLog(log);
+    // Older saves/fixtures can lack a full log. Table and pile are also public.
+    for (const c of state.pile || []) seenIds.add(c.id);
+    for (const item of state.table || []) if (item && item !== "pass") {
+      for (const c of item.cards) seenIds.add(c.id);
+    }
     const tributeKnown = tributeKnownIds(state);
 
     const myIds = new Set((state.hands[seat] || []).map((c) => c.id));
@@ -723,7 +730,7 @@
   }
 
   /* ---------- 出牌 / 不要 ---------- */
-  function act(state, seat, cards) {
+  function act(state, seat, cards, simulation) {
     if (state.paused) return { ok: false, reason: "游戏已暂停" };
     if (state.phase !== "play") return { ok: false, reason: "当前不是出牌阶段" };
     const aw = state.awaiting;
@@ -758,7 +765,7 @@
         ids: play.cards.map((c) => c.id),
         play: { type: play.type, value: play.value, size: play.size },
       });
-      event = applyPlay(state, seat, play);
+      event = applyPlay(state, seat, play, simulation);
     } else {
       state.table[seat] = "pass";
       state.log.push({ kind: "pass", seat });
@@ -775,7 +782,7 @@
       }
     }
     state.gen++;
-    const saved = store.save(state);
+    const saved = simulation ? null : store.save(state);
     // 动作摘要与提交同源：界面音效/评测日志直接读这里，不重新猜动作类型
     return {
       ok: true, saved, event, followed,
@@ -811,7 +818,7 @@
     state.table = [null, null, null, null];
   }
 
-  function applyPlay(state, seat, play) {
+  function applyPlay(state, seat, play, simulation) {
     const trick = state.trick;
     trick.target = play;
     trick.targetSeat = seat;
@@ -821,7 +828,7 @@
     const active = [0, 1, 2, 3].filter((s) => state.hands[s].length > 0);
     if (active.length === 1) {
       state.finished.push(active[0]);
-      endHand(state);
+      endHand(state, simulation);
       return;
     }
 
@@ -882,7 +889,7 @@
   }
 
   /* ---------- 单局结算 ---------- */
-  function endHand(state) {
+  function endHand(state, simulation) {
     const c = settleHand(state.finished, state.levels);
     state.handResult = {
       order: state.finished.slice(),
@@ -900,8 +907,10 @@
     state.awaiting = null;
     state.phase = "handEnd";
     state.gen++;
-    store.save(state);
-    if (GD.stats) { try { GD.stats.recordHand(state); } catch (e) {} }
+    if (!simulation) {
+      store.save(state);
+      if (GD.stats) { try { GD.stats.recordHand(state); } catch (e) {} }
+    }
   }
 
   function continueAfterHand(state) {
@@ -1112,5 +1121,34 @@
     sealedHand,
     seenIdsFromLog,
     tributeKnownIds,
+    // Explicit allowlist: never clone or traverse the sealed opponent hands.
+    serialize(obs) {
+      const card = c => ({ id:c.id, deck:c.deck, rank:c.rank, suit:c.suit });
+      return {
+        seat:obs.seat, team:obs.team, partner:obs.partner, opponents:obs.opponents.slice(),
+        mode:obs.mode, level:obs.level, levels:obs.levels.slice(), levelTeam:obs.levelTeam,
+        hand:obs.hand.map(card), counts:obs.counts.slice(),
+        target:obs.target ? { ...obs.target, cards:obs.target.cards.map(card) } : null,
+        targetSeat:obs.targetSeat, floorSeat:obs.floorSeat, pending:obs.pending.slice(),
+        awaitingKind:obs.awaitingKind, finished:obs.finished.slice(),
+        log:obs.log.map(e => ({ ...e, ids:e.ids?.slice(), play:e.play ? {...e.play} : undefined })),
+        lastTrick:obs.lastTrick ? { jiefeng:obs.lastTrick.jiefeng, winner:obs.lastTrick.winner, outSeat:obs.lastTrick.outSeat } : null,
+        seenIds:[...obs.seenIds], tributeKnown:[...obs.tributeKnown],
+        unknownIds:obs.unknownIds.slice(), stratSeed:obs.stratSeed, gen:obs.gen,
+      };
+    },
+  };
+  // Search reuses the exact turn, finish and 接风 transitions of the live engine.
+  // These states contain independently sampled hands and never touch storage/stats.
+  GD.simulation = {
+    create(obs, hands) {
+      return { phase:"play", paused:false, currentLevel:obs.level, levels:obs.levels.slice(),
+        hands:hands.map(h => h.slice()), table:[null,null,null,null], pile:[],
+        finished:obs.finished.slice(), log:[], lastTrick:null, gen:0,
+        trick:{ target:obs.target, targetSeat:obs.targetSeat, floorSeat:obs.floorSeat,
+          pending:obs.pending.slice(), startLogIndex:0 },
+        awaiting:{ seat:obs.seat, kind:obs.target ? "follow" : "lead" } };
+    },
+    act(state, seat, cards) { return act(state,seat,cards,true); },
   };
 })();

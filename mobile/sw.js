@@ -1,6 +1,8 @@
 /* 同一版本的完整资源一起缓存；新版等待所有旧窗口关闭后启用。 */
 importScripts("../js/version.js");
 importScripts("../js/voice-lines.js");
+importScripts("../js/voice-config.js");
+importScripts("../js/voice-packs.js");
 const VERSION = self.GD.VERSION;
 const PREFIX = "guandan-offline:" + self.registration.scope + ":";
 const CACHE = PREFIX + VERSION;
@@ -10,10 +12,10 @@ const FILES = [
   `./css/mobile.css?v=${VERSION}`, `./js/offline.js?v=${VERSION}`,
   `../audio/music/table-loop.mp3?v=${VERSION}`,
   ...["style", "table-theme"].map(name => `../css/${name}.css?v=${VERSION}`),
-  ...["version", "util", "cards", "rules", "flow", "ai", "fx", "voice-lines", "music", "sound", "stats", "game",
+  ...["version", "util", "cards", "rules", "flow", "ai", "ai-memory", "ai-search", "ai-client", "ai-worker", "ai-worker-source", "fx", "voice-lines", "voice-config", "voice-packs", "music", "sound", "stats", "game",
     "table-tools", "table-view", "turn-clock", "active-play", "seat-play", "play-history", "ui"]
     .map(name => `../js/${name}.js?v=${VERSION}`),
-  ...self.GD.VOICE_PROFILES.flatMap(profile => Object.keys(self.GD.VOICE_LINES)
+  ...self.GD.voicePreferences.installedProfiles().flatMap(profile => Object.keys(self.GD.VOICE_LINES)
     .map(id => `../audio/voice/${profile}/${id}.mp3?v=${VERSION}`)),
 ].map(file => new URL(file, self.registration.scope).href);
 const INDEX = new URL("./index.html", self.registration.scope).href;

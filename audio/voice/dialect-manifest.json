@@ -1,0 +1,5494 @@
+{
+  "schema": 2,
+  "engine": "multiple speech engines",
+  "packs": {
+    "cantonese-female": {
+      "language": "cantonese",
+      "gender": "female",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "locale": "zh-HK",
+      "ready": true,
+      "clipCount": 73,
+      "engine": "Microsoft stock neural speech",
+      "sourceUrl": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts",
+      "reviewStatus": "accepted",
+      "reviewedOn": "2026-10-26",
+      "clipSetSha256": "6ae6e89a4a09613adfdc2bc64bc64b72997c7442870986659e162989d6ecf027"
+    },
+    "cantonese-male": {
+      "language": "cantonese",
+      "gender": "male",
+      "voice": "zh-HK-WanLungNeural",
+      "locale": "zh-HK",
+      "ready": true,
+      "clipCount": 73,
+      "engine": "Microsoft stock neural speech",
+      "sourceUrl": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts",
+      "reviewStatus": "accepted",
+      "reviewedOn": "2026-10-26",
+      "clipSetSha256": "59e53233d3c74712dc6ef2ed79c4cda38c44c32af23469be38f649f0881feb20"
+    },
+    "dongbei-female": {
+      "language": "dongbei",
+      "gender": "female",
+      "voice": "zh-CN-liaoning-XiaobeiNeural",
+      "locale": "zh-CN-liaoning",
+      "ready": false,
+      "clipCount": 0,
+      "engine": "Microsoft stock neural speech",
+      "sourceUrl": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts",
+      "reviewStatus": "rejected",
+      "reviewedOn": "2026-10-27",
+      "rejection": "2026-10-27：用户确认河南话、东北话男女声均不太对；撤下此版本，换来源先做报牌小样。",
+      "clipSetSha256": "6ce0344ab26b265d7ceec5f3d59e4e54c09b6dd788a1a39c6defa806b1e00982"
+    },
+    "sichuan-male": {
+      "reviewStatus": "unreviewed",
+      "language": "sichuan",
+      "gender": "male",
+      "voice": "Eric",
+      "engine": "Qwen3-TTS-12Hz-1.7B-CustomVoice",
+      "backend": "mlx-audio",
+      "quantizationBits": 4,
+      "modelSha256": "45a5b5ccd3cc473b9d3890ea922937036b56b948e8bd8c678e725329abdd1d00",
+      "tokenizerSha256": "836b7b357f5ea43e889936a3709af68dfe3751881acefe4ecf0dbd30ba571258",
+      "dialect": "Sichuan, Chengdu",
+      "delivery": "natural native-dialect game calls",
+      "sourceUrl": "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice/blob/main/LICENSE",
+      "instruct": "沿用 Eric 爽朗、略带沙哑、有共鸣的成年男声音色。用自然成都话报牌，语气利落随和，像朋友打牌，声音饱满，避免播音腔和夸张喊叫。",
+      "ready": true,
+      "clipCount": 73,
+      "clipSetSha256": "8aa90893f4c0052f9a548e4502902a04ce0a1bcbfaa56bad10fd2ec9ea7d0b8a"
+    },
+    "sichuan-female": {
+      "reviewStatus": "rejected",
+      "language": "sichuan",
+      "gender": "female",
+      "voice": "VoxCPM2-original-23681",
+      "engine": "VoxCPM2-4bit",
+      "delivery": "AI-generated",
+      "sourceUrl": "https://huggingface.co/mlx-community/VoxCPM2-4bit",
+      "licenseUrl": "https://github.com/OpenBMB/VoxCPM/blob/main/LICENSE",
+      "seed": 23681,
+      "instruct": "四川成都本地成年女性，声音自然朴实，中等音高。像平时和朋友打牌一样平静说话，用四川话发音。短句直接说完，收尾干脆，不表演，不撒娇，不拖长尾音。",
+      "generationInstruction": "四川话，成年女声，平常说话，短促收尾。",
+      "generationRevision": 3,
+      "syntheticReferenceSha256": "b0a4087aa74c1d3ea01b8323139dcf6e9f4b7b97238711dfbfb23d93ea2886cc",
+      "ready": false,
+      "clipCount": 0,
+      "clipSetSha256": "e4360aeb7b248d1dd5803d519c53b330cc1c03d8dfd0be635def06aba48adce3",
+      "rejection": "新版四川女声仍然不对味，未达到方言口音要求",
+      "reviewedOn": "2026-10-26",
+      "lastRejectedAudition": {
+        "voice": "zh-CN-XiaoxiaoDialectsNeural",
+        "locale": "zh-CN-sichuan",
+        "date": "2026-10-27",
+        "sha256": "579fea3de2d3e06ef0e7a1518b3127b7c1a99855eba127bfd230db3c055cf59e",
+        "reason": "User rejected the new source audition; do not build a full pack from this version."
+      }
+    },
+    "shanghai-female": {
+      "reviewStatus": "sample-approved",
+      "language": "shanghai",
+      "gender": "female",
+      "voice": "wuu-CN-XiaotongNeural",
+      "locale": "wuu-CN",
+      "reviewEvidence": {
+        "date": "2026-10-27",
+        "sample": "test/fixtures/voice-auditions/2026-10-27/shanghai-female-xiaotong.mp3",
+        "scope": "User approved the five-phrase audition and authorized completing this speaker pack.",
+        "sampleSha256": "969c683467011a211a8b1f7eb5916a8c572d57975be4e8b44635bb34be68118a"
+      },
+      "engine": "Microsoft Azure neural speech",
+      "sourceUrl": "https://fuym.cn/",
+      "licenseUrl": "https://fuym.cn/faq.html",
+      "delivery": "AI-generated",
+      "generationScriptSha256": "732f6ceb53342d0f1077e05c54263631413099bbcf8a9797e4de1e003c36e7f4",
+      "ready": true,
+      "clipCount": 73,
+      "clipSetSha256": "3586ccfe96788e4e7596abc2714f679e0b707ba63c572bf4eb1bf02605bd3b17",
+      "masterSourceUrl": "https://fuym.cn/storage/generated/mp3/399236254_1793066997.mp3"
+    },
+    "shanghai-male": {
+      "reviewStatus": "sample-approved",
+      "language": "shanghai",
+      "gender": "male",
+      "voice": "wuu-CN-YunzheNeural",
+      "locale": "wuu-CN",
+      "reviewEvidence": {
+        "date": "2026-10-27",
+        "sample": "test/fixtures/voice-auditions/2026-10-27/shanghai-male-yunzhe.mp3",
+        "scope": "User approved the five-phrase audition and authorized completing this speaker pack.",
+        "sampleSha256": "2e2c46ca7e7871d706868ef6846f8cdd7678d4d1a896ac57bb44123989dac29f"
+      },
+      "engine": "Microsoft Azure neural speech",
+      "sourceUrl": "https://fuym.cn/",
+      "licenseUrl": "https://fuym.cn/faq.html",
+      "delivery": "AI-generated",
+      "generationScriptSha256": "a73eb85691868a846199c3164830f2dbb8660c392d2801be6232f9edd32fbd58",
+      "ready": true,
+      "clipCount": 73,
+      "clipSetSha256": "c3875f4a72533664494601f11d933cf442de7f897068ff5cb69e5a8824a2aeb6",
+      "masterSourceUrl": "https://fuym.cn/storage/generated/mp3/953685997_1793066806.mp3"
+    },
+    "henan-female": {
+      "reviewStatus": "sample-approved",
+      "language": "henan",
+      "gender": "female",
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "locale": "zh-CN-henan",
+      "engine": "Microsoft Azure neural speech, dialect mode",
+      "sourceUrl": "https://aitts.cc/multi-voice-tts",
+      "licenseUrl": "https://aitts.cc/blog/free-tts-guide",
+      "reviewEvidence": {
+        "date": "2026-10-27",
+        "sample": "test/fixtures/voice-auditions/henan-dongbei-2026-10-27/henan-female-xiaoxiao-dialects.mp3",
+        "sampleSha256": "7b44efa136ae87af0a00c4284a37f5f3c3b164576d4e4613b5faa89d6ae38335",
+        "scope": "User approved five-phrase Henan female audition and authorized the complete pack."
+      },
+      "delivery": "AI-generated",
+      "generationScriptSha256": "458fb0a0e107c9bf953fcbc12649da0a54eb45c27f7f6e7c914bf22609d672a9",
+      "masterSources": [
+        {
+          "part": 1,
+          "sha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+          "durationSeconds": 37.332,
+          "reports": 36,
+          "internalGaps": 35
+        },
+        {
+          "part": 2,
+          "sha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+          "durationSeconds": 36.216,
+          "reports": 36,
+          "internalGaps": 35
+        }
+      ],
+      "splitMinimumSilenceSeconds": 0.25,
+      "requestedPauseSeconds": 2,
+      "exportedPauseNote": "Public provider exported natural phrase gaps around 0.4 seconds. Exactly 35 internal gaps verified for each 36-report master before splitting.",
+      "ready": true,
+      "clipCount": 73,
+      "clipSetSha256": "d224bbbc0e6e5cd08ad977a43c990b59c30f164e00fd4948806dafd4a9894239",
+      "postProcessing": {
+        "date": "2026-10-27",
+        "reason": "User requested slower Henan female announcements.",
+        "sourceClipSetSha256": "5b248b0d56c4a52e1d163d3d340be3c17ad3cb71f2099ff4ae8a7e2038e9e4c4",
+        "tempo": 0.85,
+        "preservesPitch": true,
+        "leadingSeconds": 0.04,
+        "trailingSeconds": 0.06,
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "scriptSha256": "b9700a079b84be8ae1747a000b11ab00d4d4bf8fc9d2a15b7ab8baf8ca3e6696"
+      }
+    },
+    "henan-male": {
+      "language": "henan",
+      "gender": "male",
+      "voice": "VoxCPM2-original-23428",
+      "engine": "VoxCPM2-4bit",
+      "delivery": "AI-generated",
+      "sourceUrl": "https://huggingface.co/mlx-community/VoxCPM2-4bit",
+      "licenseUrl": "https://github.com/OpenBMB/VoxCPM/blob/main/LICENSE",
+      "seed": 23428,
+      "instruct": "河南话，郑州方言，中青年男性，厚实爽朗的男声，像棋牌玩家报牌，语速自然，吐字清晰，声音有精神。全程使用河南话，郑州方言的本地方言发音。",
+      "generationInstruction": "河南话，男声",
+      "generationRevision": 2,
+      "syntheticReferenceSha256": "87387937a19be5badbfb87691e60954836e8d1f2bd5bbee096f53459c544065c",
+      "ready": false,
+      "clipCount": 0,
+      "reviewStatus": "rejected",
+      "reviewedOn": "2026-10-27",
+      "rejection": "2026-10-27：用户确认河南话、东北话男女声均不太对；撤下此版本，换来源先做报牌小样。",
+      "clipSetSha256": "082d929cbe47b993084af9970a9645268fc3139033cb646a2f50f0cabed65086"
+    },
+    "dongbei-male": {
+      "language": "dongbei",
+      "gender": "male",
+      "voice": "VoxCPM2-original-23535",
+      "engine": "VoxCPM2-4bit",
+      "delivery": "AI-generated",
+      "sourceUrl": "https://huggingface.co/mlx-community/VoxCPM2-4bit",
+      "licenseUrl": "https://github.com/OpenBMB/VoxCPM/blob/main/LICENSE",
+      "seed": 23535,
+      "instruct": "东北话，哈尔滨口音，中青年男性，厚实爽朗的男声，像棋牌玩家报牌，语速自然，吐字清晰，声音有精神。全程使用东北话，哈尔滨口音的本地方言发音。",
+      "generationInstruction": "东北话，男声",
+      "generationRevision": 2,
+      "syntheticReferenceSha256": "a24a6b8df0b285da71a32ee9e1d433794da6a89928aab581db4d07c715a03108",
+      "ready": false,
+      "clipCount": 0,
+      "reviewStatus": "rejected",
+      "reviewedOn": "2026-10-27",
+      "rejection": "2026-10-27：用户确认河南话、东北话男女声均不太对；撤下此版本，换来源先做报牌小样。",
+      "clipSetSha256": "126238fe30c5ae0660175a42c30587d160e67d338786d9d7727e2d87b1882e7c"
+    },
+    "funing-male": {
+      "language": "funing",
+      "gender": "male",
+      "ready": false,
+      "clipCount": 0,
+      "reviewStatus": "rejected",
+      "rejection": "现有试音未通过方言验收",
+      "engine": "multiple speech engines"
+    }
+  },
+  "clips": {
+    "cantonese-female/straight": {
+      "text": "順子！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 685,
+      "sha256": "1bc4f701648f9e4138c30962c8d9c05a011c6741d55dcbd93aa41fb1f97c1016"
+    },
+    "cantonese-female/dpairs": {
+      "text": "三連對！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1003,
+      "sha256": "795c67343bfe1e78139c91c06e9e7c6c1f4a801d7f740a16e097ec40e3939415"
+    },
+    "cantonese-female/steel": {
+      "text": "鋼板！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 686,
+      "sha256": "ed277f45e5f0beb144f8a6217b11a798f847a74349c22f1738727182a1c78905"
+    },
+    "cantonese-female/fullhouse": {
+      "text": "三帶二！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1063,
+      "sha256": "7c3615a2b32569dfdb4910c0ae1baa26144acdaf4ec5b36c1c344835dff75b3e"
+    },
+    "cantonese-female/sflush": {
+      "text": "同花順！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 907,
+      "sha256": "5744ecc6c4cbc1273fe3a1f7472b639a539a03f2d555e0fd602d38ff935ef645"
+    },
+    "cantonese-female/jokers": {
+      "text": "四大天王！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1247,
+      "sha256": "122507539ad3deb19103179348986658ece6d0f7172cb088b172a4594689c32d"
+    },
+    "cantonese-female/jiefeng": {
+      "text": "對家接風！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1079,
+      "sha256": "1473d1484903cca3cc78ca22c402b16d5629ee4cc2978cbccf2e81e74a9c7925"
+    },
+    "cantonese-female/jiefeng-handoff": {
+      "text": "隊友，交畀你！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1571,
+      "sha256": "cdb95453287ef6de36a8cae03d4ccebd2d96b4af21640d17985fb74555900609"
+    },
+    "cantonese-female/jiefeng-reply": {
+      "text": "接風，等我嚟！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1538,
+      "sha256": "857ce248514e494221d221b85ed3b306f6b6660484b925bd7eb3ec93bb6a58f6"
+    },
+    "cantonese-female/pass-0": {
+      "text": "唔要！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 626,
+      "sha256": "598782edd4481c730fc956b3b7ad07a043e21eb34a4e54c987e125c1dabd3068"
+    },
+    "cantonese-female/pass-1": {
+      "text": "過！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 333,
+      "sha256": "e45960340187bfc562235ff0de917756e9e3e449e794057c22abaf3d752fc1e9"
+    },
+    "cantonese-female/pass-2": {
+      "text": "呢手先過！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1189,
+      "sha256": "84cabfcaa612696195d51d566101427a71f29f1f4ccd4f823c369743239e5ad7"
+    },
+    "cantonese-female/pass-3": {
+      "text": "你哋先出！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 958,
+      "sha256": "2c20ef51e24b2aecca553f2cd870b87ae5f0c2ed1a7e11e71a408c11416ef18d"
+    },
+    "cantonese-female/pass-4": {
+      "text": "呢鋪先過！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1203,
+      "sha256": "7328eb267de648034e7b41c25287bd8400135e2cffb0446debcea4049988acc7"
+    },
+    "cantonese-female/pass-5": {
+      "text": "等陣先！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 908,
+      "sha256": "e42ee2c129772df8bddf6e5a4ff25dcdcf934d99c8d5101762d24944ecf8071c"
+    },
+    "cantonese-female/pass-unable-0": {
+      "text": "要唔起！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 888,
+      "sha256": "9f75761716679afa3c47becf0c321d854d74f6817686a68cbe8e495bc3c344d5"
+    },
+    "cantonese-female/pass-unable-1": {
+      "text": "呢手跟唔到！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1395,
+      "sha256": "aa0bbfa26e78257ee7c495c5a62e2f0f9f506e62e41cbe45d4a1bd055a9e1861"
+    },
+    "cantonese-female/beat-0": {
+      "text": "大你！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 605,
+      "sha256": "f76e16c6d1c031a123a1825c6abd2ba8b9a826faf8aab3997f5d8a747e0c48a6"
+    },
+    "cantonese-female/beat-1": {
+      "text": "壓住！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 641,
+      "sha256": "050d563f4c40af5e74d13fded8f50b4b9f7148385c1548fa703223204382b826"
+    },
+    "cantonese-female/beat-2": {
+      "text": "我大啲！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 838,
+      "sha256": "626db616bb1843e2f34d9506ea25aa75f01a843b394e89b89464c0d12984fac4"
+    },
+    "cantonese-female/last1": {
+      "text": "得返一張！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1135,
+      "sha256": "356628007db7eab61538fc0a5839f893f3416a74c43de5a2400b65889cca9cc1"
+    },
+    "cantonese-female/last2": {
+      "text": "得返兩張！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1177,
+      "sha256": "33a7dae2d53460970e6ab78f2f04ba1b11035fa1de09b3ba69c55e961d7590a5"
+    },
+    "cantonese-female/single-2": {
+      "text": "二！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 355,
+      "sha256": "df11c54c46185674fb39151b1730f74431e8acc550a010e693b177ff85bad4f7"
+    },
+    "cantonese-female/pair-2": {
+      "text": "一對二！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 842,
+      "sha256": "3a816a623225aa11206f5de81ef7b5c7369f136619f83077ad440ac04863e93d"
+    },
+    "cantonese-female/triple-2": {
+      "text": "三隻二！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1019,
+      "sha256": "1b8455eb28ae1271df0c22376e0d2f4125aa0ed92a32236eb622b884efa0c721"
+    },
+    "cantonese-female/single-3": {
+      "text": "三！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 471,
+      "sha256": "6a510f12764b931503dc4c1e2cb0c77971068765939a4f78c71cc287445128f2"
+    },
+    "cantonese-female/pair-3": {
+      "text": "一對三！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 899,
+      "sha256": "e891c5265e0b393b9df6c89b5bcabb354b2d048c0b40893301224fd6c1ba8ece"
+    },
+    "cantonese-female/triple-3": {
+      "text": "三隻三！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1078,
+      "sha256": "27841a8751024db1a43b745eafadebf37fbf21c9f58b53436d221d53d8b7a2fd"
+    },
+    "cantonese-female/single-4": {
+      "text": "四！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 484,
+      "sha256": "a8d3f625e4e76d3987e821ae8ec5f530bfb0f829fe1ac4919de2eba46bf838f3"
+    },
+    "cantonese-female/pair-4": {
+      "text": "一對四！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 885,
+      "sha256": "e8a35655eaed5371350f7364da91ada1982b94bacf45b1f42b84036e8bb329f6"
+    },
+    "cantonese-female/triple-4": {
+      "text": "三隻四！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1033,
+      "sha256": "002c15db4bc03c21a922881a6b55c310ac74aad092e8a3050bb550bc73afe015"
+    },
+    "cantonese-female/single-5": {
+      "text": "五！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 307,
+      "sha256": "0b6cc2c8bc2b82ff97383e932ff160ba5aeffdc5cbb2833016eb9bfd88c4032c"
+    },
+    "cantonese-female/pair-5": {
+      "text": "一對五！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 836,
+      "sha256": "bafb5a61a85f894a84e47a01e9b60968ee6c4cb80692c1b90038a8e9e9905e1f"
+    },
+    "cantonese-female/triple-5": {
+      "text": "三隻五！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1004,
+      "sha256": "7a7c8c3f213e159b33e4a1ea8e432db9c96c3ad260042d6deb63ea8bf4a9c3cc"
+    },
+    "cantonese-female/single-6": {
+      "text": "六！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 207,
+      "sha256": "27360f885604a305dd13ee3b737e2752c323e8d9d6c46ac8236da4b8707a8b0a"
+    },
+    "cantonese-female/pair-6": {
+      "text": "一對六！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 635,
+      "sha256": "4a4bc9289f1e3e9154b0eb844d1100c18a973be2a11bffdf76b97cb179ae59bb"
+    },
+    "cantonese-female/triple-6": {
+      "text": "三隻六！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 830,
+      "sha256": "71d6b79b0fe1f427571da774ef2410f1da00c62a5c6079610fc8cb8f789cb3c8"
+    },
+    "cantonese-female/single-7": {
+      "text": "七！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 281,
+      "sha256": "2d75474f9348cde10a022e9a49a16ccba3a6be9fb51ff3ae68a9705cb053ee9f"
+    },
+    "cantonese-female/pair-7": {
+      "text": "一對七！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 696,
+      "sha256": "e78bf417e39398ee97a6e1c1b84a3340e04c2fa8f46b1f411b7d9a29e49d3317"
+    },
+    "cantonese-female/triple-7": {
+      "text": "三隻七！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 869,
+      "sha256": "5fe4898dc2ea092e9f12ba8537966fe787e7b7ed8c10a622d9d4b5c7d3435879"
+    },
+    "cantonese-female/single-8": {
+      "text": "八！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 227,
+      "sha256": "5a844288146216c8531c8925330198c23ac995cbc1f0ce46eef0cf190cb4b03f"
+    },
+    "cantonese-female/pair-8": {
+      "text": "一對八！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 687,
+      "sha256": "73f1818c46173b71b96e5e6a795bb8ad16531fbc687fb8d99f9d77c947f0cd9d"
+    },
+    "cantonese-female/triple-8": {
+      "text": "三隻八！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 880,
+      "sha256": "9043f36240574e9d01d049a14dab4651e47e909f22a59f8ba7d293967be2975a"
+    },
+    "cantonese-female/single-9": {
+      "text": "九！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 348,
+      "sha256": "935f900d0798f4af1310d83fc5b7000b5f569f356481c9cf30fa18e4c167d13d"
+    },
+    "cantonese-female/pair-9": {
+      "text": "一對九！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 824,
+      "sha256": "063183e281f6c25778f8bdb7b2464f78a6375da647c88ee7aa9334761449bbcc"
+    },
+    "cantonese-female/triple-9": {
+      "text": "三隻九！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1032,
+      "sha256": "ea06812aed0d6c04a2825237198c6e402c7a4c5709fc0f03646623fc4eeaaf72"
+    },
+    "cantonese-female/single-10": {
+      "text": "十！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 268,
+      "sha256": "c56ea6959d08a8529f3caddc446f486bc29d5bbd7438a85b77b881c3be0eb9d2"
+    },
+    "cantonese-female/pair-10": {
+      "text": "一對十！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 647,
+      "sha256": "5e783d30857ebff5a8401a80ebe9e1d6de8a8fc83012ccb9ddc389f544bd97c1"
+    },
+    "cantonese-female/triple-10": {
+      "text": "三隻十！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 867,
+      "sha256": "d6b11f84d53d47cbff1b80fa4791342a3ad14bb51f10654af4813f484060730c"
+    },
+    "cantonese-female/single-11": {
+      "text": "J！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 324,
+      "sha256": "3efa9d6b251cfa292363734e1de991258b0d9638dc46c20f5a82d092c1a3ff04"
+    },
+    "cantonese-female/pair-11": {
+      "text": "一對J！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 799,
+      "sha256": "34fa96e1522faa1a1b3fe141fc634d633052f92c30e96e600146c9cec1312d72"
+    },
+    "cantonese-female/triple-11": {
+      "text": "三隻J！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 947,
+      "sha256": "c5cc50b94cbcf0fe5a00cd042ad834e83c633f3c28c552d5393b326adbd0f99b"
+    },
+    "cantonese-female/single-12": {
+      "text": "Q！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 361,
+      "sha256": "38e46e24a533e64773879bcf436aeaa0aac00382d415148597a110f1ad441204"
+    },
+    "cantonese-female/pair-12": {
+      "text": "一對Q！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 822,
+      "sha256": "c3480babd809471805a28dfc7efaf6d4f01970d452873c7fcfd60797a78ad186"
+    },
+    "cantonese-female/triple-12": {
+      "text": "三隻Q！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1013,
+      "sha256": "c44f690fd2b66abda12f3b61be2ad10287eb5b8b0942fe692719dd498d911446"
+    },
+    "cantonese-female/single-13": {
+      "text": "K！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 301,
+      "sha256": "7fa0e118a5815c85343f060f67eb8e89be4ce9cd61e23d9d5603d4aca294b9e7"
+    },
+    "cantonese-female/pair-13": {
+      "text": "一對K！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 741,
+      "sha256": "d60930d2c90887b6d5b6185e8e3b85061985e1ec35bed71895c24c11cadb3c82"
+    },
+    "cantonese-female/triple-13": {
+      "text": "三隻K！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 954,
+      "sha256": "1bde1e5678a9a546eb6a7c29b0e452954e083eef703962212c36ee24ddd478ac"
+    },
+    "cantonese-female/single-14": {
+      "text": "A！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 231,
+      "sha256": "f6c08f18b2018fbc66ad169cfc445824401aa95947db76dd5381d0e25214b386"
+    },
+    "cantonese-female/pair-14": {
+      "text": "一對A！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 655,
+      "sha256": "0aa8488f70f1093d96ed25cde9a0a8478ed3c5a07d288fd33de07fbb4f9e0737"
+    },
+    "cantonese-female/triple-14": {
+      "text": "三隻A！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 896,
+      "sha256": "02679f299a968c67b079b9b2a510e9b7e400674fdc27afd4349219028c28420a"
+    },
+    "cantonese-female/single-16": {
+      "text": "細王！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 737,
+      "sha256": "d485a571b39be96c3ae3f0e6538339a334eab098d9c1cb05b8d3f91e560f4330"
+    },
+    "cantonese-female/pair-16": {
+      "text": "一對細王！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1131,
+      "sha256": "2a381c17042a4a3b6629c89a526fd373c2b41828dd3e8c478df353c036f419eb"
+    },
+    "cantonese-female/single-17": {
+      "text": "大王！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 654,
+      "sha256": "ae3f03a98271e0a3a855854f95e2d4be3f93d07cced123c4a75d2348ffb4d7e2"
+    },
+    "cantonese-female/pair-17": {
+      "text": "一對大王！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1157,
+      "sha256": "526124df33ff30dced7dfa03314fcf8572c4755d707c0dae7948b1e8aa276559"
+    },
+    "cantonese-female/bomb-4": {
+      "text": "四張炸彈！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1402,
+      "sha256": "52a6e1e79abb922a1a5178b301857533bd3d140422205a53784127f933108b8b"
+    },
+    "cantonese-female/bomb-5": {
+      "text": "五張炸彈！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1259,
+      "sha256": "70c772b7aa083686984350bf3001005670e7bb641819d776262cb45c990c90fe"
+    },
+    "cantonese-female/bomb-6": {
+      "text": "六張炸彈！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1236,
+      "sha256": "e27f65d345f556d6d603053e209a49284170a4150aa03b4698eedc4e610befa1"
+    },
+    "cantonese-female/bomb-7": {
+      "text": "七張炸彈！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1283,
+      "sha256": "3befa1890ea2695fbe5fbe14db87e7a1c7b3dc977d43fe19661f14cb1df361b5"
+    },
+    "cantonese-female/bomb-8": {
+      "text": "八張炸彈！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1265,
+      "sha256": "ba9fee8f40bd0d509ceab4e337550135206d039bccd794fd44c203833db65d6a"
+    },
+    "cantonese-female/bomb-9": {
+      "text": "九張炸彈！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1295,
+      "sha256": "ac2d3c973aa3525576dfdb5b05962c608df8ded5bb19a56b26ee5eeffa1a25cd"
+    },
+    "cantonese-female/bomb-10": {
+      "text": "十張炸彈！",
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1279,
+      "sha256": "02fc4f5cead353d7f1a3faa8991d80cef4c0e4b22fd179e5fa4cac1ce9460279"
+    },
+    "cantonese-female/preview": {
+      "parts": [
+        "pass-unable-0",
+        "beat-0",
+        "straight",
+        "jokers"
+      ],
+      "voice": "zh-HK-HiuGaaiNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 3425,
+      "sha256": "e509e7c609d3c66c676c412458473f66d59d0826cbd3d0d0a82fc9d17d5ffe85"
+    },
+    "cantonese-male/straight": {
+      "text": "順子！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 599,
+      "sha256": "d5843ec60031ca08b7aed30999a6319b1708bee7fc05b087b5f04c72279a1c75"
+    },
+    "cantonese-male/dpairs": {
+      "text": "三連對！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 816,
+      "sha256": "99841571f8a57ed1e54801c7212cbbbb2b35b51078d3d1526e84d45b39732f74"
+    },
+    "cantonese-male/steel": {
+      "text": "鋼板！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 601,
+      "sha256": "1c68fb08622595bfacfb33a88f3f01f755606ae97f1f8e67eae647a2c871578d"
+    },
+    "cantonese-male/fullhouse": {
+      "text": "三帶二！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 792,
+      "sha256": "bd809bba67a902f0b42c19110378aa15e869f6af3855b0c6c601868fd94ac1fb"
+    },
+    "cantonese-male/sflush": {
+      "text": "同花順！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 756,
+      "sha256": "a3ddecaa98c9c61f9ba0f17521a5b0b48cb790e6eaec99d24f733e23667b4d0e"
+    },
+    "cantonese-male/jokers": {
+      "text": "四大天王！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 969,
+      "sha256": "b6440699f798635322cde92df08f6303aa25824fe8da65d87be6834086bd5831"
+    },
+    "cantonese-male/jiefeng": {
+      "text": "對家接風！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 876,
+      "sha256": "520ff011a4cdbfe62d13f956ee537c58455e3293efe30ff30d93c5e352bbc5da"
+    },
+    "cantonese-male/jiefeng-handoff": {
+      "text": "隊友，交畀你！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1546,
+      "sha256": "4cd05623f7711ec2f1e51725dd4a0501c9dbc6b4f428514ef6593722f31cf0c9"
+    },
+    "cantonese-male/jiefeng-reply": {
+      "text": "接風，等我嚟！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1262,
+      "sha256": "778e70d740a37bea5badc08d05df74baf94b6973b81165dc8c0c4ca41facb497"
+    },
+    "cantonese-male/pass-0": {
+      "text": "唔要！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 492,
+      "sha256": "eb5b72ff8e0250ee97f7745ae14de5236486ecdea86936709a1bbaa0398c1f2f"
+    },
+    "cantonese-male/pass-1": {
+      "text": "過！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 282,
+      "sha256": "8e6dd480d5feb436d908bae929c645162d8a3b0247a7de687216f9ac5a22d03a"
+    },
+    "cantonese-male/pass-2": {
+      "text": "呢手先過！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 943,
+      "sha256": "a6899105e2a930552e239ee0af663218d111ffbf311120033ba5836630e565e8"
+    },
+    "cantonese-male/pass-3": {
+      "text": "你哋先出！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 795,
+      "sha256": "25529e7ab8b47f1b10b77a218072db727f589f191ad2a1ebcd9af8ebaa2f6837"
+    },
+    "cantonese-male/pass-4": {
+      "text": "呢鋪先過！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 926,
+      "sha256": "d2e493561565540071d7a2ae5a177f1c250d519edc3e08bf9a98e8321f755f36"
+    },
+    "cantonese-male/pass-5": {
+      "text": "等陣先！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 688,
+      "sha256": "3cf3c21e38d09643815bdf26936f3fe9fcce491367684848104387b1a3f73fd8"
+    },
+    "cantonese-male/pass-unable-0": {
+      "text": "要唔起！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 722,
+      "sha256": "a5834306fd60a9d521ea3cb5097f44342367c878287ff9eec7fbfc2f281a6b7c"
+    },
+    "cantonese-male/pass-unable-1": {
+      "text": "呢手跟唔到！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1059,
+      "sha256": "02d63388df0e2a7222acfb213bba381271bf6c31610c1d02ab2a04133c9a6aab"
+    },
+    "cantonese-male/beat-0": {
+      "text": "大你！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 494,
+      "sha256": "6062e048fc41f3f445470f6207460363e6a02bf8a3a02cda25b735d4840a875c"
+    },
+    "cantonese-male/beat-1": {
+      "text": "壓住！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 499,
+      "sha256": "eb8f398c45331e3771a0bf5f6d468a1bd68c8ee4a48abcc6fc5d50c53875ec20"
+    },
+    "cantonese-male/beat-2": {
+      "text": "我大啲！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 649,
+      "sha256": "3f9f46ef65a2f1bc61963ffa908354558d9668c87790dc92f92a26b9b36d01b5"
+    },
+    "cantonese-male/last1": {
+      "text": "得返一張！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 840,
+      "sha256": "168f56acbbfde676ecaea52b063ff2fd278557e24dd5ad16be18265ea79ecde9"
+    },
+    "cantonese-male/last2": {
+      "text": "得返兩張！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 930,
+      "sha256": "764df5adb826376479825b0ba596145a0e36e1812009fb5d37b9cfe2a1bce68a"
+    },
+    "cantonese-male/single-2": {
+      "text": "二！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 280,
+      "sha256": "e5c3fce3ea2bd6bca3a1aabead54461bcf8fb54d627eb4719ea4f36031543310"
+    },
+    "cantonese-male/pair-2": {
+      "text": "一對二！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 704,
+      "sha256": "b68d1580e4dbacbc2e802f3cb743571180799cbb4f89a4070f8491bb4ce5ecc5"
+    },
+    "cantonese-male/triple-2": {
+      "text": "三隻二！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 768,
+      "sha256": "10ce3c20a6a5444e34e2a026c35f7d1c9f610b2291bcc7175ce4492645119654"
+    },
+    "cantonese-male/single-3": {
+      "text": "三！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 427,
+      "sha256": "8cc5c728c1e5040f989a45e3cb134ede1aa421c99eaa83a83089cf19f127c13f"
+    },
+    "cantonese-male/pair-3": {
+      "text": "一對三！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 738,
+      "sha256": "b655a839b49e0d11602c1e05511bfdda750181b022d29f2308f081d5e2b1dd73"
+    },
+    "cantonese-male/triple-3": {
+      "text": "三隻三！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 829,
+      "sha256": "852e2a6ed5082bdc90043a1ee1c172cae65830ace36c0e92852e3a9a9fddecbd"
+    },
+    "cantonese-male/single-4": {
+      "text": "四！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 368,
+      "sha256": "06f1dac08e1fb66fd32912e124bdd75e925ffcf75594743308d092c77373df2f"
+    },
+    "cantonese-male/pair-4": {
+      "text": "一對四！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 735,
+      "sha256": "42a2fa341590db89c87fa1374bc8a3311c3d286f02f7743e1063b2edb0ba4cf7"
+    },
+    "cantonese-male/triple-4": {
+      "text": "三隻四！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 815,
+      "sha256": "342ee8189ac86af35b32c7c1956d105528f641d2db2f70c265de2e04bc17f674"
+    },
+    "cantonese-male/single-5": {
+      "text": "五！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 276,
+      "sha256": "9ef724f468e967fcca10f3bb1689c266154258d1addf9a18f93cbdb32b031a51"
+    },
+    "cantonese-male/pair-5": {
+      "text": "一對五！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 661,
+      "sha256": "1058f54e8a2ecfb95111ffd807045767335d96dd3c969811440a6942a0598ae8"
+    },
+    "cantonese-male/triple-5": {
+      "text": "三隻五！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 789,
+      "sha256": "c20ccea83280e7dea29d6f0285466e564aab1188399217fe8e8742a3e28dc7b6"
+    },
+    "cantonese-male/single-6": {
+      "text": "六！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 221,
+      "sha256": "b80e798a8f974d1b880accc2a280fe6734b3df994ba3b538472f6583f0c43f0b"
+    },
+    "cantonese-male/pair-6": {
+      "text": "一對六！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 587,
+      "sha256": "489457f43da63505ad2bd33a61a3b854bbcebb9ab81db8ab773e96ef8a4fdc99"
+    },
+    "cantonese-male/triple-6": {
+      "text": "三隻六！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 657,
+      "sha256": "82095c7a3a6ed73a1ebd5f4491932aef8da6050b0a22855957f0176b80781743"
+    },
+    "cantonese-male/single-7": {
+      "text": "七！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 208,
+      "sha256": "8d07f33ed624e6e8c3d5b3fc4dfac1b22ad12dcc108c06dcad66313f179025e2"
+    },
+    "cantonese-male/pair-7": {
+      "text": "一對七！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 608,
+      "sha256": "601f670a727224e4df8d30ebbd8453855a33068e7f2b66f82335199e5e387de6"
+    },
+    "cantonese-male/triple-7": {
+      "text": "三隻七！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 682,
+      "sha256": "4855d46318add021a523c1c8672955af90c5e8b453694acec647db8b15e027e6"
+    },
+    "cantonese-male/single-8": {
+      "text": "八！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 230,
+      "sha256": "1348a3d81243986d35654662e8595e2a31ef35f9e18c4e59b77505477833f215"
+    },
+    "cantonese-male/pair-8": {
+      "text": "一對八！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 649,
+      "sha256": "f49580d5b537bed5d1887cda8a97db2a5227a07b123043f64403db8e245a2814"
+    },
+    "cantonese-male/triple-8": {
+      "text": "三隻八！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 711,
+      "sha256": "bebba929abae5c87802db7c14e9743b00a5bd5aefa015d8619e210d0154f9986"
+    },
+    "cantonese-male/single-9": {
+      "text": "九！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 316,
+      "sha256": "ea2edebc24e8275e7b489a83ceeac60d15ee642cb5b37b5f84190b39b5402afb"
+    },
+    "cantonese-male/pair-9": {
+      "text": "一對九！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 731,
+      "sha256": "b7cd9a0fc167f6a3bceaf425b5f74fa99439efee6cb26300beb8c9388eee2640"
+    },
+    "cantonese-male/triple-9": {
+      "text": "三隻九！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 814,
+      "sha256": "71c075944835bfbb086f3297c9adce8fe597f0c558d067506fa6febf87663abf"
+    },
+    "cantonese-male/single-10": {
+      "text": "十！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 235,
+      "sha256": "256c0f7e2d704ccd4239f36f1987f4c32b74a21bea3e6db31a6346918db815c3"
+    },
+    "cantonese-male/pair-10": {
+      "text": "一對十！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 574,
+      "sha256": "45c218ca9845cbc877cad5a9d5a394f5ec5246906bd42e7ec0a961e6ae153de0"
+    },
+    "cantonese-male/triple-10": {
+      "text": "三隻十！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 661,
+      "sha256": "4cca78792f40823eb4ef1b353506622623681545bc590d3d7690be2be9e6834e"
+    },
+    "cantonese-male/single-11": {
+      "text": "J！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 292,
+      "sha256": "0b0f910922400ba63730b4774f081de77cf0ab0449491b4ceb119ba0930193ea"
+    },
+    "cantonese-male/pair-11": {
+      "text": "一對J！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 678,
+      "sha256": "a4792a6342864a99cf8308db2063c48b8a82ac510ccec144abd642cf79acb986"
+    },
+    "cantonese-male/triple-11": {
+      "text": "三隻J！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 783,
+      "sha256": "a8854b6a27ec6fd0e73f4725e21462c0b577319286a5391a1855094161a91833"
+    },
+    "cantonese-male/single-12": {
+      "text": "Q！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 357,
+      "sha256": "9679da23a93cd1cef9598f06834a4bce9823ab04224fc90a75ad0bca1cae94b6"
+    },
+    "cantonese-male/pair-12": {
+      "text": "一對Q！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 738,
+      "sha256": "5eed9cabd5bd408bdb390afbb381340566e4ebd20d84658836158ce74a5cc156"
+    },
+    "cantonese-male/triple-12": {
+      "text": "三隻Q！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 815,
+      "sha256": "fafc9e537e4bb26ae8f7e59ac4f0a0d9e484557947d2adc8c38703de44776574"
+    },
+    "cantonese-male/single-13": {
+      "text": "K！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 274,
+      "sha256": "3c32c2401d4e9219a1851f50372353fcd76e237532f74770b03878d4f1b3b4c2"
+    },
+    "cantonese-male/pair-13": {
+      "text": "一對K！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 705,
+      "sha256": "bc5788cc450d81828346e8b5e8f1fd474ce895575690e40ce00014ecd787ee57"
+    },
+    "cantonese-male/triple-13": {
+      "text": "三隻K！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 796,
+      "sha256": "b90c7758f6415300539b9bd639caef630437b1f38d6bf74f5dff55aa2d8d198e"
+    },
+    "cantonese-male/single-14": {
+      "text": "A！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 175,
+      "sha256": "1aaf0bdce1fb1b832e33ebd54c1ea07b8430e1c52e8ec8051c5a603e55a3d5ce"
+    },
+    "cantonese-male/pair-14": {
+      "text": "一對A！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 592,
+      "sha256": "1c05243ad02bd8c137d38f58820a1a89106ab69ecd41505bb07f614e272e52d8"
+    },
+    "cantonese-male/triple-14": {
+      "text": "三隻A！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 714,
+      "sha256": "86affd7aa976697f7959066e17608ff847e58f876fd41d48c76db4abe55c0650"
+    },
+    "cantonese-male/single-16": {
+      "text": "細王！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 577,
+      "sha256": "7c349e0ecda381f8b9ad15fdaa7aa84a0a5aa68ba9a5c7a12e6cf3947f801243"
+    },
+    "cantonese-male/pair-16": {
+      "text": "一對細王！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 869,
+      "sha256": "60c7a54191c469961facf5c786d036801218d3dc7a18c7cd9c5726b3a340f243"
+    },
+    "cantonese-male/single-17": {
+      "text": "大王！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 504,
+      "sha256": "f3e563c0e6af7e2f99ec672d27a62f85d14027f59b754d116436a6814141ccf5"
+    },
+    "cantonese-male/pair-17": {
+      "text": "一對大王！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 871,
+      "sha256": "193e81da12b6c6774ee7db8e2ff8423578bd2bf340f1c6e60d0990ccb9708494"
+    },
+    "cantonese-male/bomb-4": {
+      "text": "四張炸彈！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1033,
+      "sha256": "8554cc6b859018ed007c8249fe39b1b86bd5963e3e2aee18ac4cdd5a93630d8d"
+    },
+    "cantonese-male/bomb-5": {
+      "text": "五張炸彈！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 941,
+      "sha256": "8a79ec0423c2163d1e3a86ad47748e3ee82bdfd400d941ff1b7e7de83df9ecc4"
+    },
+    "cantonese-male/bomb-6": {
+      "text": "六張炸彈！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1002,
+      "sha256": "7de3e56fdca08b0f6fbdb3fa5259daebdd1a581e7925b2beaec522d05ce12f69"
+    },
+    "cantonese-male/bomb-7": {
+      "text": "七張炸彈！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1020,
+      "sha256": "2dbaadd8bd918407805c47425e3772f1a42ef2d0cf8c906d8057b4da33f81a57"
+    },
+    "cantonese-male/bomb-8": {
+      "text": "八張炸彈！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 973,
+      "sha256": "fe1ca400a0deed67ea9aa5905895704a1bfd4442d67f6066cdd8bdbf1fa06aa7"
+    },
+    "cantonese-male/bomb-9": {
+      "text": "九張炸彈！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 971,
+      "sha256": "b652573d03dd1ec1fd1452747e17777bca814bb9e3948222fcbb78e227d17598"
+    },
+    "cantonese-male/bomb-10": {
+      "text": "十張炸彈！",
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1034,
+      "sha256": "afc4662ea04f533cc8e8e57cf5f9f70ebb66e9c87db2165e572542cdad9adb38"
+    },
+    "cantonese-male/preview": {
+      "parts": [
+        "pass-unable-0",
+        "beat-0",
+        "straight",
+        "jokers"
+      ],
+      "voice": "zh-HK-WanLungNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 2784,
+      "sha256": "e25504e9c3ffd4a0229aa900995cfda50babbc538d27e0524f947728bd6790b2"
+    },
+    "sichuan-male/straight": {
+      "text": "顺子。",
+      "speaker": "Eric",
+      "durationMs": 1007,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "8113a41c8445b54fa8641bd0999626c58ec272821c8dfcd299a7fe03b9c21e5e",
+      "sha256": "7ee5074b3bdcc04decbe4cf9c545b884598df580190a3f8fce3a55038fcb02e5",
+      "peak": 0.7102,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/dpairs": {
+      "text": "三连对。",
+      "speaker": "Eric",
+      "durationMs": 927,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "9297f4c8f26b4b8f60f048a3fb56811459a25fae3bf612e4ccd81d8ff84b2d09",
+      "sha256": "169bd0df7d6e0061afdc50a51ccf307fb01907f948e65a1cb3302e6d72e769f8",
+      "peak": 0.7157,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/steel": {
+      "text": "钢板。",
+      "speaker": "Eric",
+      "durationMs": 753,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "3df9631e66061e5262da7e511fd21949c808ad5f8e2e0c59170fdd2c48d40aab",
+      "sha256": "f521980dfd77b71472259b07131886a0ca2a151c7333cd6b8871673b95bdc144",
+      "peak": 0.7535,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/fullhouse": {
+      "text": "三带二。",
+      "speaker": "Eric",
+      "durationMs": 1251,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "2177838bfcd31f40db936069220e822bebfd8fb9970912efd00bcaead2200e73",
+      "sha256": "32aecf2bec211b6268d3c0b16338402071b95d5f177cb523f114e4aaa96f4ec6",
+      "peak": 0.7183,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/sflush": {
+      "text": "同花顺。",
+      "speaker": "Eric",
+      "durationMs": 1234,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "170fd88a483163a2e330440adca7aef473840ce28b2ba1c8c41012ed02eb0724",
+      "sha256": "0d6dd999f099db0c22508bb4755527c1c3eaffaf1d1f73356c2923d3f9545c05",
+      "peak": 0.7396,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/jokers": {
+      "text": "四大天王。",
+      "speaker": "Eric",
+      "durationMs": 1533,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "df38d2e0bad4d9aa5776f65b69b5c5a11fe78d9d2f46d83b9e2fe0ff50f9eebd",
+      "sha256": "9e6a1136fe023b9f31e6bc7d458b3eaa04fdc1507e3e5260c763ddf3f2683e0b",
+      "peak": 0.7703,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/jiefeng": {
+      "text": "对家接风。",
+      "speaker": "Eric",
+      "durationMs": 916,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "21d063bdf6c8e1112afa78e1ef27173ec6a89727b165b15da267754b77b93122",
+      "sha256": "e819cda1710cc2b1a8e20d053f041401916f94f1841792ba67dccdbfa8a44f3d",
+      "peak": 0.7469,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/jiefeng-handoff": {
+      "text": "接好了！",
+      "speaker": "Eric",
+      "durationMs": 843,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "ece103444a75e8c615d6e1a220b635e9c6a1cd576f1d44e37af8576133a28f17",
+      "sha256": "e422ac98b873afafacf3dac6928305363ed394591500889bcf4e7beedb65876e",
+      "peak": 0.597,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/jiefeng-reply": {
+      "text": "好，我接！",
+      "speaker": "Eric",
+      "durationMs": 847,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "c21a3a521b0e4d7c574636a76b2c33b31e55c1ea5b531c60b28a52af6aca56da",
+      "sha256": "bf81a6a3c4c3e9a3e6cde93a6154a468f7eac12ebc3a7a9fb34dc6ffcf643e31",
+      "peak": 0.7443,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pass-0": {
+      "text": "这手过！",
+      "speaker": "Eric",
+      "durationMs": 796,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "85180863f09dafed5c19e60bca8a65dd9aa4392e7e1aefda3856df96791191c7",
+      "sha256": "b36c4d19c840f568576abae271ac86d9dfcce0a27da2af5bec6cd0f7c7dcd63e",
+      "peak": 0.6531,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pass-1": {
+      "text": "我过！",
+      "speaker": "Eric",
+      "durationMs": 649,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "46480b2b5bde03685c041b5ea402abee8523e6fe6452f0db159d359757816c6d",
+      "sha256": "9f07cac52f221f76871a952e835e4fee727f844ba2e34ee4b8e207a24e3dd75a",
+      "peak": 0.5044,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pass-2": {
+      "text": "先不跟了！",
+      "speaker": "Eric",
+      "durationMs": 826,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "6ca7d5f05406d922e7d082d1d33e034d015f2e2abc877bf3e509e3849bd2fe69",
+      "sha256": "65dde14d42d418e371e086d529bf3b1cc15a451e2c921d7cde362f5db33a6765",
+      "peak": 0.7304,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pass-3": {
+      "text": "你先出！",
+      "speaker": "Eric",
+      "durationMs": 742,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "1dd575ac0f8731f84dd3f8ecc19863bfe534c94461a4d81dfce9599bfeb72694",
+      "sha256": "e8b42724269c449ce38d0a30b8e3339b2d1a0b04b2c9f94811159062cadd0830",
+      "peak": 0.5592,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pass-4": {
+      "text": "这轮先过！",
+      "speaker": "Eric",
+      "durationMs": 1025,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "343e3a40b032a5a6237ed8be7058fa8dc48282e2acb7667a6064d6c29a2b1177",
+      "sha256": "149b55a1066da411fedfe81397cf0fda59b2312fac07d0935c81c8502c34bcef",
+      "peak": 0.7328,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pass-5": {
+      "text": "我等下一手！",
+      "speaker": "Eric",
+      "durationMs": 1593,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "70aff2a276fe4d5b1907579b23f351317a9d618445e3ab67e0b546a1650fa5be",
+      "sha256": "2b5f34a1d2a4b9460864d15622979a18221f1e7aa5cd2cc198ebaf43d67644df",
+      "peak": 0.7638,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pass-unable-0": {
+      "text": "要不起！",
+      "speaker": "Eric",
+      "durationMs": 887,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "13c1061c0cb12b4e3a4f7614f0767f0af366d3091604240870e6000d01fef053",
+      "sha256": "3dd271000d23fad00a2347f8be86a55f259e3a3337484741d0332c0a73d16910",
+      "peak": 0.779,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pass-unable-1": {
+      "text": "这牌管不了！",
+      "speaker": "Eric",
+      "durationMs": 1820,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "45696f8c96083f7cf7e8bb45c7f4533e129c2df87579246916038d113b2fc868",
+      "sha256": "ac36ad50b38c36e7f58ce87f0a23abb883aa261b67ee7ac29c21ab0dbd87a213",
+      "peak": 0.7422,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/beat-0": {
+      "text": "大你。",
+      "speaker": "Eric",
+      "durationMs": 766,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "af12baec0400a9e6d4543233f2f03ae2fdf6b0746c9f36c0a1f5647e780db919",
+      "sha256": "db4a0e9c7ee2f28d5a35009e79ac9af761df4f14dd8ce3328a06fab9e9485db6",
+      "peak": 0.7484,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/beat-1": {
+      "text": "压上。",
+      "speaker": "Eric",
+      "durationMs": 417,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "f4baf7b6afac068b5d911481938d9c580033fba296a270d50919372474580ab8",
+      "sha256": "2342843b600b81f95abea468a367391ed01eedf0e5e2f7977d8db4ad933ef5d3",
+      "peak": 0.757,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/beat-2": {
+      "text": "管上。",
+      "speaker": "Eric",
+      "durationMs": 902,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "6fd3cd79381b24cad290275c1baca6604770472181e66811bf56946f98dcb9a4",
+      "sha256": "064938be8268738e9a289550ba915994f3fa8349e7066366d48d13797abf505f",
+      "peak": 0.7278,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/last1": {
+      "text": "最后一张！",
+      "speaker": "Eric",
+      "durationMs": 754,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "580b38244b849eefaaab398d27126ba6b6e7f57d38c5995a17e7588ba93689df",
+      "sha256": "1e51be4f99c0358e1e1226f6b8cbb6d03a5704dcdfa6bece0d50729d74995cb9",
+      "peak": 0.7799,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/last2": {
+      "text": "还有两张！",
+      "speaker": "Eric",
+      "durationMs": 1277,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "5362de7db08294a8b906924cda4295ebd4cfc160f49c4db712e2425b8ae992e5",
+      "sha256": "3665a90221e1dd2018fdf976cb16c0ca0e8970de98f652015ced75ed60c152ee",
+      "peak": 0.7424,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/preview": {
+      "parts": [
+        "pass-unable-0",
+        "beat-0",
+        "straight",
+        "jokers"
+      ],
+      "durationMs": 4614,
+      "delivery": "actual-game-clips",
+      "sha256": "3945b99a1b9cf4b82304b84598fb6fc63405af2ed5dbef7419a7c362e6950e57",
+      "peak": 0.7365,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-2": {
+      "text": "二。",
+      "speaker": "Eric",
+      "durationMs": 605,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "781cd4bc592c7fb92a5beed698668cd0167c5d01480cc652940c766787b5b081",
+      "sha256": "a4709268ab722d393cbf601636a050caf6466c1517c48e7f7917228de3633b67",
+      "peak": 0.4736,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-2": {
+      "text": "一对二。",
+      "speaker": "Eric",
+      "durationMs": 1927,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "0a9f61205abc8e1962413c735e7d9787f1bf16346a38eb443630c359d7f79979",
+      "sha256": "edf4fd0cff830956a36bbf84c082099df66ebb006a7b8106729c98bf25450947",
+      "peak": 0.743,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-2": {
+      "text": "三个二。",
+      "speaker": "Eric",
+      "durationMs": 1014,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "50df7018f5e02b764a08e522fc82eea0e216d9126c35233e6594ee29670ad4dc",
+      "sha256": "6909b1122a8b49fea7a3a4958402a010bdd956b198467de559e9d0232878cdc5",
+      "peak": 0.7441,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-3": {
+      "text": "三。",
+      "speaker": "Eric",
+      "durationMs": 590,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "6c080aee304b37eba0b857c5dce38deff1021e4e564fbd027105aa376aca32b0",
+      "sha256": "693679b5a54650745d9eba7b73ab22f2bfb8476ffcc08916cc5c4981d6870f2f",
+      "peak": 0.7317,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-3": {
+      "text": "一对三。",
+      "speaker": "Eric",
+      "durationMs": 1202,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "8ccc9016a4277d40de31684101d490959ff4758c85fe5883b8bb50de79b2ab45",
+      "sha256": "436adbde598f55f290ad3d4bf71d24f7903b116095264859c9dc85a08e1241e5",
+      "peak": 0.7462,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-3": {
+      "text": "三个三。",
+      "speaker": "Eric",
+      "durationMs": 1374,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "5c07c05b2b639e10d51be1a240db70405e83388ccb003c56aabbdcfcde010917",
+      "sha256": "deba6cc54b0b4f98cb4af1bb5d9f542a4ae93d25a6ab56d7b9aecf0863706979",
+      "peak": 0.7393,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-4": {
+      "text": "四。",
+      "speaker": "Eric",
+      "durationMs": 732,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "490f474ee4f916b92abd4ebb1e55383077b6435cc3991f1da5ce99a1df1ef450",
+      "sha256": "2e062c402596dcd63cff703bd3f6d8428ec2669a082c5b41aff0bf9144f910d7",
+      "peak": 0.7356,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-4": {
+      "text": "一对四。",
+      "speaker": "Eric",
+      "durationMs": 1523,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "ba09612955df371e138578e1ee6535b15f178beedbd884bfbc5e1dd9a6859e7e",
+      "sha256": "3d2e80f18c65a304df85a857ea0be0b17bc7f10adeaa538a82ec58c4d442c155",
+      "peak": 0.7519,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-4": {
+      "text": "三个四。",
+      "speaker": "Eric",
+      "durationMs": 857,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "95a817399df814a53470884c94ccb1543393184d8d0d3d217b9cdec3b92226d3",
+      "sha256": "e3ba49adc1e591bbaf5fc0b4ac558f88d8d8e25f94b3ac6fa2976674ab67be1b",
+      "peak": 0.7241,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-5": {
+      "text": "五。",
+      "speaker": "Eric",
+      "durationMs": 268,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "3b10495c9afdb1fbd426274e4ecd7392bee8024bc3e3529d5a299d25e109ab13",
+      "sha256": "f0fcc35f7ea25a2546975194636be896993aeb6988c39d8a2fb8d1740fb17354",
+      "peak": 0.7422,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-5": {
+      "text": "一对五。",
+      "speaker": "Eric",
+      "durationMs": 1078,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "f266ef7578b86eb8ef7854442acfb6cc6b968759e4f9d2d021c1e5de6b961a03",
+      "sha256": "1c96401c9df12bd14ce751b961acc39c275c760349b88a849a53ce7236799081",
+      "peak": 0.7509,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-5": {
+      "text": "三个五。",
+      "speaker": "Eric",
+      "durationMs": 1411,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "00ffc2eeaa99e7e54262026e29800cfa2c33bb3dca77ea515b67c9798f62fc65",
+      "sha256": "ed47e7479ae0d0b5444fc7a22af8f89f6db35e08dcb9c14e6974437c81c43713",
+      "peak": 0.7511,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-6": {
+      "text": "六。",
+      "speaker": "Eric",
+      "durationMs": 373,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "cba69039c52decc4a09708f3b0f5e07a0b08f2c1838db0a31aec9ef88af37e9f",
+      "sha256": "1805e667440ba3abd03e6b8d23a5674520ec6c5c0ee5a5c79fa086b4907f460c",
+      "peak": 0.7492,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-6": {
+      "text": "一对六。",
+      "speaker": "Eric",
+      "durationMs": 965,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "d4f0d492c7e5c80091e7ed7f11d4e88cfde74ffcabf167efb9aa10928442b217",
+      "sha256": "70e6cd993e1b76547c68ff1c270da7bd4522e1984d035926e9c27b5186ff2a01",
+      "peak": 0.5915,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-6": {
+      "text": "三个六。",
+      "speaker": "Eric",
+      "durationMs": 547,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "6fe932ce3b11e166337645870452d4e87c6df4752c435c672443df1c54a1b21d",
+      "sha256": "873ea36d7cfcbedfb837507e5f5cec795e3b463c5455664476e13b65af6475d1",
+      "peak": 0.7516,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-7": {
+      "text": "七。",
+      "speaker": "Eric",
+      "durationMs": 898,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "f4d37be9400ff09df5d3b505bb7826025eb2ad72fed6defc0fc8590030ec1d39",
+      "sha256": "1717468b42e8e46659122cef7ad788c2afdb26035a670005717daa134cf276ca",
+      "peak": 0.499,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-7": {
+      "text": "一对七。",
+      "speaker": "Eric",
+      "durationMs": 1186,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "49f82966b4bdc6bd1f48ddb6dbd1cb80a3b851590aa1eab82973314c8b460403",
+      "sha256": "bdd77a082fae4dc2c3f7edfc41bd59afc4085b290f06349d76d4a62399c4dbf4",
+      "peak": 0.7484,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-7": {
+      "text": "三个七。",
+      "speaker": "Eric",
+      "durationMs": 1089,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "39911040164262bab84440b961e6d224bcc55d0432423122e8e7b34943d4b9e7",
+      "sha256": "abbb66d588ef38016a77ec90021657190541a2cae5b03d649c874f3154a87cfc",
+      "peak": 0.7469,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-8": {
+      "text": "八。",
+      "speaker": "Eric",
+      "durationMs": 615,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "cfa6771afa97f25a6e88a87301a281187385265043cdee8e3744fbfd1fe23e3e",
+      "sha256": "6eca9a09b56286435b8429a6fdf2c1ee226e299165da788c97a0eda013e25729",
+      "peak": 0.6647,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-8": {
+      "text": "一对八。",
+      "speaker": "Eric",
+      "durationMs": 693,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "2560a8841d5075022b315e163b5f0ceea5ab08b0ecee81e8adbd76d329a48fdf",
+      "sha256": "4f286878060718fb11afba7aad9a008fcbd5c8cc4ddaf1e66cbc2e731e6daf12",
+      "peak": 0.6878,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-8": {
+      "text": "三个八。",
+      "speaker": "Eric",
+      "durationMs": 1025,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "ae19d2a195941e045d93eb2192ba154314b1e5c108c1b70301dc8591bf48c962",
+      "sha256": "2c09acc36c000697e13355b167cf46219c16221614b26322be4eafb3541734d3",
+      "peak": 0.7491,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-9": {
+      "text": "九。",
+      "speaker": "Eric",
+      "durationMs": 456,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "ac3135306793f316f6be7b58c9567c2ee1516a5096047c7fafac49d6e94caaf0",
+      "sha256": "f8bb90015d99e0c584040a4740933d2f4658e0ed01cab2021863a0f3713b5e84",
+      "peak": 0.4661,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-9": {
+      "text": "一对九。",
+      "speaker": "Eric",
+      "durationMs": 1566,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "25de69bd17a9a10484174209b213c4540f98381232c9632c51d3cede51c4f6e7",
+      "sha256": "401ed1a0be0cdf606cf6dee5cbf567a2c748ec16b191542e386e346ba4f35e37",
+      "peak": 0.7386,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-9": {
+      "text": "三个九。",
+      "speaker": "Eric",
+      "durationMs": 940,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "efbf8d006f31543c74aef3a2b9f224309936dc15b94935f0c46b3e78230f45c3",
+      "sha256": "1d6c7dfce4bc90687d9e8286af538405d27eccea767bc4d73805644e03e7078e",
+      "peak": 0.7384,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-10": {
+      "text": "十。",
+      "speaker": "Eric",
+      "durationMs": 498,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "131098b280b334eb9500dd8c536b76e5b65e6d9f1ccb30e46cf0c7503e9d7403",
+      "sha256": "258526b71c35f5c95c2af94d1423f86dbf0c0f0a9f6cd99d6a984bc15b85891f",
+      "peak": 0.6319,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-10": {
+      "text": "一对十。",
+      "speaker": "Eric",
+      "durationMs": 951,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "a8a4d870c0b1af85acf2d3d30d91e1949c27dddd91cd9f562d11eefbf58504a5",
+      "sha256": "cf33cac0b7471611d442288e21ddcae05df192167541cf41816b7b02afef8e6e",
+      "peak": 0.7557,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-10": {
+      "text": "三个十。",
+      "speaker": "Eric",
+      "durationMs": 1149,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "48cbd753b3da36bb7b941d0f0a869a1b3884511c786f9ee8903a2867639c77c7",
+      "sha256": "27bbd40074df0e456c7b1afc05057fb1e840bde931d2a2bbc2e96dddd489a123",
+      "peak": 0.7538,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-11": {
+      "text": "勾。",
+      "speaker": "Eric",
+      "durationMs": 585,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "4cadc1219b651ed1cb93044b3031cc581a6757ff5a70716a625154d8c1544de6",
+      "sha256": "bab9c24f1a855150398841f78ac407d59118e044bbe2d9caafc5c164aaab3642",
+      "peak": 0.5154,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-11": {
+      "text": "一对勾。",
+      "speaker": "Eric",
+      "durationMs": 568,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "00917110d37ba0f6b9ae29067d9e5ff413e461ea0189955bb8e23d6c06ebae96",
+      "sha256": "0d73ddd9cf754702e2f6bfc63c933f4f4e208cfa1802154d6912e6da9e864bd0",
+      "peak": 0.7361,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-11": {
+      "text": "三个勾。",
+      "speaker": "Eric",
+      "durationMs": 1485,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "b1c7068148d2053eabdaf4cfe04be6d208d7928bce4d899044cf678f84b47f73",
+      "sha256": "87543da336036bdb4c8bd1390cbe9b1cea4355c3de0b27038d02a511a12b0b51",
+      "peak": 0.7479,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-12": {
+      "text": "圈。",
+      "speaker": "Eric",
+      "durationMs": 283,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "9314fda1241d9144c5d00b49f4d490d9b199295e9e46f482c261f59db5e79288",
+      "sha256": "4951ec1e4b044c4b0a22b48d59fa7d54a1d5891cbcd5b79cb255168c008483d9",
+      "peak": 0.758,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-12": {
+      "text": "一对圈。",
+      "speaker": "Eric",
+      "durationMs": 674,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "e12f1ca9cd14209ea88645ec8e9b997defe5fcee5d087f80d47dc256d8ad6573",
+      "sha256": "fd4b52e0a7274cf2beaf1c02946e59f700dcb5f98e55c86b34f822dbe8904e14",
+      "peak": 0.7352,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-12": {
+      "text": "三个圈。",
+      "speaker": "Eric",
+      "durationMs": 1318,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "beb4599da1fb20153fc59ea31a6a4a4e548ccf6d429675c1081f3ced01536120",
+      "sha256": "69e7ee91e4d95582257b9d55b26b23073e3cd0330d226c3059ea4a73e56b8326",
+      "peak": 0.757,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-13": {
+      "text": "凯。",
+      "speaker": "Eric",
+      "durationMs": 264,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "65da341b7f284b2f39e983acf56bc882e489443423bbdf188ef1332deeff91e5",
+      "sha256": "4481e27f7e65a46b1d11762a2b7d679ae76078bf3b66760aaf44e42cd2a2d12f",
+      "peak": 0.7253,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-13": {
+      "text": "一对凯。",
+      "speaker": "Eric",
+      "durationMs": 817,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "3b80921f04858489241902bb24d0608b1a733d1d8fbfe334a1665142689cc337",
+      "sha256": "428f9edff096a4cddc7a139215728ea4e70cacbf9669be8f0ca5c03ffad7fcc6",
+      "peak": 0.7611,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-13": {
+      "text": "三个凯。",
+      "speaker": "Eric",
+      "durationMs": 580,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "fa41484d71b042d0b6304629b83219fbd51694354a45ac0f5d61a43f659344f0",
+      "sha256": "3f034e43ddc79f1616ebf9fa563ce83dccfadedf5ff7dc2885c94c3c26e851bf",
+      "peak": 0.7538,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-14": {
+      "text": "尖。",
+      "speaker": "Eric",
+      "durationMs": 372,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "7feb15d83bd216b938df4cc480c334608b06b5ec8a6f8875ad8e37609f44b6ad",
+      "sha256": "a4d9cb45eeaaa39b3940b7ad31eba0543ee7f38ec8df9ce08b095032d2e2f27a",
+      "peak": 0.7437,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-14": {
+      "text": "一对尖。",
+      "speaker": "Eric",
+      "durationMs": 741,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "0c45c937bb7b6f8387a12d223886c07c83e255c74bfc1dd8d1fbf65a0ad6f023",
+      "sha256": "5434135888a32927fadd4f089ea8307f51a4d047b20e48f502f7c5ca561cb251",
+      "peak": 0.712,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/triple-14": {
+      "text": "三个尖。",
+      "speaker": "Eric",
+      "durationMs": 1211,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "11e8031cf70b480583567584a06deaa67348f5ee430337ef1ff8bc855bea41cc",
+      "sha256": "ea55bf5a8e3c5f5039ded57fd72e7a7fb4c74c410683b57a50b2bbfc1e52a5e9",
+      "peak": 0.7554,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-16": {
+      "text": "小王。",
+      "speaker": "Eric",
+      "durationMs": 519,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "bfc1c9c13d5ed7300de320dd313d79d12994765c4c65c40e646324485501de82",
+      "sha256": "0664b93d0389ea32639950cf54729b024cf7f4d564e1f82a4712a6f2d0f625c1",
+      "peak": 0.6852,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-16": {
+      "text": "一对小王。",
+      "speaker": "Eric",
+      "durationMs": 975,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "5f7a492ee38f86db2db2e11b2dd03222d3b9703985751b2205207fec54328bb5",
+      "sha256": "10e844ba2b59e23f1dd0e7f62ab57b770235fc440977a342a1cb94af085d5cab",
+      "peak": 0.7069,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/single-17": {
+      "text": "大王。",
+      "speaker": "Eric",
+      "durationMs": 342,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "bdb9859817520d443c33b257c640d653ec053ab5e3661bc75bc276e110cf011c",
+      "sha256": "66aa7e4da263578e04446f947c640327574084d8b55159a94a29eb3cd711d695",
+      "peak": 0.7543,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/pair-17": {
+      "text": "一对大王。",
+      "speaker": "Eric",
+      "durationMs": 830,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "9cf205dfeb3c05cf9b8d02aca67837c07cac59fff6b9bafc2b14c28d14f01fbb",
+      "sha256": "83b9e9db3c05798c90d3143dff25c3137161ee2d561fcc2bdc26efaeafc6f2d4",
+      "peak": 0.7605,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/bomb-4": {
+      "text": "四张炸弹。",
+      "speaker": "Eric",
+      "durationMs": 1585,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "8dd43ecf9e40ae097a582addbe719045a819ef606c88522fc7e428617b249eb0",
+      "sha256": "0a27d133be0302dac8c3d9eb36b30255c0f6b426ce6afa8493465d7cecd7aed6",
+      "peak": 0.7335,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/bomb-5": {
+      "text": "五张炸弹。",
+      "speaker": "Eric",
+      "durationMs": 2185,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "01b861e9312c270dfbd448350c9e788a29c7c5c0aabbed26f06eaa29b3ef59f2",
+      "sha256": "9eddf63286dfb32af986222020b68cd58f3b20f115a9a5e4a78564ab67bb1b77",
+      "peak": 0.7132,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/bomb-6": {
+      "text": "六张炸弹。",
+      "speaker": "Eric",
+      "durationMs": 1343,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "e3676f52bb9ab37c3322bc5c075d67fdae60a7cffa008b144fc5ea104036dbaa",
+      "sha256": "52e7308247dde8e0f083b6a8b2fcc561deffcb343aafabf7162135c19692209e",
+      "peak": 0.7376,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/bomb-7": {
+      "text": "七张炸弹。",
+      "speaker": "Eric",
+      "durationMs": 1223,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "1b11757767512d73eadb247ca73e509f1f253bfc5e277bfb28b37139a1f1f641",
+      "sha256": "d8271c032e5be286609295b90f6c019dd2fe5b16cf1c4881d4a61c29eb98d95e",
+      "peak": 0.7292,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/bomb-8": {
+      "text": "八张炸弹。",
+      "speaker": "Eric",
+      "durationMs": 1746,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "dacb183dabdc394fe452bfc6f2968c1b0ec4d72794bc525cffd0047d6f0773b6",
+      "sha256": "5dae7ff04c8661f89406caf34b9a02bf3963efc3013f3a5b9e2209be55f28030",
+      "peak": 0.7204,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/bomb-9": {
+      "text": "九张炸弹。",
+      "speaker": "Eric",
+      "durationMs": 1031,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "f3c7d0da9d050ee6c2dd9089461eb63d830f887551368fad4822f804d5a74cbc",
+      "sha256": "9edaf193642c5208d9294244af90c14f6723f59b9a3846b978e88e5ca81268f2",
+      "peak": 0.7229,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "sichuan-male/bomb-10": {
+      "text": "十张炸弹。",
+      "speaker": "Eric",
+      "durationMs": 877,
+      "tempo": 1,
+      "playbackRate": 1,
+      "delivery": "character-acting",
+      "sourceKey": "af60efe542951335c9501c2b91624d988cbe59526b36ed47afb0a9f811d02299",
+      "sha256": "5feeb17d4e28cc9c4d41a2d56ab758845fee91d860175c039e8b5587012b9063",
+      "peak": 0.7576,
+      "voice": "Eric",
+      "rate": 1,
+      "pitchHz": 0
+    },
+    "shanghai-male/straight": {
+      "text": "顺子！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 0,
+      "masterEndMs": 2208,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 575,
+      "sha256": "2c47811e0d3a4be38763a564f53f7afa3f4c87687f7267447b2d89e89e2b917f"
+    },
+    "shanghai-male/dpairs": {
+      "text": "三连对！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 2208,
+      "masterEndMs": 5997,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 882,
+      "sha256": "634e9aab8c0d6c83e9d50c727590d6578bea1caa568f78eacb5fd20a5c5afbd1"
+    },
+    "shanghai-male/steel": {
+      "text": "钢板！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 5997,
+      "masterEndMs": 9461,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 566,
+      "sha256": "7e682e2178e8eaded30131efc86a00193279ba34ec225b4a6f3370fceb8ce97f"
+    },
+    "shanghai-male/fullhouse": {
+      "text": "三带二！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 9461,
+      "masterEndMs": 13200,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 834,
+      "sha256": "2058c1e188beb55fd1e121faeaa4421c809865e44233be51d9e9bf4f3e15f2b7"
+    },
+    "shanghai-male/sflush": {
+      "text": "同花顺！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 13200,
+      "masterEndMs": 16855,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 744,
+      "sha256": "fbd93347865d106b6d63933b484798267af40d874b0b1a6a0ca1104099de5b13"
+    },
+    "shanghai-male/jokers": {
+      "text": "四大天王！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 16855,
+      "masterEndMs": 20847,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1078,
+      "sha256": "4c54b0a99549719351dd09fd6ec97434d2cc9bbf1ef323471fe45196611b443a"
+    },
+    "shanghai-male/jiefeng": {
+      "text": "对家接风！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 20847,
+      "masterEndMs": 24719,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 901,
+      "sha256": "6f066aae3657a53c32f1b109dc6784ebed23c1cfb18a60dace72b444568f64a6"
+    },
+    "shanghai-male/jiefeng-handoff": {
+      "text": "队友，交给你！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 24719,
+      "masterEndMs": 29042,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1387,
+      "sha256": "f9623365e41bcb949f1e26fd7e83975621e0d09ff6adfeb8d78f3c5bcf7afeec"
+    },
+    "shanghai-male/jiefeng-reply": {
+      "text": "接风，看我的！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 29042,
+      "masterEndMs": 33117,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1206,
+      "sha256": "b600bedcac0e55427b741e73250c4551c2960f9fe5d1e03e38e600770d6f721c"
+    },
+    "shanghai-male/pass-0": {
+      "text": "不要！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 33117,
+      "masterEndMs": 36477,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 478,
+      "sha256": "1ea8467afc90af80302a906d8c3fdb3c7174e2042d724c8992838b0f3b90feda"
+    },
+    "shanghai-male/pass-1": {
+      "text": "过！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 36477,
+      "masterEndMs": 39734,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 336,
+      "sha256": "b4bb96801bf7b4f4805cde3379b84328c3a9fb8e6063c8bdda964cf1598e816d"
+    },
+    "shanghai-male/pass-2": {
+      "text": "这手先过！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 39734,
+      "masterEndMs": 43648,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 980,
+      "sha256": "4508b39a5e6959cd5847bcae64f04cd77fc8434b6a6073c202a6de5bdc83eca6"
+    },
+    "shanghai-male/pass-3": {
+      "text": "你们先出！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 43648,
+      "masterEndMs": 47520,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 919,
+      "sha256": "0f00201a5cc2ff29379511f7a2d2c48451d174c9f5c78bd4f8ae7d983e4e43d3"
+    },
+    "shanghai-male/pass-4": {
+      "text": "这轮先过！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 47520,
+      "masterEndMs": 51485,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1002,
+      "sha256": "505f7d574071d83a8e246cd0e09a52cb0fc8594fbea0fa47e03c19a4a587913e"
+    },
+    "shanghai-male/pass-5": {
+      "text": "先歇一手！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 51485,
+      "masterEndMs": 55362,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1008,
+      "sha256": "4bfad7b9c25624a8e2a62ab22534b4ae8d4d05d7b3d8fa75a31673a1eb031647"
+    },
+    "shanghai-male/pass-unable-0": {
+      "text": "要不起！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 55362,
+      "masterEndMs": 58971,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 721,
+      "sha256": "cf1613fff8d57fb0445ca09b6d12f5682722cb10d540093ea171cca0191c73f7"
+    },
+    "shanghai-male/pass-unable-1": {
+      "text": "这牌要不起！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 58971,
+      "masterEndMs": 62915,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1058,
+      "sha256": "694a926fddcad188a169237de6fd5840043a67079c210752f4495803e9031865"
+    },
+    "shanghai-male/beat-0": {
+      "text": "大你！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 62915,
+      "masterEndMs": 66409,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 569,
+      "sha256": "d214844b8abd51d4eb44a9d9a2dd81f5e871ff6436bf5e832a3a533a7e4e9f26"
+    },
+    "shanghai-male/beat-1": {
+      "text": "压上！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 66409,
+      "masterEndMs": 69874,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 497,
+      "sha256": "131cd48137c8bbcc9c5515c5a8166bdfee8fbd000527217436d5f5229d8dc5ca"
+    },
+    "shanghai-male/beat-2": {
+      "text": "管上！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 69874,
+      "masterEndMs": 73372,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 541,
+      "sha256": "b8903d587eeff55ee005d43702c1a8fc68157de1806c9b9c4920c32562a0be4c"
+    },
+    "shanghai-male/last1": {
+      "text": "我还剩一张！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 73372,
+      "masterEndMs": 77335,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1089,
+      "sha256": "b0e87370c70c300248e388c3ca12804784610eb59628f385630fa5bdb8b12f5c"
+    },
+    "shanghai-male/last2": {
+      "text": "我还剩两张！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 77335,
+      "masterEndMs": 81483,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1285,
+      "sha256": "30c86f5083fb473ae7d3f88744816f4e9568e1ed3926bdf3a655d85d39465aa4"
+    },
+    "shanghai-male/preview": {
+      "parts": [
+        "pass-unable-0",
+        "beat-0",
+        "straight",
+        "jokers"
+      ],
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 2944,
+      "sha256": "635173e1c094a99aaf3e1481375794825b2c6a2be0aadc17c02d5d7e9a44b54e"
+    },
+    "shanghai-male/single-2": {
+      "text": "二！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 81483,
+      "masterEndMs": 84802,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 465,
+      "sha256": "99015531863bc3357416b67ea58272f5c15118cd94a0849564cf220d280ba632"
+    },
+    "shanghai-male/pair-2": {
+      "text": "一对二！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 84802,
+      "masterEndMs": 88368,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 642,
+      "sha256": "4db8a814d1fe652d3765e23fd3f8d92663d69432916230602d70a3a64f1c5a7b"
+    },
+    "shanghai-male/triple-2": {
+      "text": "三个二！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 88368,
+      "masterEndMs": 92173,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 811,
+      "sha256": "ca16431b6841543dfb8d25ea651bf3be762d8045b9290f1662d5a8a550508d25"
+    },
+    "shanghai-male/single-3": {
+      "text": "三！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 92173,
+      "masterEndMs": 95737,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 566,
+      "sha256": "fea4d84af9074f89fadde4a7e5520ea4fd05e449a22eb5aaf524e0532756e772"
+    },
+    "shanghai-male/pair-3": {
+      "text": "一对三！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 95737,
+      "masterEndMs": 99347,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 722,
+      "sha256": "64d0815856c4206294464a1ab839b9ffb05dc4dfdd7016f505113497f9f7f339"
+    },
+    "shanghai-male/triple-3": {
+      "text": "三个三！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 99347,
+      "masterEndMs": 103071,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 877,
+      "sha256": "73c29edc369fd20977c5d0098b68b3c9a6a1a6776f68de1d17906a544ebd970e"
+    },
+    "shanghai-male/single-4": {
+      "text": "四！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 103071,
+      "masterEndMs": 106458,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 530,
+      "sha256": "840cf1ffe849a8aeacc1c9f6104593eb3a4bb73734aebc44ecc6656ff023e676"
+    },
+    "shanghai-male/pair-4": {
+      "text": "一对四！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 106458,
+      "masterEndMs": 110058,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 680,
+      "sha256": "e14cb21df3b15b85a744ce1031503e803dcc4fccdba9a49531907ad7e970f208"
+    },
+    "shanghai-male/triple-4": {
+      "text": "三个四！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 110058,
+      "masterEndMs": 113763,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 789,
+      "sha256": "9e6748f0fbce21a8020d95fcfc2418c58362289b6e64f7c42a19f19bb95d8917"
+    },
+    "shanghai-male/single-5": {
+      "text": "五！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 113763,
+      "masterEndMs": 117002,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 341,
+      "sha256": "80eb48fff59c9c712c84285b6c1fa4324f87fc0cd3639840c11cd5caa12831fd"
+    },
+    "shanghai-male/pair-5": {
+      "text": "一对五！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 117002,
+      "masterEndMs": 120565,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 634,
+      "sha256": "d623160a5f42d3dd3062060d84c074a58337545975156b8503d57cd842acdc9b"
+    },
+    "shanghai-male/triple-5": {
+      "text": "三个五！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 120565,
+      "masterEndMs": 124185,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 808,
+      "sha256": "1a313cd53cafde95ba770ef9b7497be4a31bd20c8e54851c58887c9d1ac4db1b"
+    },
+    "shanghai-male/single-6": {
+      "text": "六！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 124185,
+      "masterEndMs": 127423,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 368,
+      "sha256": "7a6538dd73d6640c36d9468904ea1ba29a6a99078e6ac16ad1b8bca31b8410b1"
+    },
+    "shanghai-male/pair-6": {
+      "text": "一对六！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 127423,
+      "masterEndMs": 130987,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 653,
+      "sha256": "70ae9065f8f3ccf291a7ae0f9d2ca9b7bd1fba22cdd9eaf4a2be87c9ee7287e0"
+    },
+    "shanghai-male/triple-6": {
+      "text": "三个六！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 130987,
+      "masterEndMs": 134671,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 851,
+      "sha256": "8a2083d7c16636d1171dd746ea69cb6e1db2e74f4b0970d08eb3728caa295e12"
+    },
+    "shanghai-male/single-7": {
+      "text": "七！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 134671,
+      "masterEndMs": 137810,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 283,
+      "sha256": "3a906b7927e38615fb1c430054a164e010095769e77da597f43500b22f047ec6"
+    },
+    "shanghai-male/pair-7": {
+      "text": "一对七！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 137810,
+      "masterEndMs": 141381,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 583,
+      "sha256": "39ad8bb18940f6e4a783853ec1eb48f650e25db1332676533d0056c5a340a177"
+    },
+    "shanghai-male/triple-7": {
+      "text": "三个七！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 141381,
+      "masterEndMs": 145091,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 771,
+      "sha256": "ec1cb6391a10da9cd526c74f793b8ee299c297df34991a0aae08ccf30a2a7b80"
+    },
+    "shanghai-male/single-8": {
+      "text": "八！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 145091,
+      "masterEndMs": 148170,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 204,
+      "sha256": "6e4b7c521084aaa36bef00a2792c94e7b342e1e4e16bb75f126e601a7c01114e"
+    },
+    "shanghai-male/pair-8": {
+      "text": "一对八！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 148170,
+      "masterEndMs": 151740,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 657,
+      "sha256": "e006ff8eded90a5915ad2ee50828660ed8de44aa85de9ebb68d49ce48d69118a"
+    },
+    "shanghai-male/triple-8": {
+      "text": "三个八！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 151740,
+      "masterEndMs": 155412,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 762,
+      "sha256": "99919beca3364a1a6ec1ac32e163ecfa65f304f7bad3b9b16f515d6d4c2b4b03"
+    },
+    "shanghai-male/single-9": {
+      "text": "九！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 155412,
+      "masterEndMs": 158716,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 443,
+      "sha256": "b7711a35b7a48f9e15a4b3b05ca9b96f5a221780502fd9d7180dcf5796b71e30"
+    },
+    "shanghai-male/pair-9": {
+      "text": "一对九！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 158716,
+      "masterEndMs": 162355,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 705,
+      "sha256": "3362fd5cdb850e9046875206a0a667e9285d7ecaf38604adfccd22715e3bedda"
+    },
+    "shanghai-male/triple-9": {
+      "text": "三个九！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 162355,
+      "masterEndMs": 166235,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 935,
+      "sha256": "b866360065fe615413e25f8424f2ab98bca4da2a2e5631991ee6052c5b62b552"
+    },
+    "shanghai-male/single-10": {
+      "text": "十！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 166235,
+      "masterEndMs": 169596,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 395,
+      "sha256": "4b4bc5128de5d93bbc40ad0501b7347752a0e70b76ea880f5015108ec5973ed5"
+    },
+    "shanghai-male/pair-10": {
+      "text": "一对十！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 169596,
+      "masterEndMs": 173178,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 666,
+      "sha256": "3804493539695fc8c867353118667c78e43a416bef61afee146d72c97f7f621d"
+    },
+    "shanghai-male/triple-10": {
+      "text": "三个十！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 173178,
+      "masterEndMs": 176901,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 840,
+      "sha256": "fbbf6a97ecd00ef3fd6853f042e474b0b4b6e8aa834a43a3d108d43998ce1913"
+    },
+    "shanghai-male/single-11": {
+      "text": "勾！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 176901,
+      "masterEndMs": 180124,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 356,
+      "sha256": "f8bcf76c6d5043a1e827c464aff5edd9e4186639226e8943a386248835f3ba0b"
+    },
+    "shanghai-male/pair-11": {
+      "text": "一对勾！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 180124,
+      "masterEndMs": 183734,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 690,
+      "sha256": "db7502be4a26e9d18f8dc35883858c4cbee368c1946c8f5f72ecea649bd7765c"
+    },
+    "shanghai-male/triple-11": {
+      "text": "三个勾！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 183734,
+      "masterEndMs": 187465,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 803,
+      "sha256": "8a3aeae98256ed014c8489bfa63106daf6c6c8112b061c7b0aebf7503128b1ba"
+    },
+    "shanghai-male/single-12": {
+      "text": "圈！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 187465,
+      "masterEndMs": 190846,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 489,
+      "sha256": "6ea5a18ff983e71d6a1580944e72b290c6208bf6309805d5ef1ff9fc1d8a679c"
+    },
+    "shanghai-male/pair-12": {
+      "text": "一对圈！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 190846,
+      "masterEndMs": 194542,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 763,
+      "sha256": "202061c40801ec0fd5089fef6eec5bcdec188f928a22f23378a554b2cbdcad08"
+    },
+    "shanghai-male/triple-12": {
+      "text": "三个圈！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 194542,
+      "masterEndMs": 198309,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 956,
+      "sha256": "d14a39f455650a6af55caff4fa188799d0892068ecb99e12306b27a617fd5029"
+    },
+    "shanghai-male/single-13": {
+      "text": "凯！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 198309,
+      "masterEndMs": 201613,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 453,
+      "sha256": "38f9dae258fd6510e2edc2f12f1760a6b2142716d2ea8bdb832be97eed2e0436"
+    },
+    "shanghai-male/pair-13": {
+      "text": "一对凯！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 201613,
+      "masterEndMs": 205159,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 643,
+      "sha256": "f71d18652ef2fb3f2dff1e8f32844ec344e6bca7ebb3f6d69ea5924fb2aed4e2"
+    },
+    "shanghai-male/triple-13": {
+      "text": "三个凯！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 205159,
+      "masterEndMs": 208886,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 793,
+      "sha256": "ebc015b50df470edd356acfd4ee1895b94b59fd64797b57df54fccd400ae7eae"
+    },
+    "shanghai-male/single-14": {
+      "text": "尖！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 208886,
+      "masterEndMs": 212221,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 440,
+      "sha256": "abb594e4b2cfbf1bcca32933fd7e827c8cc5f58be78a2c82aeabff6a6a5b75b8"
+    },
+    "shanghai-male/pair-14": {
+      "text": "一对尖！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 212221,
+      "masterEndMs": 215940,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 721,
+      "sha256": "1afaccd62778e26267103918ca92e7511aebdfde903ec1bbd61a83d251748063"
+    },
+    "shanghai-male/triple-14": {
+      "text": "三个尖！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 215940,
+      "masterEndMs": 219800,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 860,
+      "sha256": "e4ab3222fd0a8dfe861d64dc376baa2acb2c42e50f9e5fa856682d8ff5efa73d"
+    },
+    "shanghai-male/single-16": {
+      "text": "小王！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 219800,
+      "masterEndMs": 223406,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 722,
+      "sha256": "a93864f9a022a1e969c0e66e336175d2445b8f926314e51cc2adef0d5cf6c63e"
+    },
+    "shanghai-male/pair-16": {
+      "text": "一对小王！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 223406,
+      "masterEndMs": 227184,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 883,
+      "sha256": "3a3198843c82f0f471bbc08d506dc26b053a05161a8f0101c21bd05b76f0c4d4"
+    },
+    "shanghai-male/single-17": {
+      "text": "大王！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 227184,
+      "masterEndMs": 230671,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 589,
+      "sha256": "d5be1c5258443a813af3971d9f9cc27c7cbb59e2d9162d8f2d6e8cdf388d7da7"
+    },
+    "shanghai-male/pair-17": {
+      "text": "一对大王！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 230671,
+      "masterEndMs": 234449,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 867,
+      "sha256": "23312bf83262656f79de95d8204b490977c0da5dc1abd10abaa6aed232a95e45"
+    },
+    "shanghai-male/bomb-4": {
+      "text": "四张炸弹！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 234449,
+      "masterEndMs": 238664,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1258,
+      "sha256": "56bcc74db063fba057b338c4b4193d40c6babaa3450d1f41063c499aa472a3d6"
+    },
+    "shanghai-male/bomb-5": {
+      "text": "五张炸弹！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 238664,
+      "masterEndMs": 242826,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1214,
+      "sha256": "adf6b10f224487950c7b494931335fd176d1cdd123017837f3f1a62f9700d951"
+    },
+    "shanghai-male/bomb-6": {
+      "text": "六张炸弹！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 242826,
+      "masterEndMs": 246771,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1059,
+      "sha256": "499cd189d279972bd83f2e62b40d51e0bc3d1a49566ac2088b63e537cfd716a3"
+    },
+    "shanghai-male/bomb-7": {
+      "text": "七张炸弹！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 246771,
+      "masterEndMs": 250756,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1107,
+      "sha256": "0f276c73f03ed86fba3c8163c1df2a86e936269b582a0917f0bfa0c0246f3fc8"
+    },
+    "shanghai-male/bomb-8": {
+      "text": "八张炸弹！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 250756,
+      "masterEndMs": 254697,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1050,
+      "sha256": "8845bbd16e9d38acb28b88c7e6375443c29ef559bd38c536972fa9a2357dff3d"
+    },
+    "shanghai-male/bomb-9": {
+      "text": "九张炸弹！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 254697,
+      "masterEndMs": 258686,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1094,
+      "sha256": "b556a1e52f756abfced81be89859397912bae65244d152f24c47a82584b04d05"
+    },
+    "shanghai-male/bomb-10": {
+      "text": "十张炸弹！",
+      "masterSha256": "0d5b530190bbed46c976a6c796dfb89afc51f4cc01c81f6b7898f69e79eb25ff",
+      "masterStartMs": 258686,
+      "masterEndMs": 262008,
+      "voice": "wuu-CN-YunzheNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1036,
+      "sha256": "2e76ee1d767846f5c268fdde32f0fcdb81dbd15782dc5f255cf81d42e33ce9cd"
+    },
+    "shanghai-female/straight": {
+      "text": "顺子！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 0,
+      "masterEndMs": 2298,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 713,
+      "sha256": "5e1f8deef7d031b92753de663f1d18ffca9b3e841a6ff45072aa804230a56caf"
+    },
+    "shanghai-female/dpairs": {
+      "text": "三连对！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 2298,
+      "masterEndMs": 6067,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 850,
+      "sha256": "46b5497e716814bb6273a6dc19494305ea0914e91492384d57fe650f73944869"
+    },
+    "shanghai-female/steel": {
+      "text": "钢板！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 6067,
+      "masterEndMs": 9527,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 500,
+      "sha256": "4ff6dbb6994ec5af5094f105adb42e2681ab99bb3c175288468dba9f868f15a9"
+    },
+    "shanghai-female/fullhouse": {
+      "text": "三带二！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 9527,
+      "masterEndMs": 13398,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 843,
+      "sha256": "d35b5fdc67650d69d2fa47e96920c2bb2e17580a4c076853bbd701579fe51a50"
+    },
+    "shanghai-female/sflush": {
+      "text": "同花顺！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 13398,
+      "masterEndMs": 17071,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 794,
+      "sha256": "de89caa7b5654628bb6c508e0b4977132a0b48685edba610421a09869a546275"
+    },
+    "shanghai-female/jokers": {
+      "text": "四大天王！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 17071,
+      "masterEndMs": 21168,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1097,
+      "sha256": "5d5fbe296f74ed4b629d8b934f9cf166d228f85287c25919454e63aa05e8c0cb"
+    },
+    "shanghai-female/jiefeng": {
+      "text": "对家接风！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 21168,
+      "masterEndMs": 25182,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 984,
+      "sha256": "0f9ec7d4ca7bb418e504e12dab382dcb396ef16c2db8d74c1d3ed948044f1660"
+    },
+    "shanghai-female/jiefeng-handoff": {
+      "text": "队友，交给你！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 25182,
+      "masterEndMs": 29673,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1453,
+      "sha256": "9b777de19681143d9fbd46e7376be53c74dd693d4022f54c97b09b24793cca23"
+    },
+    "shanghai-female/jiefeng-reply": {
+      "text": "接风，看我的！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 29673,
+      "masterEndMs": 33799,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1264,
+      "sha256": "288ca555f26fc62b15a76b641203f3b42389a89f6f4d95b372bffbcd5b0b6aff"
+    },
+    "shanghai-female/pass-0": {
+      "text": "不要！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 33799,
+      "masterEndMs": 37256,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 507,
+      "sha256": "eebf811f73d89cd1f7925cd16529cc6ebf1dde1633c2804e586bba3a60ac0de9"
+    },
+    "shanghai-female/pass-1": {
+      "text": "过！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 37256,
+      "masterEndMs": 40528,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 332,
+      "sha256": "4f44775f27cecdfb5d83ba1630343b6e6392d742466cf2bb4537f786d7a87a64"
+    },
+    "shanghai-female/pass-2": {
+      "text": "这手先过！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 40528,
+      "masterEndMs": 44449,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 952,
+      "sha256": "9385650c43585f13c194d7864bf6e3594a2d779d37db9e2fb1ccc1ccce9301dd"
+    },
+    "shanghai-female/pass-3": {
+      "text": "你们先出！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 44449,
+      "masterEndMs": 48475,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 982,
+      "sha256": "81b18c225f4eb1f2d83082ebe5a757f2dcd48a780335a38ff010bf39bb3db904"
+    },
+    "shanghai-female/pass-4": {
+      "text": "这轮先过！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 48475,
+      "masterEndMs": 52437,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 967,
+      "sha256": "acbe8167778d04df501b76fba453c1845790f6770e0e364803b7ef17af72bea9"
+    },
+    "shanghai-female/pass-5": {
+      "text": "先歇一手！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 52437,
+      "masterEndMs": 56389,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1098,
+      "sha256": "c73afa5507af9060897e59c900ee69b3649cf3288ec104df1caf535ba3e46419"
+    },
+    "shanghai-female/pass-unable-0": {
+      "text": "要不起！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 56389,
+      "masterEndMs": 60021,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 688,
+      "sha256": "c51a7bba392fd003ac9813952665e9a9db03192530041ec120c1fb9f6a2e9159"
+    },
+    "shanghai-female/pass-unable-1": {
+      "text": "这牌要不起！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 60021,
+      "masterEndMs": 63924,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 989,
+      "sha256": "084f03a84ff897713dcedf3df8f9e38114d8ab85db0a4b0bea6bf33c89ab393a"
+    },
+    "shanghai-female/beat-0": {
+      "text": "大你！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 63924,
+      "masterEndMs": 67440,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 552,
+      "sha256": "8683ea35454fa0b590801ace89fa5840e9a46d9216bd35ce7101575173768f38"
+    },
+    "shanghai-female/beat-1": {
+      "text": "压上！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 67440,
+      "masterEndMs": 71003,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 535,
+      "sha256": "c5a5fbda3d973d8bf746cb62d946037f8a2d6b738821f7f0efb046d691491388"
+    },
+    "shanghai-female/beat-2": {
+      "text": "管上！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 71003,
+      "masterEndMs": 74632,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 537,
+      "sha256": "d6db0804d254856d29078ac007c40daffa2fc384d2cb58f8d443e10a42795c00"
+    },
+    "shanghai-female/last1": {
+      "text": "我还剩一张！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 74632,
+      "masterEndMs": 78666,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1063,
+      "sha256": "f6e8c6df18b0a814be502eeb6e4f2c6f74bd2525d4bae442b15ddef192a55950"
+    },
+    "shanghai-female/last2": {
+      "text": "我还剩两张！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 78666,
+      "masterEndMs": 82719,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1154,
+      "sha256": "7fae7d7e14c61c452c79c827053e6a966fa240aae36375afcc71eab0f1184e44"
+    },
+    "shanghai-female/preview": {
+      "parts": [
+        "pass-unable-0",
+        "beat-0",
+        "straight",
+        "jokers"
+      ],
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 3050,
+      "sha256": "5f7936ee7aed6173dfac0fbcde7aed2c7e6a4afb17bd9a0fd86b255cb96d8a02"
+    },
+    "shanghai-female/single-2": {
+      "text": "二！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 82719,
+      "masterEndMs": 86104,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 409,
+      "sha256": "32f88de13cb087494f723cdcf5d04a6e31b32afd0fdbaf18c26ac0e6877f2c5c"
+    },
+    "shanghai-female/pair-2": {
+      "text": "一对二！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 86104,
+      "masterEndMs": 89785,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 696,
+      "sha256": "941141ec80e6d13b3a8022340efcc7c15b79fc7833f8f64c67fd0729dce0a11c"
+    },
+    "shanghai-female/triple-2": {
+      "text": "三个二！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 89785,
+      "masterEndMs": 93581,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 788,
+      "sha256": "56706d190197ed92f5d6c8ce7b06b37acc9735c509171f86816812ba77150b8e"
+    },
+    "shanghai-female/single-3": {
+      "text": "三！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 93581,
+      "masterEndMs": 97065,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 501,
+      "sha256": "2cd99466a2722031cbc1eba8743fcaba3f10b605c02a6c7e2bd7c505870699f4"
+    },
+    "shanghai-female/pair-3": {
+      "text": "一对三！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 97065,
+      "masterEndMs": 100768,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 803,
+      "sha256": "73a33612fdc88436c518cac70e91713e9664ff86af84e557a9c4871ee1c0bc0f"
+    },
+    "shanghai-female/triple-3": {
+      "text": "三个三！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 100768,
+      "masterEndMs": 104546,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 867,
+      "sha256": "a1798791f71519e5aa0087bcd622eddf077eeb70d2ae9bc05afad2878bec745b"
+    },
+    "shanghai-female/single-4": {
+      "text": "四！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 104546,
+      "masterEndMs": 107932,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 477,
+      "sha256": "489d2688fe031820c9adfa10cec1e553df08d6aa35967ed987f83f759f382c75"
+    },
+    "shanghai-female/pair-4": {
+      "text": "一对四！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 107932,
+      "masterEndMs": 111547,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 657,
+      "sha256": "6229fabbac348c12cd7a28b41fef1389f80a797fe59c8853d0fb622704a19494"
+    },
+    "shanghai-female/triple-4": {
+      "text": "三个四！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 111547,
+      "masterEndMs": 115283,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 845,
+      "sha256": "3f4f7bd29e1eaac95a3d0cb5c4e9b1f20d6b2ce1aa4e6aea80db52bc7e4eee82"
+    },
+    "shanghai-female/single-5": {
+      "text": "五！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 115283,
+      "masterEndMs": 118640,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 354,
+      "sha256": "85982fd56d62db3618cbbe85aebf2d52aecac55c2932319ff92ded832c3e547e"
+    },
+    "shanghai-female/pair-5": {
+      "text": "一对五！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 118640,
+      "masterEndMs": 122393,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 728,
+      "sha256": "f04143acc6befb3e6c12a8d53140e9dbdb2b6a3e95bcf81f0f7f83b3a02a681f"
+    },
+    "shanghai-female/triple-5": {
+      "text": "三个五！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 122393,
+      "masterEndMs": 126072,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 758,
+      "sha256": "1c100d9c075ba6f791451345acd6ef12be1b3674ed84127dba31ff8ec1bb7a2d"
+    },
+    "shanghai-female/single-6": {
+      "text": "六！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 126072,
+      "masterEndMs": 129360,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 358,
+      "sha256": "51d41c21dcefc23fe78c5c6265d8cd2a48aeed695de421cb5860c93105f692a0"
+    },
+    "shanghai-female/pair-6": {
+      "text": "一对六！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 129360,
+      "masterEndMs": 132959,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 616,
+      "sha256": "a26c8e726e1abc66a2c346427d38dbf978e7b84309bdc15c1f7cb23e88364c02"
+    },
+    "shanghai-female/triple-6": {
+      "text": "三个六！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 132959,
+      "masterEndMs": 136703,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 747,
+      "sha256": "f274a49996da63769d90a23bdbff53312555845d55cc9f62a35bf40e89ac310f"
+    },
+    "shanghai-female/single-7": {
+      "text": "七！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 136703,
+      "masterEndMs": 139990,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 325,
+      "sha256": "c98d2875c95cd586fd59e6140a837bea900c725179d460d397d9674a7a6de3f4"
+    },
+    "shanghai-female/pair-7": {
+      "text": "一对七！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 139990,
+      "masterEndMs": 143613,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 696,
+      "sha256": "9a842e3e7b36ee3eb72b87f52ef7a1c153fa6f8ec193511505eef4bae2ec583a"
+    },
+    "shanghai-female/triple-7": {
+      "text": "三个七！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 143613,
+      "masterEndMs": 147401,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 850,
+      "sha256": "2616c7417197b8e445e5d954a743738d48d01f98da82ad72d28e07dc2fd1c7d4"
+    },
+    "shanghai-female/single-8": {
+      "text": "八！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 147401,
+      "masterEndMs": 150552,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 234,
+      "sha256": "8f3c70e2f7b7dffa65df2f339885e234fec596037e9366d759899e655411f895"
+    },
+    "shanghai-female/pair-8": {
+      "text": "一对八！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 150552,
+      "masterEndMs": 154074,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 617,
+      "sha256": "7f9555c6df7c859bdeeb70c7b375e770ddc441ef84a390d4af511a881f10968a"
+    },
+    "shanghai-female/triple-8": {
+      "text": "三个八！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 154074,
+      "masterEndMs": 157792,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 718,
+      "sha256": "ba010408aebba29793989ad40a8ab8262b39f9ba677f7dda3e5d1ce55d38ec78"
+    },
+    "shanghai-female/single-9": {
+      "text": "九！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 157792,
+      "masterEndMs": 161100,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 404,
+      "sha256": "8b23f0c5f9acc63f930c28d925db30119d8694b60fc10583e9f8731635070bfd"
+    },
+    "shanghai-female/pair-9": {
+      "text": "一对九！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 161100,
+      "masterEndMs": 164884,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 744,
+      "sha256": "694c04d09457701738919f41e372f6bd66bfb15f6cdb5d50bf052a45eadfc288"
+    },
+    "shanghai-female/triple-9": {
+      "text": "三个九！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 164884,
+      "masterEndMs": 168809,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 845,
+      "sha256": "2dd855f95544de49b23b3a6e256a77b03b0341b5df3d917d78faaad8869cfb0d"
+    },
+    "shanghai-female/single-10": {
+      "text": "十！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 168809,
+      "masterEndMs": 172155,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 332,
+      "sha256": "ad796fd72a2d44bd3bfd3be1b22b9c8cc8cc596ae4d73b93f36fcd6826983b1a"
+    },
+    "shanghai-female/pair-10": {
+      "text": "一对十！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 172155,
+      "masterEndMs": 175783,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 668,
+      "sha256": "157023b03549abcf0957e357df8e7a7af3d4e6bf8a20aa61387a76e5508c699a"
+    },
+    "shanghai-female/triple-10": {
+      "text": "三个十！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 175783,
+      "masterEndMs": 179444,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 796,
+      "sha256": "f6887fbe4f7b1fab922b3ab580e1595c1cbf5a830b7a70673922b30c0c5ea92d"
+    },
+    "shanghai-female/single-11": {
+      "text": "勾！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 179444,
+      "masterEndMs": 182699,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 340,
+      "sha256": "bf92a65f101d6d86761d6957f40a1447b2ac904159bbc166d263da8524f5757e"
+    },
+    "shanghai-female/pair-11": {
+      "text": "一对勾！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 182699,
+      "masterEndMs": 186376,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 685,
+      "sha256": "5e190bb9011486df38eed23ed9ca0cc78b0a572d39adc2c99c9338d11a69589e"
+    },
+    "shanghai-female/triple-11": {
+      "text": "三个勾！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 186376,
+      "masterEndMs": 190137,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 765,
+      "sha256": "f62df272ef7d6e7098955e2c8296892589709ccfb1dbc4472dea8d7edc3a2f91"
+    },
+    "shanghai-female/single-12": {
+      "text": "圈！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 190137,
+      "masterEndMs": 193568,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 400,
+      "sha256": "ecb5d4502279683c06dfa42d72a57cc3e6d677ed588aa0e866635571cce694ad"
+    },
+    "shanghai-female/pair-12": {
+      "text": "一对圈！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 193568,
+      "masterEndMs": 197223,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 681,
+      "sha256": "4f853de1e3a03485f5e49c11031449d76458622236cb43761171ab790a215404"
+    },
+    "shanghai-female/triple-12": {
+      "text": "三个圈！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 197223,
+      "masterEndMs": 201028,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 810,
+      "sha256": "ca4d2bd9c38df7b77c0cf5b49c457cdd88a694a07d49414c417001a606acf221"
+    },
+    "shanghai-female/single-13": {
+      "text": "凯！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 201028,
+      "masterEndMs": 204378,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 430,
+      "sha256": "65999957670adc7cad8fff0425789931627cbfee871722d342716cb0fc231438"
+    },
+    "shanghai-female/pair-13": {
+      "text": "一对凯！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 204378,
+      "masterEndMs": 208028,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 680,
+      "sha256": "35aa4eeead1cf4457f959a8dc49e16d103ba8b26ea0f46c4a73b97aa68536dbf"
+    },
+    "shanghai-female/triple-13": {
+      "text": "三个凯！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 208028,
+      "masterEndMs": 211761,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 778,
+      "sha256": "3099ed6b01cbc7b4afe20a264d5052a1dcf3aaaf4cea677be8a09ec26b5e302d"
+    },
+    "shanghai-female/single-14": {
+      "text": "尖！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 211761,
+      "masterEndMs": 215042,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 337,
+      "sha256": "4bb86748b3e8163fc9c0f10630b6fa8ef5e3a0a9d02a5af923a02a1ae6588e57"
+    },
+    "shanghai-female/pair-14": {
+      "text": "一对尖！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 215042,
+      "masterEndMs": 218755,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 708,
+      "sha256": "44bfd87126bfb77342ec81a4b7c042a7026e4e399b1ae08969e936bee4c87da3"
+    },
+    "shanghai-female/triple-14": {
+      "text": "三个尖！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 218755,
+      "masterEndMs": 222576,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 833,
+      "sha256": "396b683d83665ef951e34562ae8dc50ad19935165852960c6f159a4ed4750669"
+    },
+    "shanghai-female/single-16": {
+      "text": "小王！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 222576,
+      "masterEndMs": 226239,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 722,
+      "sha256": "aaeaea8a0da62697d3d7bcf57e2f688e825e9266b623deaa7fe3afe3d7a44cd6"
+    },
+    "shanghai-female/pair-16": {
+      "text": "一对小王！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 226239,
+      "masterEndMs": 230177,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 941,
+      "sha256": "40f44e3bae754baafaf9fbae96664f12cdd3657627e676d1beafd53602d49dc4"
+    },
+    "shanghai-female/single-17": {
+      "text": "大王！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 230177,
+      "masterEndMs": 233686,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 620,
+      "sha256": "b0f870eb365ed5881fdf50b6ea3ae4577412772a8473fad953e2b6cc08bd5776"
+    },
+    "shanghai-female/pair-17": {
+      "text": "一对大王！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 233686,
+      "masterEndMs": 237593,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 887,
+      "sha256": "478e92961004e57e93c6e840950efb5509ff5379fa0366a80a857d52f76d1f2e"
+    },
+    "shanghai-female/bomb-4": {
+      "text": "四张炸弹！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 237593,
+      "masterEndMs": 241735,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1137,
+      "sha256": "2d9bd174bc91f86f112c4e78b84d77f5d94181fc3408b6d57a3ab4c2f82bb8ec"
+    },
+    "shanghai-female/bomb-5": {
+      "text": "五张炸弹！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 241735,
+      "masterEndMs": 245829,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1064,
+      "sha256": "6df00b781cee4e715294944fbd59a501ad2f1364ba6b6a6cbc125bfbfa090ef5"
+    },
+    "shanghai-female/bomb-6": {
+      "text": "六张炸弹！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 245829,
+      "masterEndMs": 249818,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1005,
+      "sha256": "12369129bbd1eef304ace09faf7062aac7fec40c8602c9a26a639e311ce5623d"
+    },
+    "shanghai-female/bomb-7": {
+      "text": "七张炸弹！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 249818,
+      "masterEndMs": 253774,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1014,
+      "sha256": "60831fdb424e9ebdc7251506008047a023fc95210386e1f49abbaab7b9251d7c"
+    },
+    "shanghai-female/bomb-8": {
+      "text": "八张炸弹！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 253774,
+      "masterEndMs": 257695,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1012,
+      "sha256": "f2d0847ba34547e542a982e9d2ddbaceba1a4a3bde1aae4688e455454020b17e"
+    },
+    "shanghai-female/bomb-9": {
+      "text": "九张炸弹！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 257695,
+      "masterEndMs": 261740,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1054,
+      "sha256": "b2a2fdab5a06053844c9268f4a7854b19715f2fd26a0f03689174e81c9228ba5"
+    },
+    "shanghai-female/bomb-10": {
+      "text": "十张炸弹！",
+      "masterSha256": "356a72610ce800b62421757c5c4cd410f325a933d244e7995bbae670e372aff2",
+      "masterStartMs": 261740,
+      "masterEndMs": 265140,
+      "voice": "wuu-CN-XiaotongNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 1046,
+      "sha256": "a773514945f98d099fc9b7df7717fbdbfc55a0d3df823433ea9d3abf9dcc35f9"
+    },
+    "henan-female/straight": {
+      "text": "顺子。",
+      "durationMs": 592,
+      "sha256": "baefa04860e5202b41201fe6a831046fa4dcd2c1b7d68d1c1870c8afbb8cc78b",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        0,
+        0.8569685
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "12b381ed581aa3d0bf313ebdba4b7c8a78c7a63788b61d665babfb622fd1e7f2",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/dpairs": {
+      "text": "三连对。",
+      "durationMs": 849,
+      "sha256": "c663a086894a87f1bc1a5097be9749096d1b99612e832bc660aac200c443e8af",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        0.8569685,
+        1.9800315
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "0ef8491e12d835d969cc1f28a1a4cfd71c96adc0d16cf5623e019c412436be1d",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/steel": {
+      "text": "钢板。",
+      "durationMs": 600,
+      "sha256": "d291e8dcb35525fb3087e7ecc6a35afaa6c5823124d1d0d0f04fd3864dc10bed",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        1.9800315,
+        2.8531874999999998
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "4beea2a9c6d895f53ec959e411396f1c1406c98f1cf697917ad4526144916eb0",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/fullhouse": {
+      "text": "三带二。",
+      "durationMs": 819,
+      "sha256": "f0842d83fbe8e8c3836552de73196b16a06957cf760089fb17a3c0911f89f881",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        2.8531874999999998,
+        3.955063
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "bfa6dcaad67236a3716ea677c6148316faebed36b90b80a4d7dcfbfe70d31d76",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/sflush": {
+      "text": "同花顺。",
+      "durationMs": 831,
+      "sha256": "ade9b2fe7376603db9abd7fec64506967d35e8da69e6415be5cc6410112ee15c",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        3.955063,
+        5.0172185
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "a407b8db7d4e8df73b0a26ee17177c372f00c495d8086219448baef8ca5c42ef",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/jokers": {
+      "text": "四大天王。",
+      "durationMs": 1026,
+      "sha256": "952e4ab99647dfa692be3398a9799d8a1745aa36e5c570aa40312971f8a8658c",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        5.0172185,
+        6.2448440000000005
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "9e6fd01620f2ae126c9571ad7e570ee8403be8a5d3a4e1257ca53a37dc49f8e2",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/jiefeng": {
+      "text": "对家接风。",
+      "durationMs": 973,
+      "sha256": "5c023f5725993644066e1de4462112c89962611680ede7d1b553886097fdcb4f",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        6.2448440000000005,
+        7.427656499999999
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "438aca800b173d1161c5f80269d03151acd5e927198eed9254b7214931272dee",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/jiefeng-handoff": {
+      "text": "队友，交给你。",
+      "durationMs": 1377,
+      "sha256": "2b50cc3580cb593276904336e5be185e8761cb8d9bef0d444eeea5df3e7e4010",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        7.427656499999999,
+        8.959749500000001
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "5c71a08e5386b932210713466dadeb940d9e798f9ccdb0458c29ab9c0c060ba7",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/jiefeng-reply": {
+      "text": "接风，看我的。",
+      "durationMs": 1567,
+      "sha256": "cabc311be9ec9eb9ef8f5cf88caae75c7690c0fd4049e01e2629e82d9ffe9fc7",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        8.959749500000001,
+        10.6494995
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "74331cfea1db64cf4435257bde5a0367ebbff52c1949d324adeae264ae7fa834",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pass-0": {
+      "text": "不要。",
+      "durationMs": 503,
+      "sha256": "141d54242a88af90a35b48015d12800c46f833d0540fc08c21cfa8027c865f6f",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        10.6494995,
+        11.4381875
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "2d8bfa93a3a17ecf9b51dbaf5c0fd0507b87490beb6b884a76dfd4940cf93c1b",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pass-1": {
+      "text": "过。",
+      "durationMs": 371,
+      "sha256": "65ab56aa2f2bae240ac2864719e167736f45f7dd1cef1e1aba3948f036485f5b",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        11.4381875,
+        12.1067815
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "0099f40c1cd54cc7255731204790ea7556ef2a0014c2bcac7c2d69f0701363af",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pass-2": {
+      "text": "这手先过。",
+      "durationMs": 1024,
+      "sha256": "28bc030e4f3466f656a588c8afc54e48eb8163f7eb85995df427d040c7201e8a",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        12.1067815,
+        13.3449685
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "5cd15faa6db43a092b1469c8fca29124a90f8b4403f46822b03b6d40d8d98f70",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pass-3": {
+      "text": "你们先出。",
+      "durationMs": 917,
+      "sha256": "0fa8e0f557a48686900aa2c98b212825026c7f47e1b030540331624857a49b45",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        13.3449685,
+        14.4754685
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "3427736dfaae4586c492a36329a90ba708210adfcadf96e97613248259da23c3",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pass-4": {
+      "text": "这轮先过。",
+      "durationMs": 996,
+      "sha256": "b633faf4d49ac89a8094fd47c5e93f7b2c8e578fe5f25cfbb35d593c84ca340b",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        14.4754685,
+        15.679281
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "bb84b2784365bd56588093fbc51b95f2b67c287d6b894e22bec72be0ccca9aef",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pass-5": {
+      "text": "先歇一手。",
+      "durationMs": 1059,
+      "sha256": "5f7986b6aba9c34c8153f7f733acfccd811b582c342319b03376415c31684084",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        15.679281,
+        16.94025
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "e1aa87fa726d9b75433dea658871cdf925f538a746abbb2db5e23d69d3299b1f",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pass-unable-0": {
+      "text": "要不起。",
+      "durationMs": 749,
+      "sha256": "49e92a5938f3723c198b057eeab6962806b02c47bd820ab8815272712f5d0403",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        16.94025,
+        17.9444685
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "f32ea3387d05ab7bdc4fa93207cead6da721c73f222bda1282420ccbb63703e7",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pass-unable-1": {
+      "text": "这牌要不起。",
+      "durationMs": 1084,
+      "sha256": "cfdf9cca15f2b3f818823dbad064a41bdd156a3072a3879f6352eee36689ec7b",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        17.9444685,
+        19.2386875
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "ac419ffc8fb1b9d4aca13dba2aac3d2aa6a9cdacac988cc8a7cdcd2ccef0a344",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/beat-0": {
+      "text": "大你。",
+      "durationMs": 538,
+      "sha256": "865b14d6f21e45d41fc236410295e1f33cd5af9c0bcf9458527b2240d67f8520",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        19.2386875,
+        20.0550315
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "43d6c43b64292d84c3f3daa137d80c870fe89bf96dcd0bcdb63d7dc190145fc8",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/beat-1": {
+      "text": "压上。",
+      "durationMs": 545,
+      "sha256": "33ba85090db8f511622a706d0f85a658fb0be69ec008e75a41e78b5adc4455a2",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        20.0550315,
+        20.8744065
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "a58ee91cc613d09741f9188775d07d9b557ddd416463d1f47c52035c2c02a97f",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/beat-2": {
+      "text": "管上。",
+      "durationMs": 585,
+      "sha256": "97e7dd38e191531c3ecc63fcbe5d4e7f500830d9ef65d177051504437e5997af",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        20.8744065,
+        21.736
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "c015d5421835bd0c32aa2d665daf45cd5aec3abfa5cb7d8c5e5ee768d3c392af",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/last1": {
+      "text": "我还剩一张。",
+      "durationMs": 1075,
+      "sha256": "9c96d0df33c72f42fc31f9faf46e0f3f95758aa2885185170520320a85562a34",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        21.736,
+        23.024813
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "8825243fb1f452cadf7c9593da638e8d4c119918e2fc1979dc43d27091303943",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/last2": {
+      "text": "我还剩两张。",
+      "durationMs": 1133,
+      "sha256": "35b43f9a8adca62a3146b6be5d055f288cfc920b491c5442626cd5311ba30800",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        23.024813,
+        24.386530999999998
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "6adb9be14c5951e23041a8f45c45b4f92bf941b55e48c026ee324842ebe2ce2b",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/preview": {
+      "parts": [
+        "pass-unable-0",
+        "beat-0",
+        "straight",
+        "jokers"
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "durationMs": 2905,
+      "sha256": "dee96b4b42afa8fd8a5d8a34217150f093d1461998fa8cd83cbd0c459e87f8eb"
+    },
+    "henan-female/single-2": {
+      "text": "二。",
+      "durationMs": 351,
+      "sha256": "9af91d3de9ac3fca03f1c234ef25e60e5107e39a7d586eb0c6d7b1e510b388a9",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        24.386530999999998,
+        25.069906500000002
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "1fa82abac8165b191b31a79749ee3e5c17aadb1581eec814d23c235cf4ec8bd9",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-2": {
+      "text": "一对二。",
+      "durationMs": 675,
+      "sha256": "1365d279dfe5157a5d8f1a8c34ad9f5df6bf96cf83653dabaa173522e26dedde",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        25.069906500000002,
+        26.0142185
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "ebd7c1ea130a85e38a7629ec591b5b821c133845dbaf59d96e42c534f5b171ba",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-2": {
+      "text": "三个二。",
+      "durationMs": 709,
+      "sha256": "671b47c6fe38dab5fcf223c16aea821ead9cd990f09007f5a92a65807f0dd12d",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        26.0142185,
+        27.0232815
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "a715e4a816cacf04cc3fadfa8df277ee14a9fc918553151c71e1de699beab628",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-3": {
+      "text": "三。",
+      "durationMs": 534,
+      "sha256": "696ee3aecbccb01423b8043100fa970758002a64d26dda7491d7b244a560827d",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        27.0232815,
+        27.8371255
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "0d82cb496d8f2ca33c608c557ddf60cb98893bfbdec83443ae24c00320368cc1",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-3": {
+      "text": "一对三。",
+      "durationMs": 751,
+      "sha256": "a0ec51d7e1419d1c9e020745f251f28d907fed64b25cca3dab904334458ea4e0",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        27.8371255,
+        28.844438
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "9bbdf724d58a7a332051716bf194a6fe9648a1f7764c3b0ed2fc3e0e4957b2a4",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-3": {
+      "text": "三个三。",
+      "durationMs": 774,
+      "sha256": "65a09d34046b08afa14ee0d5ab5020cd125e2559f5d69da419beed7a3eb42c75",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        28.844438,
+        29.9120935
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "3be98aa48594daf4439a267fb1518267b5ed00f1b94cfbc3984754028c834720",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-4": {
+      "text": "四。",
+      "durationMs": 384,
+      "sha256": "53e68e68b38ad2ccb5434740e08fff4447aa2b194fd4a389977ff7c2e741a492",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        29.9120935,
+        30.606875000000002
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "3b75f7ec767be9d47fc59dba17cfb45b03a03293cac75b375ab764ae4f3ccead",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-4": {
+      "text": "一对四。",
+      "durationMs": 793,
+      "sha256": "8158fbeba49739f82b4ebff4a41ccda0cfcb07f3bbb6117b2038211227e2bc6c",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        30.606875000000002,
+        31.6216255
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "b366212cd51c430920792642dc7a3efbcd8782acc63771525ba494a1ec636c7e",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-4": {
+      "text": "三个四。",
+      "durationMs": 808,
+      "sha256": "d46b6acd3cecd8ac147d16a5f68ba90daa03f8909c675e00354f73e15ddf75dd",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        31.6216255,
+        32.688281
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "7c852117ff7fd424d0aa6067c0bfff6d618cfc2fef64c1315dad7c9d1605c9bf",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-5": {
+      "text": "五。",
+      "durationMs": 349,
+      "sha256": "8ea29db8256d8bb9751a97cf74e5c02ad7e8aeed3425a4ad167333b21b0ad460",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        32.688281,
+        33.362874500000004
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "a675fb272d0d0aabd88cefff5943773a3e69d3722b9a452be173088526906d14",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-5": {
+      "text": "一对五。",
+      "durationMs": 767,
+      "sha256": "6e2d13b9e41a3de64524d3b189de3e7110844a1de098b1311f2c165e26b2c571",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        33.362874500000004,
+        34.374125
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "29a452451e6bac8c9ae0469e3a6a61d26989685b92ce316798c08eb0d23236ff",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-5": {
+      "text": "三个五。",
+      "durationMs": 727,
+      "sha256": "63ed7a42b742b69647050a3fc0dfa82cec678fdb98cae7ad9bbe46b70d5ef543",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        34.374125,
+        35.435656
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "9a1b0a1d593815ddd7359abca9c2fe963cc1c0fd54fed4db2df3ad02dafb23a2",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-6": {
+      "text": "六。",
+      "durationMs": 383,
+      "sha256": "2d5a6afe5f11beab8d3f5475e8674e3bf8b1dbbd4f5ba418795e92d6e60e75d9",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        35.435656,
+        36.142406
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "b7cbc1ed4e6fe3301a8a0356f7d64deed8e19563bd340e7cf8a5feb8ac31bb18",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-6": {
+      "text": "一对六。",
+      "durationMs": 749,
+      "sha256": "0489dd9c3eb0ac376790c022a3cc6ed77a630abd65d30c9aa62660abece7c8b3",
+      "masterSha256": "908a305e5824eda2f58e2db0781be453d4e9de84069e71c47970ad4149fb02e6",
+      "rangeSeconds": [
+        36.142406,
+        37.332
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "42fb9daa73d8bd744956de22d371799d13f201d1eeb183c6a89ac4b0bd232be1",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-6": {
+      "text": "三个六。",
+      "durationMs": 729,
+      "sha256": "f4d3117b3fce53637b8bb2fcaae598b2f48bc7866ca1f08abb91b88947dbff0d",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        0,
+        1.045969
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "cab0f913b82e609772910b1ed4f37814a981da2cfbbeae9b89ccd9c95fffb81d",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-7": {
+      "text": "七。",
+      "durationMs": 418,
+      "sha256": "b84efb858e3b86e143da3b9fb004ceef0bf9d09ea0e13da7d1410cc317dab6b8",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        1.045969,
+        1.75775
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "713d629912089469caf84e3a7856190ea605fb725879604800a7804c4248f7e2",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-7": {
+      "text": "一对七。",
+      "durationMs": 776,
+      "sha256": "766961fab22d567c041bff19192163153e03e07be298b88ce3a2cbda259a2a90",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        1.75775,
+        2.776438
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "083e364f8d678ad11c562412b67dbde9b17ce48c5f7efa40ce08e140dfce8c59",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-7": {
+      "text": "三个七。",
+      "durationMs": 813,
+      "sha256": "e4468542057bd1549987bdc14d1f791bfa3b7a37f1cfc828464d183237a1ff29",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        2.776438,
+        3.876125
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "677683ea3203e3362000e12261887c4e86b931c16056cc291de79112bf12c05d",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-8": {
+      "text": "八。",
+      "durationMs": 328,
+      "sha256": "947c3d19223697d87316322a1be8641b6992e95cd2c2b87f89caf5568c6076c7",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        3.876125,
+        4.4976875
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "e253e94367654c7ec4f85bc0dca54cffe57fd04c58dea51154ada449b8c0b572",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-8": {
+      "text": "一对八。",
+      "durationMs": 691,
+      "sha256": "7285a77f1a51f3dbfdb40b0670f68f5d5921c81f9b470b7e833f21f2aa88ad58",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        4.4976875,
+        5.4472815
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "4b19846c7afea2296fea221f7f80f6ab749f4a78e2108f62d93350a646139f1a",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-8": {
+      "text": "三个八。",
+      "durationMs": 685,
+      "sha256": "8776eba8a3ef6b08de29e9153baf974d71739223ba1e4168f07b20989290a98b",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        5.4472815,
+        6.4423435
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "ab18814a9374c93bf6dd4101ea0733fccd7b0d5e32adbfd9aab31b0324a40dd6",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-9": {
+      "text": "九。",
+      "durationMs": 354,
+      "sha256": "f7b5fb4e779412e85b0f1fe6557f838b733f94614b7dbb5d4c3190322d5f0da2",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        6.4423435,
+        7.1059375
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "98974bdc8cbd8315876cc364f75fccd1f48bfca67bd599080b2569a7b3f0efb7",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-9": {
+      "text": "一对九。",
+      "durationMs": 705,
+      "sha256": "28b8d23f56c156004ad7856d0b6f6498b3a3675bf5743d398f0bfbfbb6d56d95",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        7.1059375,
+        8.0550935
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "7b06914008e527f770889691859d14278d5bd118a2c333317676481acfb9d7fc",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-9": {
+      "text": "三个九。",
+      "durationMs": 735,
+      "sha256": "e5165ca53a989bd4ff8d4bab199944bb1e42a95269a06ae00c6eaa8f18be9dce",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        8.0550935,
+        9.0954995
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "010815d0b90df417e05532bfa97a03e0eba3c22bf462f2432244027b725860d8",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-10": {
+      "text": "十。",
+      "durationMs": 445,
+      "sha256": "2411a385e3cd8d39f3ebcfd6ef99c572dcdd238aa29907fc77b7944e4254066c",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        9.0954995,
+        9.82125
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "16637588575b01b5275886742380f8b545fc71ca40a33bc58453044d81339f45",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-10": {
+      "text": "一对十。",
+      "durationMs": 839,
+      "sha256": "f4077182916bab61974794d77ce98d5e0ddf07726c5f831fe50127c1e0883034",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        9.82125,
+        10.8725935
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "277d32570df8b9ea950686a25919184d9294d91370eb51d05c7196eca304ef6f",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-10": {
+      "text": "三个十。",
+      "durationMs": 862,
+      "sha256": "46c9e24cac9c05448d15869d4030b9a7a2268cf7a31c1f85e9862fd56cca4471",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        10.8725935,
+        11.960594
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "a666c834427070f28fe15629f2e3e5ef1e617b48036ba3190315f70931ee7719",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-11": {
+      "text": "勾。",
+      "durationMs": 427,
+      "sha256": "660a509708010f7b05da4a620b6df9161cdb1423df5ae0cc37f53833372586a7",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        11.960594,
+        12.661312500000001
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "e64cf8c82f99e9c2de3b4fbf8ca9c72e81398dcc4f3c71b76ce67312060b0024",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-11": {
+      "text": "一对勾。",
+      "durationMs": 737,
+      "sha256": "8e90d63935ff18abc0a214480921565a445053924c75bef7aff48d5ac6b4370e",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        12.661312500000001,
+        13.6525935
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "7f75ed564c9b165b64e5346baf90f62f53a165ca9d26efffca8b7932898800bf",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-11": {
+      "text": "三个勾。",
+      "durationMs": 798,
+      "sha256": "5c0fb9ba66037b198e3e0ee729f7e234927bd0316d31ec3b608899c84c70afcb",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        13.6525935,
+        14.7309065
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "2befd8996180128d6d30afede4868834f59fb301d2f78029e1e7c32bc478b170",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-12": {
+      "text": "圈。",
+      "durationMs": 430,
+      "sha256": "e393446977cbe489973a6da89b7e1efd576880a2df0e9039250df1681f4c29cb",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        14.7309065,
+        15.450844
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "a8721b1345c1bd154869ee859575f75cd8a4e7d3ffa1ff863838ddb6d702d96a",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-12": {
+      "text": "一对圈。",
+      "durationMs": 734,
+      "sha256": "b50a7a9839d2c55b4584513f34e440b03096af0f86ed653ab8453c01238e8a58",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        15.450844,
+        16.4495625
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "c6a4df12246356a0b54d49e719d30a3739ee313da9b1a31081f3f9846f0ccf93",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-12": {
+      "text": "三个圈。",
+      "durationMs": 778,
+      "sha256": "a3fb69de247dc4d16e3087882c49078dec9e9bd836efac9e5e6a130ec7734ded",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        16.4495625,
+        17.527562500000002
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "8224d9829bd7c24742ade3704b8a732227e017ad841fe97383be0e065c0c0b59",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-13": {
+      "text": "凯。",
+      "durationMs": 440,
+      "sha256": "00f3267463e35b3bfc5a29cbeafd2c2a1d915ce23df1b2dc9a33f839adf3e129",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        17.527562500000002,
+        18.278000499999997
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "10d5f3d9f4e8f8e3eed58f121e8a0af611e5cc7e351d9879a145e24029f46812",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-13": {
+      "text": "一对凯。",
+      "durationMs": 758,
+      "sha256": "e7cab79674f7a3909a6ea1c7bd8006c81044dc1e63785cc5a41d54c36c05d25a",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        18.278000499999997,
+        19.3113125
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "e5ffc28ede739f3f88dc45fd4efda45f7bfb4031677f98d482c52a43cd47019d",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-13": {
+      "text": "三个凯。",
+      "durationMs": 825,
+      "sha256": "7e016e1a572ea8b209eac7a4fe837eba4a1aceb58f53dbf2fa0e83c45f4e5d07",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        19.3113125,
+        20.4030315
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "6a72c45c4fcb5730c514806d41c7d718df232e7b9584d10d0ca91f334c751581",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-14": {
+      "text": "尖。",
+      "durationMs": 390,
+      "sha256": "bed48bf1268e830babd2027f92873a792ce97023d977e9ce8d18922da4f97c92",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        20.4030315,
+        21.09075
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "eac26839644bd6a4e00982118a0b9a3b662397a84d1dbc160d17bd8360af1cf4",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-14": {
+      "text": "一对尖。",
+      "durationMs": 739,
+      "sha256": "663325299c2f95e90ab130f904d83a1cef4d46471b9973c8e54d4295e0e5680c",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        21.09075,
+        22.078843499999998
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "ed3ed2282a8ec4080fbb927d10f223a537e9260b3774991260bcaaac29c11490",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/triple-14": {
+      "text": "三个尖。",
+      "durationMs": 771,
+      "sha256": "30270fd191800ed8441f6e33c434271e73a4d659fa28fd976321b87da51a1f19",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        22.078843499999998,
+        23.1348125
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "771822c5b9ae6963c97e7b422e3690d5b6d6c5b855279cd0df1e65d84040e186",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-16": {
+      "text": "小王。",
+      "durationMs": 701,
+      "sha256": "8d59512006c0e17161b9cdd5eb1acefbcb512987cfcb3d0a6348bfcc711d1edf",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        23.1348125,
+        24.0806245
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "a2bebc1861749ff75400e756ca4c4fff1919ff0d2dfd4912477ae220d53c2708",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-16": {
+      "text": "一对小王。",
+      "durationMs": 1008,
+      "sha256": "42986d6322798c2d3297886ee39a5e9608d8755ca9da3e27e8f4a60d106ac788",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        24.0806245,
+        25.262999999999998
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "a71c943ddf1dc79de79a005c86f24461df0c99c85b4bf4d2c1053f46b531d0f4",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/single-17": {
+      "text": "大王。",
+      "durationMs": 619,
+      "sha256": "690e4a281bbf587992bc17c6e63d31b8458a1a17f1ff40ea3ebc57155c3b7bad",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        25.262999999999998,
+        26.119688
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "c405005031d5f35dceb3ddc94c47eb45b768741ea667da77f351ef86b613660d",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/pair-17": {
+      "text": "一对大王。",
+      "durationMs": 1024,
+      "sha256": "fcda3a124f680f471be01abb67c426559bcbd96ae15adeab79cc39eddf56d6c7",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        26.119688,
+        27.316812
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "39d51dfd64b10acafab766676833255bdb777e80a6152c61e23a9eeac5aa1742",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/bomb-4": {
+      "text": "四张炸弹。",
+      "durationMs": 1032,
+      "sha256": "49549ca1d7ae9b7f4bf814aece3665d948c04ca47795d12d0841d8c46359bc40",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        27.316812,
+        28.5531565
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "49df583a482f6ef180089e95479656993d3c265ccdc878508c960a839d145d38",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/bomb-5": {
+      "text": "五张炸弹。",
+      "durationMs": 988,
+      "sha256": "7a7db978fede297cf1680e690a49ac3182c961c889faefe6ced6b4a01e68defb",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        28.5531565,
+        29.774
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "99d41b4a03945b007fed8e76dc8b81d16344209c263a83a52391d19cc1939f9b",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/bomb-6": {
+      "text": "六张炸弹。",
+      "durationMs": 1012,
+      "sha256": "933dcb54db77be18de48777824934c9e561ddf21dea528b9fe028942ce6173e8",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        29.774,
+        31.002625000000002
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "19d3e059ef0b05665eae9cd0206236c96015a01414db8d31866a61b2897f8128",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/bomb-7": {
+      "text": "七张炸弹。",
+      "durationMs": 1117,
+      "sha256": "74e089245cf4096b28ab734a6fc80cd25841d20510a6ec16549aaaf371f195c3",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        31.002625000000002,
+        32.3071875
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "88389efab136dcf442765a7d6f463f996bb5fa12061fb1ff4e1606e27c64c01c",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/bomb-8": {
+      "text": "八张炸弹。",
+      "durationMs": 1047,
+      "sha256": "85939d39c32c38d34dc0bd002ae8da475fc01c43109392722c2c0d4a9e756b42",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        32.3071875,
+        33.545030999999994
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "52c69bdce5239c71b58757c349632f5e4fcee5e3bacfa9e1c02708dd90334323",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/bomb-9": {
+      "text": "九张炸弹。",
+      "durationMs": 1041,
+      "sha256": "6da884e314ce830f725cfeecc497b1fd9db5c93fed0cd44b6062e2ed4c509159",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        33.545030999999994,
+        34.777844
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "5d121daba693dfcc7b5a8ed6d5ad80025cb98a4fb3602f7ed9377d1dfdfd0911",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    },
+    "henan-female/bomb-10": {
+      "text": "十张炸弹。",
+      "durationMs": 1091,
+      "sha256": "d861ada47ddf3c0f700c1062b4dc1e28329369d713ea787891d7445e21c00241",
+      "masterSha256": "18ad518248c5f5c7011156cec14e0e52dcd5b1cb22ea0b6613d941fc73b6ff99",
+      "rangeSeconds": [
+        34.777844,
+        36.216
+      ],
+      "voice": "zh-CN-XiaoxiaoDialectsNeural",
+      "rate": 1,
+      "pitchHz": 0,
+      "postProcessing": {
+        "inputSha256": "37b0c97fbf0ca1ffc4bc36eeed926b9473d134dceae1925496c6ff6a44032d3f",
+        "filter": "atempo=0.85,adelay=40,apad=pad_dur=0.06",
+        "tempo": 0.85,
+        "preservesPitch": true
+      }
+    }
+  },
+  "rejectedPacks": {
+    "shanghai-female": [
+      {
+        "reviewedOn": "2026-10-26",
+        "clipSetSha256": "4e6daadb860c980200909eb0afb3f686609dedff48f2051d63846c35c9c7e2fc",
+        "reason": "声调、腔调均不对"
+      }
+    ],
+    "shanghai-male": [
+      {
+        "reviewedOn": "2026-10-26",
+        "clipSetSha256": "b9f5ef773fca2386cfebd9434b8f56f16f4cf840f9a8ead6f3049bbd93bfd7e4",
+        "reason": "声调、腔调均不对"
+      }
+    ],
+    "sichuan-female": [
+      {
+        "reviewedOn": "2026-10-26",
+        "clipSetSha256": "b39a5ce9cd750c14c5165c61a0ff901749249edb917c0c3498e5749d6d14d95f",
+        "reason": "表演浮夸，拖长尾音"
+      },
+      {
+        "reviewedOn": "2026-10-26",
+        "clipSetSha256": "e4360aeb7b248d1dd5803d519c53b330cc1c03d8dfd0be635def06aba48adce3",
+        "reason": "新版四川女声仍然不对味，未达到方言口音要求"
+      }
+    ],
+    "funing-male": [
+      {
+        "reviewedOn": "2026-10-26",
+        "clipSetSha256": "309592dd9f0442a0af0332eed2ce9aa7657d0c65d389f34e0b2ac8c85c3ddd35",
+        "reason": "声调、腔调均不对，现有参考合成未还原阜宁话"
+      }
+    ],
+    "henan-female": [
+      {
+        "reviewedOn": "2026-10-27",
+        "clipSetSha256": "6271153c880cdb0d7997f53ff569f0f431f70f03571e489bbed23e95b4e6ff18",
+        "reason": "2026-10-27：用户确认河南话、东北话男女声均不太对；撤下此版本，换来源先做报牌小样。"
+      }
+    ],
+    "henan-male": [
+      {
+        "reviewedOn": "2026-10-27",
+        "clipSetSha256": "082d929cbe47b993084af9970a9645268fc3139033cb646a2f50f0cabed65086",
+        "reason": "2026-10-27：用户确认河南话、东北话男女声均不太对；撤下此版本，换来源先做报牌小样。"
+      }
+    ],
+    "dongbei-female": [
+      {
+        "reviewedOn": "2026-10-27",
+        "clipSetSha256": "6ce0344ab26b265d7ceec5f3d59e4e54c09b6dd788a1a39c6defa806b1e00982",
+        "reason": "2026-10-27：用户确认河南话、东北话男女声均不太对；撤下此版本，换来源先做报牌小样。"
+      }
+    ],
+    "dongbei-male": [
+      {
+        "reviewedOn": "2026-10-27",
+        "clipSetSha256": "126238fe30c5ae0660175a42c30587d160e67d338786d9d7727e2d87b1882e7c",
+        "reason": "2026-10-27：用户确认河南话、东北话男女声均不太对；撤下此版本，换来源先做报牌小样。"
+      }
+    ]
+  }
+}

@@ -11,6 +11,7 @@
   let muted = false;
   let volume = 0.6;
   let voiceEnabled = true, voiceStyle = "roles";
+  let seatVoices=null;
   let voiceSerial = 0;
   // 四家各用自己的媒体元素；试听另占一个，互不抢占或排队。
   const channels = Array.from({ length: 5 }, (_, seat) => ({
@@ -58,6 +59,10 @@
     channels.forEach(stopChannel);
   }
   function profileFor(seat, style) {
+    if(seatVoices&&GD.voicePreferences){
+      const route=GD.voicePreferences.resolve(seat,seatVoices[seat]);
+      return route?.ready?route.profile:null;
+    }
     return GD.VOICE_PROFILES.includes(style) ? style : GD.VOICE_SEATS[seat];
   }
   function speak(ids, seat, opts = {}) {
@@ -67,6 +72,7 @@
     const audio = ensurePlayer(channel);
     if (!audio || !GD.VOICE_LINES || ids.some(id => !GD.VOICE_LINES[id])) return false;
     const profiles = opts.profiles || ids.map(() => profileFor(seat, opts.style || voiceStyle));
+    if(profiles.some(p=>!p))return false;
     // 接风应答与该玩家紧接着的报牌接在一起；其余座位仍可同时说话。
     if (!opts.interaction && !opts.preview && channel.current && channel.current.interaction && channel.current.index === 0) {
       channel.current.ids.push(...ids);
@@ -237,10 +243,26 @@
       return speak(ids, r.seat);
     },
     preview(style = voiceStyle) {
+      if(seatVoices&&GD.voicePreferences){
+        const profiles=[],ids=[];
+        ["pass-unable-0","beat-0","beat-1","beat-2"].forEach((id,seat)=>{
+          const profile=profileFor(seat,style);if(profile){profiles.push(profile);ids.push(id);}
+        });
+        return ids.length?speak(ids,0,{preview:true,profiles}):false;
+      }
       return style === "roles" ? speak(["pass-unable-0", "beat-0", "beat-1", "beat-2"], 0,
         { preview: true, profiles: GD.VOICE_SEATS }) : speak(["preview"], 0, { preview: true, style });
     },
-    setVoice(enabled, style) { voiceEnabled = enabled !== false; voiceStyle = ["roles","bright","calm"].includes(style) ? style : "roles"; if (!voiceEnabled) cancelVoice(); },
+    previewSeat(seat){return speak(['preview'],seat,{preview:true});},
+    setVoice(enabled, style, preferences) {
+      const before=[0,1,2,3].map(seat=>profileFor(seat,voiceStyle));
+      voiceEnabled=enabled!==false;voiceStyle=["roles","bright","calm"].includes(style)?style:'roles';
+      seatVoices=Array.isArray(preferences)&&GD.voicePreferences?GD.voicePreferences.normalize(preferences):null;
+      let changed=false;
+      for(let seat=0;seat<4;seat++)if(before[seat]!==profileFor(seat,voiceStyle)){stopChannel(channels[seat]);changed=true;}
+      if(changed)stopChannel(channels[4]);
+      if(!voiceEnabled)cancelVoice();
+    },
     cancel() {
       cancelVoice();
       oscillators.forEach(osc => { try { osc.stop(); } catch (e) {} }); oscillators.clear();
