@@ -1,0 +1,14 @@
+.git
+.codex
+.agents
+.aws
+.env
+.env.*
+.online-data
+node_modules
+dist
+test
+docs
+tools
+*.log
+.DS_Store

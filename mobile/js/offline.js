@@ -24,6 +24,7 @@
   // 手机上中途转回竖屏时，通过现有菜单暂停并保存，横回来后手动继续。
   const portrait = window.matchMedia?.("(max-width: 600px) and (orientation: portrait)");
   portrait?.addEventListener("change", () => {
+    if (window.GD?.online?.inGame) return; // 联机时旋转只影响当前页面，其他玩家继续对局。
     const home = document.getElementById("homeOverlay");
     const modal = document.querySelector(".overlay:not(.hidden)");
     if (portrait.matches && home.classList.contains("hidden") && !modal)
@@ -45,6 +46,7 @@
   }
   function refresh() {
     if (waiting) status("新版已下载，关闭所有游戏窗口后重新打开即可更新", "ready");
+    else if (window.GD?.online?.inGame) status("联机需要连接房间服务 · 离线缓存供单机游玩", "ready");
     else if (ready) status(navigator.onLine === false
       ? "当前已离线 · 可以正常对局和保存进度" : "离线已就绪 · 断网也能玩", "ready");
     else if (navigator.onLine === false) status("尚未完成离线准备，请联网后重试", "error");
@@ -63,6 +65,7 @@
     installPrompt = null;
     button.classList.add("hidden");
   });
+  window.addEventListener("gd:online-mode", refresh);
   button.addEventListener("click", async () => {
     if (!installPrompt) return;
     const prompt = installPrompt;

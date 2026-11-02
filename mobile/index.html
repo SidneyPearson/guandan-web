@@ -4,18 +4,19 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#155d4c" />
-<meta name="description" content="四人单机掼蛋，手机横屏游玩，添加到桌面后可离线游玩。" />
+<meta name="description" content="手机横屏掼蛋，支持单机离线、同一 Wi-Fi 和公网好友房间。" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="单机掼蛋" />
-<title>单机掼蛋 · 手机离线版</title>
+<title>掼蛋 · 手机横屏版</title>
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="manifest" href="manifest.webmanifest" />
-<link rel="stylesheet" href="../css/style.css?v=1.24.6" />
-<link rel="stylesheet" href="../css/table-theme.css?v=1.24.6" />
-<link rel="stylesheet" href="css/mobile.css?v=1.24.6" />
+<link rel="stylesheet" href="../css/style.css?v=1.25.1" />
+<link rel="stylesheet" href="../css/table-theme.css?v=1.25.1" />
+<link rel="stylesheet" href="css/mobile.css?v=1.25.1" />
+<link rel="stylesheet" href="../css/online.css?v=1.25.1" />
 </head>
 <body>
 <div id="app">
@@ -140,7 +141,7 @@
   <div class="overlay hidden" id="homeOverlay">
     <div class="panel home-panel">
       <h1 class="game-title">掼&nbsp;蛋</h1>
-      <p class="subtitle">手机横屏版 · 四人对局 · 离线畅玩</p>
+      <p class="subtitle">手机横屏版 · 单机畅玩 · 好友联机</p>
       <div class="diff-row">
         <span>电脑难度：</span>
         <label><input type="radio" name="homeDiff" value="easy" /> 简单</label>
@@ -149,6 +150,10 @@
       </div>
       <button class="btn btn-primary big" id="btnStart">完整对局<span class="mode-desc">升级、进贡，打到过 A</span></button>
       <button class="btn big" id="btnPractice">快速一局<span class="mode-desc">只打一副，结束即结算</span></button>
+      <div class="online-entry-row" aria-label="在线游玩">
+        <button class="btn" id="btnOnlineLan">同一 Wi-Fi<span class="mode-desc">同一网络，面对面开桌</span></button>
+        <button class="btn" id="btnOnlinePublic">公网联机<span class="mode-desc">分享房间，异地一起玩</span></button>
+      </div>
       <button class="btn big hidden" id="btnContinue">继续完整对局</button>
       <button class="btn big hidden" id="btnPracticeContinue">继续快速一局</button>
       <div class="home-sub-row">
@@ -156,7 +161,7 @@
         <button class="btn btn-ghost" id="btnHomeStats">战绩</button>
         <button class="btn btn-ghost" id="btnHomeRules">规则</button>
       </div>
-      <p class="foot-tip">规则、AI、存档均在本地浏览器运行</p>
+      <p class="foot-tip">单机无需联网 · 联机通过房间服务同步</p>
       <div class="offline-tools">
         <p class="offline-status" data-offline-status role="status">正在准备离线资源…</p>
         <p class="browser-hint hidden" data-browser-hint>微信内可在线游玩；离线安装请点右上角「···」→「在浏览器打开」，再用 Safari 或 Chrome 添加到桌面。</p>
@@ -304,31 +309,34 @@
   <div class="toast" id="toast"></div>
 </div>
 
-<script src="../js/version.js?v=1.24.6"></script>
-<script src="../js/util.js?v=1.24.6"></script>
-<script src="../js/cards.js?v=1.24.6"></script>
-<script src="../js/rules.js?v=1.24.6"></script>
-<script src="../js/flow.js?v=1.24.6"></script>
-<script src="../js/ai.js?v=1.24.6"></script>
-<script src="../js/ai-memory.js?v=1.24.6"></script>
-<script src="../js/ai-search.js?v=1.24.6"></script>
-<script src="../js/ai-worker-source.js?v=1.24.6"></script>
-<script src="../js/ai-client.js?v=1.24.6"></script>
-<script src="../js/fx.js?v=1.24.6"></script>
-<script src="../js/voice-lines.js?v=1.24.6"></script>
-<script src="../js/voice-config.js?v=1.24.6"></script>
-<script src="../js/voice-packs.js?v=1.24.6"></script>
-<script src="../js/music.js?v=1.24.6"></script>
-<script src="../js/sound.js?v=1.24.6"></script>
-<script src="../js/stats.js?v=1.24.6"></script>
-<script src="../js/game.js?v=1.24.6"></script>
-<script src="../js/table-tools.js?v=1.24.6"></script>
-<script src="../js/table-view.js?v=1.24.6"></script>
-<script src="../js/turn-clock.js?v=1.24.6"></script>
-<script src="../js/active-play.js?v=1.24.6"></script>
-<script src="../js/seat-play.js?v=1.24.6"></script>
-<script src="../js/play-history.js?v=1.24.6"></script>
-<script src="../js/ui.js?v=1.24.6"></script>
-<script src="js/offline.js?v=1.24.6"></script>
+<script src="../js/version.js?v=1.25.1"></script>
+<script src="../js/util.js?v=1.25.1"></script>
+<script src="../js/cards.js?v=1.25.1"></script>
+<script src="../js/rules.js?v=1.25.1"></script>
+<script src="../js/flow.js?v=1.25.1"></script>
+<script src="../js/ai.js?v=1.25.1"></script>
+<script src="../js/ai-memory.js?v=1.25.1"></script>
+<script src="../js/ai-search.js?v=1.25.1"></script>
+<script src="../js/ai-worker-source.js?v=1.25.1"></script>
+<script src="../js/ai-client.js?v=1.25.1"></script>
+<script src="../js/fx.js?v=1.25.1"></script>
+<script src="../js/voice-lines.js?v=1.25.1"></script>
+<script src="../js/voice-config.js?v=1.25.1"></script>
+<script src="../js/voice-packs.js?v=1.25.1"></script>
+<script src="../js/music.js?v=1.25.1"></script>
+<script src="../js/sound.js?v=1.25.1"></script>
+<script src="../js/stats.js?v=1.25.1"></script>
+<script src="../js/game.js?v=1.25.1"></script>
+<script src="../js/table-tools.js?v=1.25.1"></script>
+<script src="../js/table-view.js?v=1.25.1"></script>
+<script src="../js/turn-clock.js?v=1.25.1"></script>
+<script src="../js/active-play.js?v=1.25.1"></script>
+<script src="../js/seat-play.js?v=1.25.1"></script>
+<script src="../js/play-history.js?v=1.25.1"></script>
+<script src="../js/vendor/socket.io.min.js?v=1.25.1"></script>
+<script src="../js/online-view.js?v=1.25.1"></script>
+<script src="../js/online.js?v=1.25.1"></script>
+<script src="../js/ui.js?v=1.25.1"></script>
+<script src="js/offline.js?v=1.25.1"></script>
 </body>
 </html>

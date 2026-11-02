@@ -44,6 +44,7 @@
     lastSave: null,
     // 按模式分别存档：整场与练习互不覆盖
     save(state) {
+      if (state && state.online) return { ok: true }; // 房间进度由服务端保存，保留原单机存档。
       const result = writeKey(state.mode === "practice" ? PRACTICE_KEY : SAVE_KEY, JSON.stringify(state));
       store.lastSave = result;
       return result;

@@ -3,6 +3,7 @@
   const GD = window.GD;
   const handKey = (s) => s.matchId + ":" + s.handId;
   function handSeat(s) {
+    if (s.online && !s.partnerVisible) return 0;
     return s.phase === "play" && s.finished.includes(0) && !s.hands[0].length &&
       !s.finished.includes(2) && s.hands[2].length > 0 ? 2 : 0;
   }

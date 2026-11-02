@@ -1,0 +1,30 @@
+# 免费试用：服务休眠、重启或重新部署后，当前牌局需要重新开桌。
+# 需要跨重启续局时，改用 deploy/render-persistent.yaml 并确认 Render 费用。
+services:
+  - type: web
+    name: guandan-online
+    runtime: node
+    repo: https://github.com/SidneyPearson/guandan-web
+    branch: codex/render-online
+    region: singapore
+    plan: free
+    numInstances: 1
+    buildCommand: npm ci --omit=dev --no-audit --no-fund
+    startCommand: npm run start:public
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.1
+      - key: NODE_ENV
+        value: production
+      - key: ONLINE_MODES
+        value: public
+      - key: HOST
+        value: 0.0.0.0
+      - key: ROOM_STORAGE
+        value: ephemeral
+      - key: DATA_DIR
+        value: /tmp/guandan-rooms
+      - key: AI_WORKERS
+        value: "1"

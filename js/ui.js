@@ -4,6 +4,7 @@
   const $ = (id) => document.getElementById(id);
 
   const NAMES = GD.tableTools.seats.map((s) => s.name);
+  const LOCAL_NAMES = NAMES.slice();
   const RANK_WORDS = ["头游", "二游", "三游", "四游"];
   const CARD_BY_ID = new Map(GD.buildDeck().map((c) => [c.id, c]));
 
@@ -79,6 +80,54 @@
       (r) => (r.checked = r.value === s.difficulty));
     refreshContinueEntry();
     show("homeOverlay");
+    if (GD.online) GD.online.mount({ receive: receiveOnline, leave: leaveOnline,
+      connection: () => { if (state?.online) { renderSeats(); updateButtons(); } },
+      refresh: () => { if (state?.online) updateButtons(); }, toast });
+  }
+
+  function receiveOnline(snapshot) {
+    const previous = state, room = snapshot.room;
+    const first = !previous?.online || previous.roomCode !== room.code || previous.onlineMode !== room.mode;
+    const newHand = first || previous.handId !== snapshot.game.handId;
+    state = GD.onlineView.hydrate(snapshot.game, room);
+    state.serverClockOffset = snapshot.serverTime - Date.now();
+    state.organize = !newHand && !!previous.organize;
+    if (state.phase === "handEnd" || state.phase === "matchEnd") GD.stats.recordHand(state);
+    if (state.phase === "matchEnd") GD.stats.recordMatch(state);
+    NAMES[0] = "你";
+    for (let seat = 1; seat < 4; seat++) {
+      const p = room.seats[(seat + room.ownSeat) % 4];
+      NAMES[seat] = p.nickname;
+      $("seat-" + seat).querySelector(".seat-name").textContent = p.nickname + (seat === 2 ? " · 队友" : " · 对手") +
+        (p.bot ? " · 电脑" : !p.connected ? " · 掉线" : "");
+    }
+    if (newHand) {
+      hide("settleOverlay"); hide("matchEndOverlay");
+      seatPlayView.clear(); historyView.close(); turnClock.clear(); GD.fx?.cancel();
+    }
+    resetTemp();
+    const actor = state.awaiting?.seat;
+    if (actor != null) {
+      const p = room.seats[(actor + room.ownSeat) % 4];
+      thinkingSeat = p.bot || p.autoPilot ? actor : -1;
+    }
+    if (!first && !newHand && snapshot.action) afterAct(snapshot.action);
+    if (first) enterGame();
+    else { renderAll(); kick(); if (newHand) dealSound(); }
+    GD.online.updateNextButtons();
+  }
+
+  function leaveOnline() {
+    if (!state?.online) return;
+    state = null;
+    NAMES.splice(0, 4, ...LOCAL_NAMES);
+    for (let seat = 1; seat < 4; seat++) $("seat-" + seat).querySelector(".seat-name").textContent =
+      seat === 2 ? "对家 · 队友" : (seat === 1 ? "东家" : "西家") + " · 电脑";
+    resetTemp(); hideAllOverlays(); seatPlayView.clear(); turnClock.clear(); GD.fx?.cancel(); GD.sound.cancel();
+    $("btnNew").classList.remove("hidden");
+    for (const name of ["btnSettleNext", "btnPracticeAgain", "btnMatchRestart"]) $(name).disabled = false;
+    $("btnPauseHome").textContent = "回首页";
+    refreshContinueEntry(); show("homeOverlay");
   }
 
   function homeDiff() {
@@ -252,6 +301,7 @@
       toggleRecorder(false);
       historyView.close();
       if (!state) return;
+      if (state.online) { show("pauseOverlay"); $("btnResume").focus(); return; }
       state.paused = true;
       noteSaveResult(GD.store.save(state));
       thinkingSeat = -1;
@@ -271,6 +321,7 @@
       $("btnPause").focus();
     };
     $("btnPauseHome").onclick = () => {
+      if (state?.online) { hide("pauseOverlay"); GD.online.open(state.onlineMode); return; }
       hide("pauseOverlay");
       state.paused = true; // 回首页期间暂停一切
       noteSaveResult(GD.store.save(state));
@@ -282,6 +333,7 @@
 
     $("btnNew").onclick = () => {
       if (!state) return;
+      if (state.online) return;
       const practice = state.mode === "practice";
       const title = practice ? "重开快速一局" : "重开完整对局";
       const text = practice
@@ -302,6 +354,7 @@
     };
 
     $("btnMatchRestart").onclick = () => {
+      if (state?.online) { GD.online.action("next"); return; }
       const diff = state ? state.difficulty : "normal";
       GD.store.clearLegacy();
       state = GD.game.newMatch(diff);
@@ -310,6 +363,7 @@
       dealSound();
     };
     $("btnMatchHome").onclick = () => {
+      if (state?.online) { GD.online.leave(); return; }
       hide("matchEndOverlay");
       state.paused = true;
       noteSaveResult(GD.store.save(state));
@@ -320,6 +374,7 @@
     };
 
     $("btnSettleNext").onclick = () => {
+      if (state?.online) { GD.online.action("next"); return; }
       hide("settleOverlay");
       if (state.mode === "practice") {
         // 快速一局结束回首页（存档保留，可从继续入口回看结果）
@@ -344,6 +399,7 @@
     };
 
     $("btnPracticeAgain").onclick = () => {
+      if (state?.online) { GD.online.action("next"); return; }
       hide("settleOverlay");
       state = GD.game.newPractice(state.difficulty);
       noteSaveResult(GD.store.lastSave);
@@ -357,6 +413,7 @@
     $("btnClear").onclick = () => { selected = new Set(); clearHint(); renderHand(); updateButtons(); };
     $("btnAuto").onclick = () => {
       if (!state || $("btnAuto").disabled) return;
+      if (state.online) { GD.online.action("autopilot"); return; }
       state.autoPilot = !state.autoPilot;
       noteSaveResult(GD.store.save(state));
       selected = new Set();
@@ -603,6 +660,7 @@
   }
   /* ================= 弹窗暂停 ================= */
   function modalPauseGame() {
+    if (state?.online) return;
     if (state && !state.paused) {
       state.paused = true;
       modalPause = true;
@@ -652,6 +710,7 @@
   }
 
   function onKeydown(e) {
+    if (GD.online?.dialogOpen) return;
     if (e.key === "Escape" && !$("recorderPanel").classList.contains("hidden")) {
       e.preventDefault(); toggleRecorder(false); $("btnRecorder").focus(); return;
     }
@@ -727,7 +786,7 @@
   function playActionSound(r) {
     if (!settings.sound) return;
     let canBeat;
-    if (settings.voice && r.kind === "pass" && r.followed &&
+    if (settings.voice && (!state.online || r.seat === 0) && r.kind === "pass" && r.followed &&
         r.followed.seat % 2 !== r.seat % 2 && !(r.event && r.event.type === "jiefeng")) {
       // 区分真的“要不起”和主动过牌；仅用当前说话者自己的手牌判断。
       try { canBeat = GD.rules.findBeats(state.hands[r.seat], r.followed.play, state.currentLevel).length > 0; }
@@ -792,7 +851,7 @@
       // 快速档缩短，慢速略放宽，标准 1
       speedMul: settings.speed === "fast" ? 0.62 : settings.speed === "slow" ? 1.15 : 1,
       reduceMotion: !!settings.reduceMotion,
-      ending: state.phase === "handEnd",
+      ending: state.phase === "handEnd" || (state.online && state.phase === "matchEnd"),
       jiefeng: jie,
     });
   }
@@ -801,6 +860,7 @@
     if (!isHumanTurn()) return;
     const cards = state.hands[0].filter((c) => selected.has(c.id));
     if (!cards.length) return toast("请先选择要出的牌");
+    if (state.online) { GD.online.action("play", { ids: cards.map(c => c.id) }); return; }
     const r = GD.game.act(state, 0, cards);
     if (!r.ok) return toast(r.reason);
     afterAct(r);
@@ -811,6 +871,7 @@
 
   function humanPass() {
     if (!isHumanTurn() || state.awaiting.kind !== "follow") return;
+    if (state.online) { GD.online.action("pass"); return; }
     const r = GD.game.act(state, 0, null);
     if (!r.ok) return toast(r.reason);
     afterAct(r);
@@ -875,13 +936,20 @@
   }
 
   function isHumanTurn() {
-    return state && state.phase === "play" && state.awaiting && state.awaiting.seat === 0;
+    return state && state.phase === "play" && state.awaiting && state.awaiting.seat === 0 &&
+      (!state.online || (GD.online.connected && !GD.online.busy && !GD.online.dialogOpen));
   }
 
   /* ================= 节奏驱动 ================= */
   function kick() {
     if (unloading || !$("table")) return; // 卸载中或牌桌节点尚/已不存在：不推进不渲染
     if (!state || state.paused) return;
+    if (state.online) {
+      if (state.phase === "handEnd") showSettle();
+      else if (state.phase === "matchEnd") state.mode === "practice" ? showPracticeEnd() : showMatchEnd();
+      GD.online.updateNextButtons();
+      return;
+    }
     if (state.phase === "handEnd") {
       if (state.mode === "practice") {
         // 练习：一副即终局（此处完成战绩计数，刷新恢复同样幂等）
@@ -1039,6 +1107,14 @@
   }
 
   function handClickInTribute(card) {
+    if (state.online) {
+      if (!GD.online.connected || GD.online.busy || state.autoPilot) return;
+      const t = state.tribute, pair = t.pairs[t.idx];
+      if (!pair || t.anti) return;
+      if (t.stage === "give" && pair.from === 0) GD.online.action("give", { ids: [card.id] });
+      else if (t.stage === "return" && pair.to === 0) GD.online.action("return", { ids: [card.id] });
+      return;
+    }
     const t = state.tribute;
     let rr = null;
     if (t.stage === "give") {
@@ -1087,6 +1163,10 @@
     if (unloading || !$("table")) return;
     $("table").dataset.phase = state.phase;
     $("btnNew").textContent = state.mode === "practice" ? "重开快速一局" : "重开完整对局";
+    $("btnNew").classList.toggle("hidden", !!state.online);
+    $("btnPauseHome").textContent = state.online ? "返回房间" : "回首页";
+    document.querySelector("#pauseOverlay .menu-note").textContent = state.online ? "联机牌局继续进行，菜单仅影响当前页面" : "对局已暂停，进度已自动保存";
+    $("btnPause").title = state.online ? "打开菜单，联机牌局继续进行" : "打开菜单并暂停";
     kickKey = "";
     renderLevels();
     renderSeats();
@@ -1210,7 +1290,8 @@
     el.classList.toggle("your-turn", !paused && seat === 0);
     el.classList.toggle("is-thinking", !paused && thinkingSeat === seat && seat >= 0);
     el.classList.toggle("is-paused", !!paused);
-    if (paused) el.textContent = "对局已暂停";
+    if (state.online && !GD.online.connected) el.textContent = "正在恢复连接 · 暂不可操作";
+    else if (paused) el.textContent = "对局已暂停";
     else if (state.phase === "tribute") {
       el.textContent = state.tribute.anti ? "抗贡 · 等待开局"
         : `${NAMES[seat]}正在${state.tribute.stage === "give" ? "进贡" : "还贡"}`;
@@ -1273,7 +1354,8 @@
   // 手牌操作可用：玩家回合出牌阶段，非托管/暂停/弹窗
   function canHandPick() {
     return !!state && state.phase === "play" && !!state.awaiting &&
-      state.awaiting.seat === 0 && !state.autoPilot && !state.paused && !activeModal;
+      state.awaiting.seat === 0 && !state.autoPilot && !state.paused && !activeModal &&
+      (!state.online || (GD.online.connected && !GD.online.busy && !GD.online.dialogOpen));
   }
 
   // 当前屏幕上的手牌顺序（含理牌顺序），身份一律以 id 保持
@@ -1640,6 +1722,7 @@
     $("btnAuto").classList.toggle("btn-primary", !!state.autoPilot);
     // 出完后不能开启托管；此前已开启的仍可取消，避免下一副继续代打。
     $("btnAuto").disabled = state.phase === "play" && state.finished.includes(0) && !state.autoPilot;
+    if (state.online && (!GD.online.connected || GD.online.busy)) $("btnAuto").disabled = true;
     if (humanPlayTurn) {
       const cards = state.hands[0].filter((c) => selected.has(c.id));
       if (cards.length) {

@@ -1,0 +1,33 @@
+# 本配置使用付费计算和磁盘，仅在确认 Render 展示的费用后应用。
+services:
+  - type: web
+    name: guandan-online
+    runtime: node
+    repo: https://github.com/SidneyPearson/guandan-web
+    branch: codex/render-online
+    region: singapore
+    plan: 0.5c-512mb
+    numInstances: 1
+    buildCommand: npm ci --omit=dev --no-audit --no-fund
+    startCommand: npm run start:public
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+    disk:
+      name: guandan-rooms
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.1
+      - key: NODE_ENV
+        value: production
+      - key: ONLINE_MODES
+        value: public
+      - key: HOST
+        value: 0.0.0.0
+      - key: ROOM_STORAGE
+        value: persistent
+      - key: DATA_DIR
+        value: /var/data/rooms
+      - key: AI_WORKERS
+        value: "1"

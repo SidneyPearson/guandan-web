@@ -11,9 +11,9 @@ const FILES = [
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png",
   `./css/mobile.css?v=${VERSION}`, `./js/offline.js?v=${VERSION}`,
   `../audio/music/table-loop.mp3?v=${VERSION}`,
-  ...["style", "table-theme"].map(name => `../css/${name}.css?v=${VERSION}`),
+  ...["style", "table-theme", "online"].map(name => `../css/${name}.css?v=${VERSION}`),
   ...["version", "util", "cards", "rules", "flow", "ai", "ai-memory", "ai-search", "ai-client", "ai-worker", "ai-worker-source", "fx", "voice-lines", "voice-config", "voice-packs", "music", "sound", "stats", "game",
-    "table-tools", "table-view", "turn-clock", "active-play", "seat-play", "play-history", "ui"]
+    "table-tools", "table-view", "turn-clock", "active-play", "seat-play", "play-history", "vendor/socket.io.min", "online-view", "online", "ui"]
     .map(name => `../js/${name}.js?v=${VERSION}`),
   ...self.GD.voicePreferences.installedProfiles().flatMap(profile => Object.keys(self.GD.VOICE_LINES)
     .map(id => `../audio/voice/${profile}/${id}.mp3?v=${VERSION}`)),
