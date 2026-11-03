@@ -28,6 +28,13 @@ npm run start:lan
 
 ## 公网：GitHub 连接 Render 部署
 
+v1.25.1 已于 2026-11-03 部署到 Render 免费服务，可直接游玩：
+
+- [电脑公网联机](https://guandan-online-x50v.onrender.com/?online=public)
+- [手机横屏公网联机](https://guandan-online-x50v.onrender.com/mobile/?online=public)
+
+填写昵称后创建房间，复制邀请链接发给朋友；朋友加入并准备后，房主点击「开始对局」。服务地址自动识别，无需自行填写。已通过实际公网四客户端开局、私有手牌隔离、出牌同步、请求去重和断线重连验收；手机网页入口及邀请跳转也已验证。
+
 部署目标为 `SidneyPearson/guandan-web` 的 `codex/render-online` 分支，现有 GitHub Pages 的 `main` 分支保留。先把本版代码发布到该分支，再使用仓库根目录的 `render.yaml`，让 Render 同时托管网页和房间后台，无需自建服务器、购买域名或运行 Docker。
 
 1. 登录 Render，创建 Blueprint，连接 GitHub 仓库 `SidneyPearson/guandan-web`。
@@ -54,7 +61,7 @@ npm run start:lan
 
 ## 公网：Docker Compose 部署（自建服务器可选）
 
-公网版已提供代码与配置，尚未部署到实际公网地址。准备一台装有 Docker 和 Compose 的服务器，以及一个已解析到该服务器的域名。
+如果选择自建服务，准备一台装有 Docker 和 Compose 的服务器，以及一个已解析到该服务器的域名。
 
 上传完整项目，在项目目录执行：
 
@@ -140,4 +147,4 @@ node test/mobile-viewport.cjs
 
 在线集成测试使用真实本机 Socket.IO 连接，覆盖两种模式的四客户端通信、私有视图、身份／回合校验、请求去重、电脑补位、服务重启恢复等；浏览器检查使用 macOS Google Chrome 和项目已有的 CDP 驱动，截图保存在 `test/online-evidence/`。
 
-当前服务按单进程、多房间设计，房间数量默认上限 100；没有进行 100 房并发压测。两种模式的同步流程已通过本机浏览器和独立客户端连接验证；实际路由器网络、iOS／Android 真机及公网域名的证书签发仍需部署环境验收。Compose 配置已通过语法检查；本机 Docker 守护进程未运行，因此本轮没有实际构建／运行容器。
+当前服务按单进程、多房间设计，房间数量默认上限 100；没有进行 100 房并发压测。两种模式的同步流程已通过本机浏览器和独立客户端连接验证；Render 公网服务的 HTTPS、桌面／手机网页入口和四客户端实时联机已验收。实际路由器网络和 iOS／Android 真机尚未验收。Compose 配置已通过语法检查；本机 Docker 守护进程未运行，因此本轮没有实际构建／运行容器。

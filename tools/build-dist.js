@@ -96,7 +96,7 @@ const txt = [
   "- 手机横屏游玩，安装步骤见游戏首页「安装到手机 / 离线说明」。",
   "- index.html 是电脑版；mobile/index.html 是独立手机入口，两版均在此完整压缩包中。",
   "- 同一 Wi-Fi 联机：先安装 Node.js 22+，双击「局域网联机.bat」（Windows）或「局域网联机.command」（Mac）。首次安装依赖需联网。",
-  "- 公网联机：按 docs/online-play.md 部署随包提供的服务；单纯打开静态网页不会创建公网房间。",
+  "- 公网联机：按 docs/online-play.md 打开已上线的联机网址，或部署随包提供的服务。",
   "",
 ].join("\r\n");
 fs.writeFileSync(path.join(APP, "快速开始.txt"), "﻿" + txt, "utf8");
