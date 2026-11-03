@@ -4,6 +4,7 @@
   'use strict';
   const GD = window.GD, $ = id => document.getElementById(id);
   const LABEL = { lan: '同一 Wi-Fi', public: '公网联机' };
+  const DEFAULT_PUBLIC_SERVER = 'https://guandan-online-x50v.onrender.com';
   const PREFS = 'gd-online-preferences-v1', SESSIONS = 'gd-online-sessions-v1';
   let hooks, socket = null, mode = 'lan', server = '', current = null, session = null;
   let cancelConnection = null;
@@ -62,7 +63,7 @@
       : '连接公网服务，与不同网络下的朋友一起玩。';
     $('onlineSetupHint').textContent = mode === 'lan'
       ? '建房前，在一台电脑双击「局域网联机.command」，把显示的 Wi-Fi 地址发给朋友。'
-      : '填写已上线联机服务的 HTTPS 地址；从联机网站打开时会自动选择本站服务。';
+      : '公网服务地址已自动填写，通常无需修改。填写昵称和六位房间号即可加入好友房间。';
     document.querySelectorAll('[data-online-mode]').forEach(b => {
       b.classList.toggle('is-selected', b.dataset.onlineMode === mode); b.disabled = !!current && b.dataset.onlineMode !== mode;
     });
@@ -71,10 +72,11 @@
       const query = new URLSearchParams(location.search);
       const queryServer = query.get('online') === mode ? query.get('server') : '';
       $('onlineServer').value = queryServer || prefs[mode + 'Server'] ||
-        (info?.modes?.includes(mode) ? (mode === 'public' && info.publicUrl ? info.publicUrl : location.origin) : '');
+        (info?.modes?.includes(mode) ? (mode === 'public' && info.publicUrl ? info.publicUrl : location.origin) : '') ||
+        (mode === 'public' ? DEFAULT_PUBLIC_SERVER : '');
       $('onlineServer').placeholder = mode === 'lan' ? 'http://192.168.1.8:8897' : 'https://你的联机服务域名';
       if (query.get('online') === mode) $('onlineRoomCode').value = query.get('room') || '';
-      status('填写昵称与服务地址，然后创建或加入房间。');
+      status(mode === 'public' ? '填写昵称后可创建房间，或输入六位房间号加入。' : '填写昵称与服务地址，然后创建或加入房间。');
     }
     renderLobby(); updateResume();
     (current ? $('btnOnlineBack') : $('onlineNickname')).focus();

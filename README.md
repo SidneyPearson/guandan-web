@@ -8,7 +8,7 @@
 - **公网联机**：已通过 GitHub → Render 上线，[直接创建或加入好友房间](https://guandan-online-x50v.onrender.com/?online=public)，朋友可通过手机流量或不同 Wi-Fi 加入同一房间。也保留自行部署方式。
 - 支持换座、完整升级／快速一局、统一倒计时、掉线托管和刷新重连；持久存储部署还支持同版本服务重启恢复。两种模式的房间相互独立。
 
-启动、部署及具体使用步骤见 [联机使用说明](docs/online-play.md)。当前公网服务为 v1.25.1，已通过四客户端建房、开局出牌与断线重连验收。免费服务休眠后首次打开约需一分钟，休眠、重启或重新部署后需要重新开桌。
+启动、部署及具体使用步骤见 [联机使用说明](docs/online-play.md)。当前版本为 v1.25.2，公网服务已通过四客户端建房、开局出牌与断线重连验收。公网地址默认填写，安装新版后只需昵称和六位房间号即可加入。免费服务休眠后首次打开约需一分钟，休眠、重启或重新部署后需要重新开桌。
 
 [部署到 Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FSidneyPearson%2Fguandan-web%2Ftree%2Fcodex%2Frender-online) · 默认免费试用，休眠或重启后需重新开桌；保留跨重启牌局需另选付费持久存储。
 
@@ -16,7 +16,7 @@
 
 - [电脑版：单机与好友联机](https://guandan-online-x50v.onrender.com/)
 - [手机横屏版：单机与好友联机](https://guandan-online-x50v.onrender.com/mobile/)
-- [原 GitHub Pages 电脑版](https://sidneypearson.github.io/guandan-web/) · [原手机横屏版](https://sidneypearson.github.io/guandan-web/mobile/)（由 main 分支发布，仍为原有版本）
+- [GitHub Pages 电脑版](https://sidneypearson.github.io/guandan-web/) · [手机横屏版](https://sidneypearson.github.io/guandan-web/mobile/)（由 main 分支发布）
 
 ## 主要功能
 
