@@ -65,12 +65,12 @@ function worker(scope = "https://example.test/guandan/mobile/", networkText = ur
     for (const entry of ['btnOnlineLan', 'btnOnlinePublic']) {
       assert(desktop.includes(entry)); assert(html.includes(entry));
     }
-    assert(desktop.includes('href="mobile/index.html"'));
+    assert(desktop.includes('href="mobile/index.html?view=mobile"'));
     assert(!desktop.includes("rotateOverlay"));
     assert(!desktop.includes("css/mobile.css"));
     assert(!desktop.includes('rel="manifest"'));
     assert(!desktop.includes("js/offline.js"));
-    assert(html.includes('href="../index.html"'));
+    assert(html.includes('href="../index.html?view=desktop"'));
     assert(html.includes("rotateOverlay"));
   });
   await check("两版共用原规则和 AI，手机专用功能放在 mobile 内", () => {

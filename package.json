@@ -1,6 +1,6 @@
 {
   "name": "guandan-online",
-  "version": "1.25.3",
+  "version": "1.25.4",
   "private": true,
   "description": "掼蛋单机、同一 Wi-Fi 与公网好友房间",
   "engines": {
@@ -11,6 +11,7 @@
     "start:lan": "node server/index.cjs --mode=lan",
     "start:public": "node server/index.cjs --mode=public",
     "test:online": "node --test test/online.cjs test/online-client.cjs",
+    "test:environment": "node --test test/environment.cjs",
     "test:online-browser": "node test/browser/online.cjs"
   },
   "dependencies": {

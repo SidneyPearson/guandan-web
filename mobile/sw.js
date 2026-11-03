@@ -1,5 +1,5 @@
 /* 同一版本的完整资源一起缓存；新版等待所有旧窗口关闭后启用。 */
-importScripts("../js/version.js?v=1.25.3");
+importScripts("../js/version.js?v=1.25.4");
 for (const file of ["voice-lines", "voice-config", "voice-packs"])
   importScripts(`../js/${file}.js?v=${self.GD.VERSION}`);
 const VERSION = self.GD.VERSION;
@@ -13,7 +13,7 @@ const FILES = [
   `./css/mobile.css?v=${VERSION}`, `./js/offline.js?v=${VERSION}`,
   `../audio/music/table-loop.mp3?v=${VERSION}`,
   ...["style", "table-theme", "online"].map(name => `../css/${name}.css?v=${VERSION}`),
-  ...["version", "util", "cards", "rules", "flow", "ai", "ai-memory", "ai-search", "ai-client", "ai-worker", "ai-worker-source", "fx", "voice-lines", "voice-config", "voice-packs", "music", "sound", "stats", "game",
+  ...["environment", "version", "util", "cards", "rules", "flow", "ai", "ai-memory", "ai-search", "ai-client", "ai-worker", "ai-worker-source", "fx", "voice-lines", "voice-config", "voice-packs", "music", "sound", "stats", "game",
     "table-tools", "table-view", "turn-clock", "active-play", "seat-play", "play-history", "vendor/socket.io.min", "online-view", "online", "ui"]
     .map(name => `../js/${name}.js?v=${VERSION}`),
   ...self.GD.voicePreferences.installedProfiles().flatMap(profile => Object.keys(self.GD.VOICE_LINES)
