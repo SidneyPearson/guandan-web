@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "单机掼蛋 · 手机离线版",
+  "name": "掼蛋 · 手机横屏版",
   "short_name": "单机掼蛋",
-  "description": "你与三名电脑玩家的四人掼蛋，手机横屏、离线对局和本地存档。",
+  "description": "手机横屏掼蛋，支持单机离线、同一 Wi-Fi 和公网好友房间。",
   "lang": "zh-CN",
   "start_url": "./?source=homescreen",
   "scope": "./",

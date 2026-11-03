@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>单机掼蛋</title>
-<link rel="stylesheet" href="css/style.css?v=1.24.6" />
-<link rel="stylesheet" href="css/table-theme.css?v=1.24.6" />
+<title>掼蛋 · 单机与好友联机</title>
+<link rel="stylesheet" href="css/style.css?v=1.25.2" />
+<link rel="stylesheet" href="css/table-theme.css?v=1.25.2" />
+<link rel="stylesheet" href="css/online.css?v=1.25.2" />
 </head>
 <body>
 <div id="app">
@@ -130,7 +131,7 @@
   <div class="overlay hidden" id="homeOverlay">
     <div class="panel home-panel">
       <h1 class="game-title">掼&nbsp;蛋</h1>
-      <p class="subtitle">单机网页版 · 四人对局 · 无需联网</p>
+      <p class="subtitle">四人掼蛋 · 单机畅玩 · 好友联机</p>
       <div class="diff-row">
         <span>电脑难度：</span>
         <label><input type="radio" name="homeDiff" value="easy" /> 简单</label>
@@ -139,6 +140,10 @@
       </div>
       <button class="btn btn-primary big" id="btnStart">完整对局<span class="mode-desc">升级、进贡，打到过 A</span></button>
       <button class="btn big" id="btnPractice">快速一局<span class="mode-desc">只打一副，结束即结算</span></button>
+      <div class="online-entry-row" aria-label="在线游玩">
+        <button class="btn" id="btnOnlineLan">同一 Wi-Fi<span class="mode-desc">同一网络，面对面开桌</span></button>
+        <button class="btn" id="btnOnlinePublic">公网联机<span class="mode-desc">分享房间，异地一起玩</span></button>
+      </div>
       <button class="btn big hidden" id="btnContinue">继续完整对局</button>
       <button class="btn big hidden" id="btnPracticeContinue">继续快速一局</button>
       <div class="home-sub-row">
@@ -146,7 +151,7 @@
         <button class="btn btn-ghost" id="btnHomeStats">战绩</button>
         <button class="btn btn-ghost" id="btnHomeRules">规则</button>
       </div>
-      <p class="foot-tip">规则、AI、存档均在本地浏览器运行</p>
+      <p class="foot-tip">单机无需联网 · 联机通过房间服务同步</p>
       <p class="foot-tip version-tip">版本 v<span id="homeVersion"></span> · <a href="mobile/index.html" style="color:#e5cb8a">手机离线版</a></p>
     </div>
   </div>
@@ -271,31 +276,34 @@
   <div class="toast" id="toast"></div>
 </div>
 
-<script src="js/version.js?v=1.24.6"></script>
-<script src="js/util.js?v=1.24.6"></script>
-<script src="js/cards.js?v=1.24.6"></script>
-<script src="js/rules.js?v=1.24.6"></script>
-<script src="js/flow.js?v=1.24.6"></script>
-<script src="js/ai.js?v=1.24.6"></script>
-<script src="js/ai-memory.js?v=1.24.6"></script>
-<script src="js/ai-search.js?v=1.24.6"></script>
-<script src="js/ai-worker-source.js?v=1.24.6"></script>
-<script src="js/ai-client.js?v=1.24.6"></script>
-<script src="js/fx.js?v=1.24.6"></script>
-<script src="js/voice-lines.js?v=1.24.6"></script>
-<script src="js/voice-config.js?v=1.24.6"></script>
-<script src="js/voice-packs.js?v=1.24.6"></script>
-<script src="js/music.js?v=1.24.6"></script>
-<script src="js/sound.js?v=1.24.6"></script>
-<script src="js/stats.js?v=1.24.6"></script>
-<script src="js/game.js?v=1.24.6"></script>
-<script src="js/table-tools.js?v=1.24.6"></script>
-<script src="js/table-view.js?v=1.24.6"></script>
-<script src="js/turn-clock.js?v=1.24.6"></script>
-<script src="js/active-play.js?v=1.24.6"></script>
-<script src="js/seat-play.js?v=1.24.6"></script>
-<script src="js/play-history.js?v=1.24.6"></script>
-<script src="js/ui.js?v=1.24.6"></script>
-<script src="js/desktop.js?v=1.24.6"></script>
+<script src="js/version.js?v=1.25.2"></script>
+<script src="js/util.js?v=1.25.2"></script>
+<script src="js/cards.js?v=1.25.2"></script>
+<script src="js/rules.js?v=1.25.2"></script>
+<script src="js/flow.js?v=1.25.2"></script>
+<script src="js/ai.js?v=1.25.2"></script>
+<script src="js/ai-memory.js?v=1.25.2"></script>
+<script src="js/ai-search.js?v=1.25.2"></script>
+<script src="js/ai-worker-source.js?v=1.25.2"></script>
+<script src="js/ai-client.js?v=1.25.2"></script>
+<script src="js/fx.js?v=1.25.2"></script>
+<script src="js/voice-lines.js?v=1.25.2"></script>
+<script src="js/voice-config.js?v=1.25.2"></script>
+<script src="js/voice-packs.js?v=1.25.2"></script>
+<script src="js/music.js?v=1.25.2"></script>
+<script src="js/sound.js?v=1.25.2"></script>
+<script src="js/stats.js?v=1.25.2"></script>
+<script src="js/game.js?v=1.25.2"></script>
+<script src="js/table-tools.js?v=1.25.2"></script>
+<script src="js/table-view.js?v=1.25.2"></script>
+<script src="js/turn-clock.js?v=1.25.2"></script>
+<script src="js/active-play.js?v=1.25.2"></script>
+<script src="js/seat-play.js?v=1.25.2"></script>
+<script src="js/play-history.js?v=1.25.2"></script>
+<script src="js/vendor/socket.io.min.js?v=1.25.2"></script>
+<script src="js/online-view.js?v=1.25.2"></script>
+<script src="js/online.js?v=1.25.2"></script>
+<script src="js/ui.js?v=1.25.2"></script>
+<script src="js/desktop.js?v=1.25.2"></script>
 </body>
 </html>

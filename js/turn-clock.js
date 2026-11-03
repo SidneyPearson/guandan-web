@@ -45,13 +45,22 @@
     return {
       clear, suspend,
       sync(state) {
-        if (state.phase !== "play" || !state.awaiting || state.finished.includes(state.awaiting.seat)) {
+        let active = state.phase === "play" ? state.awaiting : null;
+        if (state.online && state.phase === "tribute" && !state.tribute.anti) {
+          const t = state.tribute, pair = t.pairs[t.idx];
+          if (pair) active = { seat: t.stage === "give" ? pair.from : pair.to, kind: t.stage + ":" + t.idx };
+        }
+        if (!active || state.finished.includes(active.seat)) {
           clear(); return;
         }
-        const next = `${GD.tableView.handKey(state)}:${state.gen}:${state.awaiting.seat}:${state.awaiting.kind}`;
+        const next = `${GD.tableView.handKey(state)}:${state.gen}:${active.seat}:${active.kind}`;
         suspend();
         if (next !== key) { key = next; remaining = duration; }
-        seat = state.awaiting.seat;
+        if (state.online && state.deadline != null) {
+          remaining = Math.max(0, state.deadline - Date.now() - (state.serverClockOffset || 0));
+        }
+        seat = active.seat;
+        roots[seat].title = state.online ? "服务端统一计时，到时自动托管" : "30 秒回合提示，归零后仍可出牌";
         roots.forEach((root, index) => root.classList.toggle("hidden", index !== seat));
         if (state.paused) paint(true);
         else { deadline = performance.now() + remaining; tick(); }
