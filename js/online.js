@@ -227,7 +227,7 @@
         }
         connected = !!response?.ok;
       }
-      hooks.connection(true); renderHud();
+      hooks.connection(connected); renderLobby(); renderHud();
     });
     return new Promise((resolve, reject) => {
       let settled = false;

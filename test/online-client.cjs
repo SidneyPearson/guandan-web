@@ -11,11 +11,16 @@ const { parseHTML } = require('linkedom');
 const ROOT = path.resolve(__dirname, '..');
 const PUBLIC = 'https://guandan-online-x50v.onrender.com';
 
-function frontend({ entry = 'mobile/index.html', url = 'https://example.test/guandan/mobile/', config = null, prefs = {} } = {}) {
+function frontend({ entry = 'mobile/index.html', url = 'https://example.test/guandan/mobile/', config = null, prefs = {}, reply = () => ({ ok: true }) } = {}) {
   const { document, window } = parseHTML(fs.readFileSync(path.join(ROOT, entry), 'utf8'));
   const memory = new Map([['gd-online-preferences-v1', JSON.stringify(prefs)]]);
-  const connections = [], requests = [];
+  const connections = [], requests = [], sockets = [];
   window.HTMLElement.prototype.focus = function () {};
+  Object.defineProperty(window.HTMLSelectElement.prototype, 'value', {
+    configurable:true,
+    get() { return (this.querySelector('option[selected]') || this.querySelector('option'))?.value || ''; },
+    set(value) { this.querySelectorAll('option').forEach(option=>option.toggleAttribute('selected',option.value===value)); }
+  });
   const context = vm.createContext({ document, URL, URLSearchParams, AbortSignal,
     crypto: webcrypto, location: new URL(url), navigator: {}, setTimeout, clearTimeout,
     history: { replaceState() {} },
@@ -24,9 +29,10 @@ function frontend({ entry = 'mobile/index.html', url = 'https://example.test/gua
     io(origin) {
       connections.push(origin);
       const socket = new EventEmitter();
+      sockets.push(socket);
       socket.connected = true;
       socket.timeout = () => socket;
-      socket.emitWithAck = async (event, message) => { requests.push({ event, message }); return { ok: true }; };
+      socket.emitWithAck = async (event, message) => { requests.push({ event, message }); return reply(message); };
       socket.disconnect = () => { socket.connected = false; socket.emit('disconnect', 'io client disconnect'); };
       queueMicrotask(() => socket.emit('connect'));
       return socket;
@@ -37,7 +43,7 @@ function frontend({ entry = 'mobile/index.html', url = 'https://example.test/gua
     vm.runInContext(fs.readFileSync(path.join(ROOT, 'js', file), 'utf8'), context, { filename: file });
   context.GD.online.mount({ toast() {}, refresh() {}, connection() {}, leave() {}, receive() {} });
   const input = id => document.getElementById(id);
-  return { online: context.GD.online, input, connections, requests };
+  return { online: context.GD.online, input, connections, requests, sockets };
 }
 
 for (const entry of ['index.html', 'mobile/index.html']) {
@@ -82,4 +88,34 @@ test('LAN mode stays separate from the default public service', async () => {
   const local = frontend({ url: 'http://192.168.1.8:8897/mobile/', config: { modes: ['lan'] } });
   await local.online.open('lan');
   assert.equal(local.input('onlineServer').value, 'http://192.168.1.8:8897');
+});
+
+test('lobby readiness remains usable after joining and reconnecting', async () => {
+  const version = fs.readFileSync(path.join(ROOT, 'js/version.js'), 'utf8').match(/GD.VERSION = "([^"]+)"/)[1];
+  let ready = false, revision = 0;
+  const snapshot = () => ({ protocol:1, version, game:null, room:{
+    code:'123456', mode:'public', revision:++revision, ownSeat:0, hostId:'test-player', started:false,
+    storage:'ephemeral', options:{gameMode:'match',difficulty:'normal',turnSeconds:30,partnerView:true},
+    seats:[0,1,2,3].map(seat=>({seat,id:seat===0?'test-player':null,nickname:seat===0?'本人':'空位',
+      connected:seat===0,ready:seat===0&&ready,isHost:seat===0,autoPilot:false}))
+  }});
+  const app = frontend({ reply: message => {
+    if (message.kind==='room:ready') ready=!ready;
+    return {ok:true,snapshot:snapshot(),...(message.kind==='room:join'?{session:{mode:'public',code:'123456',token:'test-only-token'}}:{})};
+  }});
+  await app.online.open('public');
+  app.input('onlineNickname').value='本人'; app.input('onlineRoomCode').value='123456';
+  await app.input('btnOnlineJoin').onclick();
+  assert.equal(app.input('btnOnlineReady').disabled,false);
+  await app.input('btnOnlineReady').onclick();
+  assert.equal(app.input('btnOnlineReady').textContent,'取消准备');
+  assert.equal(app.input('btnOnlineReady').disabled,false);
+  app.sockets[0].emit('disconnect','transport close');
+  assert.equal(app.input('btnOnlineReady').disabled,true);
+  app.sockets[0].emit('connect');
+  for(let n=0;n<12;n++)await Promise.resolve();
+  assert.equal(app.online.connected,true);
+  assert.equal(app.input('btnOnlineReady').disabled,false);
+  assert.equal(app.input('btnOnlineStart').disabled,false);
+  await app.online.leave();
 });

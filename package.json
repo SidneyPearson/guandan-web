@@ -1,6 +1,6 @@
 {
   "name": "guandan-online",
-  "version": "1.25.2",
+  "version": "1.25.3",
   "private": true,
   "description": "掼蛋单机、同一 Wi-Fi 与公网好友房间",
   "engines": {
