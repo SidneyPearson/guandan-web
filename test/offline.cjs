@@ -8,7 +8,7 @@ const MOBILE = path.join(ROOT, "mobile");
 let passed = 0;
 async function check(name, fn) { await fn(); passed++; console.log("✓ " + name); }
 
-function worker(scope = "https://example.test/guandan/mobile/") {
+function worker(scope = "https://example.test/guandan/mobile/", networkText = url => url) {
   const events = {}, stores = new Map(), messages = [];
   let online = true, failInstall = false, fetches = 0;
   function cache(name) {
@@ -17,7 +17,7 @@ function worker(scope = "https://example.test/guandan/mobile/") {
     return {
       async addAll(requests) {
         if (failInstall) throw new Error("missing resource");
-        for (const request of requests) map.set(request.url, new Response(request.url));
+        for (const request of requests) map.set(request.url, new Response(networkText(request.url)));
       },
       async match(key) { return map.get(typeof key === "string" ? key : key.url)?.clone(); },
       async put(key, response) { map.set(key, response); },
@@ -31,7 +31,7 @@ function worker(scope = "https://example.test/guandan/mobile/") {
     async fetch(request) {
       fetches++;
       if (!online) throw new Error("offline");
-      return new Response(request.url);
+      return new Response(networkText(request.url));
     },
     importScripts(file) { vm.runInContext(fs.readFileSync(path.join(MOBILE, file), "utf8"), context); },
   });
@@ -43,7 +43,7 @@ function worker(scope = "https://example.test/guandan/mobile/") {
     events[event]({ waitUntil(p) { promise = p; }, respondWith(p) { promise = p; }, ...extra });
     return promise;
   };
-  return { files, name, stores, scope, messages, dispatch, cache,
+  return { files, name, stores, scope, version: vm.runInContext("VERSION", context), messages, dispatch, cache,
     online(value) { online = value; }, fail(value) { failInstall = value; },
     get fetches() { return fetches; },
     request(relative, mode = "cors", method = "GET") {
@@ -130,9 +130,23 @@ function worker(scope = "https://example.test/guandan/mobile/") {
     assert.equal(w.messages.at(-1).ready, true);
   });
   w.online(false);
+  await check("CDN 保留旧无版本首页时，新离线包仍安装对应版本的手机页面", async () => {
+    const scope = 'https://example.test/guandan/mobile/';
+    const stale = worker(scope, value => {
+      const url = new URL(value);
+      if (url.pathname === '/guandan/mobile/' || url.pathname === '/guandan/mobile/index.html')
+        return url.searchParams.get('v') === w.version ? '<button id="btnOnlinePublic">公网联机</button>' : '<h1>旧单机首页</h1>';
+      return value;
+    });
+    await stale.dispatch('install');
+    stale.online(false);
+    const html = await (await stale.request('./?source=homescreen', 'navigate')).text();
+    assert(html.includes('btnOnlinePublic'));
+    assert(!html.includes('旧单机首页'));
+  });
   await check("断网时桌面启动链接仍返回完整首页", async () => {
     const response = await w.request("./?source=homescreen", "navigate");
-    assert.equal(await response.text(), w.scope + "index.html");
+    assert.equal(await response.text(), w.scope + "index.html?v=" + w.version);
     assert.equal(w.fetches, 0);
   });
   await check("断网时每个资源均从缓存读取", async () => {
@@ -160,6 +174,13 @@ function worker(scope = "https://example.test/guandan/mobile/") {
     await w.request(w.files[4]);
     await w.status();
     assert.equal(w.messages.at(-1).ready, true);
+  });
+  await check("离线首页缺失时从带版本地址修复，保留启动页上的房间参数", async () => {
+    const index = w.files.find(url => new URL(url).pathname.endsWith('/index.html'));
+    w.stores.get(w.name).delete(index);
+    const response = await w.request('./?online=public&room=123456', 'navigate');
+    assert.equal(await response.text(), w.scope + 'index.html?v=' + w.version);
+    assert(w.stores.get(w.name).has(index));
   });
   await check("新版本激活只清除本项目同一作用域的旧缓存", async () => {
     const old = w.name.replace(/:[^:]+$/, ":0.9.0");
