@@ -1,8 +1,7 @@
 /* 同一版本的完整资源一起缓存；新版等待所有旧窗口关闭后启用。 */
-importScripts("../js/version.js");
-importScripts("../js/voice-lines.js");
-importScripts("../js/voice-config.js");
-importScripts("../js/voice-packs.js");
+importScripts("../js/version.js?v=1.25.3");
+for (const file of ["voice-lines", "voice-config", "voice-packs"])
+  importScripts(`../js/${file}.js?v=${self.GD.VERSION}`);
 const VERSION = self.GD.VERSION;
 const PREFIX = "guandan-offline:" + self.registration.scope + ":";
 // Migrate existing caches whose unversioned index may contain an older CDN page.

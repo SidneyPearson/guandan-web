@@ -9,7 +9,7 @@ let passed = 0;
 async function check(name, fn) { await fn(); passed++; console.log("✓ " + name); }
 
 function worker(scope = "https://example.test/guandan/mobile/", networkText = url => url) {
-  const events = {}, stores = new Map(), messages = [];
+  const events = {}, stores = new Map(), messages = [], imports = [];
   let online = true, failInstall = false, fetches = 0;
   function cache(name) {
     if (!stores.has(name)) stores.set(name, new Map());
@@ -33,7 +33,10 @@ function worker(scope = "https://example.test/guandan/mobile/", networkText = ur
       if (!online) throw new Error("offline");
       return new Response(networkText(request.url));
     },
-    importScripts(file) { vm.runInContext(fs.readFileSync(path.join(MOBILE, file), "utf8"), context); },
+    importScripts(file) {
+      imports.push(new URL(file, scope).href);
+      vm.runInContext(fs.readFileSync(path.join(MOBILE, file.split('?')[0]), "utf8"), context);
+    },
   });
   vm.runInContext(fs.readFileSync(path.join(MOBILE, "sw.js"), "utf8"), context);
   const files = Array.from(vm.runInContext("FILES", context));
@@ -43,7 +46,7 @@ function worker(scope = "https://example.test/guandan/mobile/", networkText = ur
     events[event]({ waitUntil(p) { promise = p; }, respondWith(p) { promise = p; }, ...extra });
     return promise;
   };
-  return { files, name, stores, scope, version: vm.runInContext("VERSION", context), messages, dispatch, cache,
+  return { files, imports, name, stores, scope, version: vm.runInContext("VERSION", context), messages, dispatch, cache,
     online(value) { online = value; }, fail(value) { failInstall = value; },
     get fetches() { return fetches; },
     request(relative, mode = "cors", method = "GET") {
@@ -89,6 +92,7 @@ function worker(scope = "https://example.test/guandan/mobile/", networkText = ur
     const version = fs.readFileSync(path.join(ROOT, "js/version.js"), "utf8").match(/GD.VERSION = "([^"]+)"/)[1];
     for (const content of [html, fs.readFileSync(path.join(ROOT, "index.html"), "utf8")])
       for (const match of content.matchAll(/\?v=([^"']+)/g)) assert.equal(match[1], version);
+    for (const url of w.imports) assert.equal(new URL(url).searchParams.get('v'), version);
   });
   await check("所有已就绪报牌语音按产品版本缓存，未就绪方言不发起缺失请求", () => {
     const context = { self: {} };
